@@ -246,7 +246,7 @@ Management of data or records is a basic need for human society:
 ---
 
 
-# CS2001 – Week 3  
+# CS2001 – Week 1, Lecture 3  
 ## File Handling via Python vs DBMS
 
 ---
@@ -436,12 +436,7 @@ Management of data or records is a basic need for human society:
   - Commit transaction.
 - Most of the work (locking, atomicity, persistence) is handled by DBMS engine.
 
----
-
-
-# CS2001 – Week 3 (continued)
-
-## 1. Data Manipulation Language (DML)
+## 11. Data Manipulation Language (DML)
 
 - Language for accessing and manipulating the data organized by the appropriate data model.
 - **Two classes of query languages:**
@@ -452,7 +447,7 @@ Management of data or records is a basic need for human society:
 
 ---
 
-## 2. SQL
+## 12. SQL
 
 - **SQL is NOT a Turing complete language** (equivalent to C programming language).
 - Cannot be used to solve all problems that a C program, for example, can solve.
@@ -462,7 +457,7 @@ Management of data or records is a basic need for human society:
 
 ---
 
-## 3. Data Definition Language (DDL)
+## 13. Data Definition Language (DDL)
 
 - Specification notation for defining the database schema.
 - **Example:**
@@ -482,26 +477,26 @@ budget numeric(12,2)
 
 ---
 
-## 4. Relational model
+## 14. Relational model
 
 - All data stored in tables in the relational model.
 - **Example tabular data in relational model:**
 
-| ID  | name      | salary | dept_name | budget |
-|-----|-----------|--------|-----------|--------|
-| 1223| Watson   | 80000 | Physics   | 70000 |
-| 3233| Wu       | 90000 | Finance   | 50000 |
-| 3231| Franklin | 60000 | Biology   | 80000 |
-| 45565| Katz     | 75000 | Comp.Sci. | 100000|
-| 98321| Srinivasan| 65000 | Comp.Sci. | 100000|
-| 15151| Brandt   | 92000 | Music     | 80000 |
-| 76453| Singh    | 87000 | Physics   | 120000|
+| ID    | name       | salary | dept_name | budget |
+| ----- | ---------- | ------ | --------- | ------ |
+| 1223  | Watson     | 80000  | Physics   | 70000  |
+| 3233  | Wu         | 90000  | Finance   | 50000  |
+| 3231  | Franklin   | 60000  | Biology   | 80000  |
+| 45565 | Katz       | 75000  | Comp.Sci. | 100000 |
+| 98321 | Srinivasan | 65000  | Comp.Sci. | 100000 |
+| 15151 | Brandt     | 92000  | Music     | 80000  |
+| 76453 | Singh      | 87000  | Physics   | 120000 |
 
 *(c) Instructor table*
 
 ---
 
-## 5. Data models
+## 15. Data models
 
 - **Collection of tools** for describing:
 - Data
@@ -517,7 +512,7 @@ budget numeric(12,2)
 
 ---
 
-## 6. Schema and instances
+## 16. Schema and instances
 
 - **Physical data independence:** Ability to modify the physical schema without changing the logical schema.
 - **Logical data independence:** Ability to modify the logical schema without changing the application programs.
@@ -526,17 +521,17 @@ budget numeric(12,2)
 
 ---
 
-## 7. Schemas and instances (continued)
+## 17. Schemas and instances (continued)
 
 - **Instance:** Content of the database at a particular point in time.
 - **Schema:** Analogue to the type of a variable at a particular point in time.
 
 **Example customer instance:**
 
-| name    | CustomerID | Account# | Adhaar ID | Mobile # |
-|---------|------------|----------|-----------|----------|
-| Pavan Laha | 6728 | 91723 | 182708937 | 93010293 |
-| Nand Prabhu | 6917 | 82713 | 18290429 | 78820928 |
+| name        | CustomerID | Account# | Adhaar ID | Mobile # |
+| ----------- | ---------- | -------- | --------- | -------- |
+| Pavan Laha  | 6728       | 91723    | 182708937 | 93010293 |
+| Nand Prabhu | 6917       | 82713    | 18290429  | 78820928 |
 
 **Account # | Account Type | Interest Rate | Min.Bal. | Balance**
 
@@ -545,16 +540,16 @@ budget numeric(12,2)
 
 ---
 
-## 8. Schemas and instances (continued)
+## 18. Schemas and instances (continued)
 
 - **Schema:** Analogous to type of a variable and value of the variable at run-time in programming.
 - **Logical schema:** Overall logical structure of the database.
 - **Example:** Database consists of information about a set of customers and accounts in a bank.
 
-| name    | CustomerID | Account# | Adhaar ID | Mobile # |
-|---------|------------|----------|-----------|----------|
-| Pavan Laha | 6728 | 91723 | 182708937 | 93010293 |
-| Nand Prabhu | 6917 | 82713 | 18290429 | 78820928 |
+| name        | CustomerID | Account# | Adhaar ID | Mobile # |
+| ----------- | ---------- | -------- | --------- | -------- |
+| Pavan Laha  | 6728       | 91723    | 182708937 | 93010293 |
+| Nand Prabhu | 6917       | 82713    | 18290429  | 78820928 |
 
 **Customer Schema | Account Schema**
 
@@ -565,7 +560,7 @@ budget numeric(12,2)
 
 ---
 
-## 9. View of data
+## 19. View of data
 
 **An architecture for a database system:**
 
@@ -592,7 +587,8 @@ budget numeric(12,2)
 
 ---
 
-## 10. Levels of abstraction
+# CS2001 – Week 1, Lecture 4
+## 1. Levels of abstraction
 
 - **Physical level:** Describes how data (for example, instructor) is actually stored.
 - **Logical level:** Describes what data is recorded in the database, and the relationships among data.
@@ -611,23 +607,23 @@ end;
 
 ---
 
-## 11. Database design (2)
+## 2. Database design (2)
 
 **Is there any problem with this relation?**
 
-| ID  | name      | salary | dept_name | budget |
-|-----|-----------|--------|-----------|--------|
-| 1223| Watson   | 80000 | Physics   | 70000 |
-| 3233| Wu       | 90000 | Finance   | 50000 |
-| 3231| Franklin | 60000 | Biology   | 80000 |
-| 45565| Katz     | 75000 | Comp.Sci. | 100000|
-| 98321| Srinivasan| 65000 | Comp.Sci. | 100000|
-| 15151| Brandt   | 92000 | Music     | 80000 |
-| 76453| Singh    | 87000 | Physics   | 120000|
+| ID    | name       | salary | dept_name | budget |
+| ----- | ---------- | ------ | --------- | ------ |
+| 1223  | Watson     | 80000  | Physics   | 70000  |
+| 3233  | Wu         | 90000  | Finance   | 50000  |
+| 3231  | Franklin   | 60000  | Biology   | 80000  |
+| 45565 | Katz       | 75000  | Comp.Sci. | 100000 |
+| 98321 | Srinivasan | 65000  | Comp.Sci. | 100000 |
+| 15151 | Brandt     | 92000  | Music     | 80000  |
+| 76453 | Singh      | 87000  | Physics   | 120000 |
 
 ---
 
-## 12. Database design
+## 3. Database design
 
 **Logical design:** Deciding on the database schema.
 - Database design requires that we find a **good collection of relation schemas**.
@@ -637,7 +633,7 @@ end;
 **Physical design:** Deciding on the physical layout of the database.
 
 
-# CS2001 – Week 3 (final batch)
+# CS2001 – Week 1, Lecture 5 
 
 ## 1. Database architecture
 
