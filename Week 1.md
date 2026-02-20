@@ -1,5 +1,3 @@
-#### Lecture 1
-
 # CS2001 – Week 1, Lecture 1
 
 ## 1. Course prerequisites (desirable)
@@ -533,10 +531,10 @@ budget numeric(12,2)
 | Pavan Laha  | 6728       | 91723    | 182708937 | 93010293 |
 | Nand Prabhu | 6917       | 82713    | 18290429  | 78820928 |
 
-**Account # | Account Type | Interest Rate | Min.Bal. | Balance**
-
-| 37172 | Savings     | 4.0% | 5000 | 27912 |
-| 82713 | Term Deposit| 6.75%| 10000| 10000 |
+| Account # | Account Type | Interest Rate | Min. Balance | Balance |
+| --------- | ------------ | ------------- | ------------ | ------- |
+| 37172     | Savings      | 4.0%          | 5000         | 27912   |
+| 82713     | Term Deposit | 6.75%         | 10000        | 10000   |
 
 ---
 
