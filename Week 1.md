@@ -684,5 +684,6 @@ query output
 
 
 ---
-
-##
+### Notes to be taken from GA1
+1. Physical Data Independence describes the concept that any change made to the physical schema should not affect the logical level of the DBMS. (Question: 3)
+2. Data Definition Language can lead to modification in the Data Dictionary. (Question: 7)
