@@ -78,8 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "right": {
     "id": "3037a329b7b9f448",
@@ -186,7 +185,8 @@
   },
   "active": "ff78c7f73f018e77",
   "lastOpenFiles": [
-    "DBMS.md",
-    "Week 1.md"
+    "Week 2.md",
+    "Week 1.md",
+    "DBMS.md"
   ]
 }
