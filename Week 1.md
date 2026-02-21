@@ -191,7 +191,6 @@ Management of data or records is a basic need for human society:
 ---
 ---
 ## CS2001 – Week 1, Lecture 3  
-### File Handling via Python vs DBMS
 ### 1. Case study: a banking transaction system
 - Simple banking system where a user can:
   - Open a new account.
@@ -444,7 +443,9 @@ budget numeric(12,2)
 └─────────────┘
 ```
 
-### CS2001 – Week 1, Lecture 4
+---
+---
+## CS2001 – Week 1, Lecture 4
 ### 1. Levels of abstraction
 - **Physical level:** Describes how data (for example, instructor) is actually stored.
 - **Logical level:** Describes what data is recorded in the database, and the relationships among data.

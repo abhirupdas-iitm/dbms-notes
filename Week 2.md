@@ -1,5 +1,4 @@
 # CS2001 – Week 2, Lecture 1
-## Module 06 – Introduction to Relational Model
 ### 1. Week Recap
 - DBMS widely used across domains → motivation for study.
 - File-system based applications are limited compared to DBMS.
@@ -244,7 +243,6 @@ Properties:
 ---
 ---
 # CS2001 – Week 2, Lecture 2
-## Module 07 – Relational Algebra
 ### 1. Module Recap
 - Relational model basics introduced:
   - Attributes and domains
@@ -451,7 +449,6 @@ Aggregate Operators:
 ---
 ---
 # CS2001 – Week 2, Lecture 3
-## Module 08 – Introduction to SQL
 ### 1. Module Recap
 - Relational algebra introduced.
 - Studied operators: selection, projection, union, difference, Cartesian product, natural join.
@@ -730,6 +727,234 @@ where instructor.ID = teaches.ID;
   - where
 - Understood duplicates behavior.
 - Understood relation to relational algebra.
+
+---
+---
+# CS2001 – Week 2, Lecture 4
+### 1. Module Recap
+- We introduced SQL.
+- We discussed DDL and basic query structure.
+- We studied the select–from–where form.
+- We now complete our understanding of the basic query structure.
+### 2. Module Objectives
+- To complete the understanding of basic query structure.
+- To study additional basic SQL operations:
+  - Cartesian Product
+  - Rename (AS)
+  - String Operations
+  - Order By
+  - Select Top / Fetch
+  - Where Clause Predicates
+  - Duplicates
+### 3. Cartesian Product
+#### 3.1 Basic Form
+`select * from instructor, teaches;`
+- Produces the Cartesian product of instructor × teaches.
+- Every instructor tuple is paired with every teaches tuple.
+- All attributes from both relations appear in the result.
+- If attribute names are common (e.g., ID), they are qualified:
+  - instructor.ID
+  - teaches.ID
+#### 3.2 Why Cartesian Product Alone Is Not Useful
+- It produces many meaningless tuples.
+- Example:
+  - instructor.ID ≠ teaches.ID → meaningless pairing.
+- Useful only when combined with a where clause (selection).
+#### 3.3 Equi-Join Example
+Find names of instructors who have taught some course and the course id:
+```
+select name, course_id
+from instructor, teaches
+where instructor.ID = teaches.ID;
+```
+- This performs:
+  - Cartesian product
+  - Selection on matching IDs
+- Equivalent to equi-join / natural join in relational algebra.
+#### 3.4 Adding Additional Condition
+Find instructors in the Art department who have taught some course:
+```
+select name, course_id
+from instructor, teaches
+where instructor.ID = teaches.ID
+and instructor.dept_name = 'Art';
+```
+- First condition → join.
+- Second condition → department restriction.
+### 4. Rename (AS) Operation
+#### 4.1 Syntax
+`old_name as new_name`
+- Used to rename:
+  - Relations
+  - Attributes
+Keyword as is optional:
+instructor as T ≡ instructor T
+#### 4.2 Self-Join Example
+Find instructors whose salary is higher than some instructor in 'Comp. Sci':
+select distinct T.name
+from instructor as T, instructor as S
+where T.salary > S.salary
+  and S.dept_name = 'Comp. Sci.';
+- We create two instances of instructor:
+  - T
+  - S
+- Compare T.salary and S.salary.
+- Restrict S to Comp. Sci.
+This is necessary for self-join operations.
+### 5. Cartesian Product and Hierarchies
+Given relation emp_super(person, supervisor):
+Tasks:
+- Find supervisor of "Bob".
+- Find supervisor of supervisor of "Bob".
+- Find all supervisors (direct and indirect) of "Bob".
+Basic query:
+```
+select supervisor
+from emp_super
+where person = 'Bob';
+```
+To find supervisor of supervisor:
+- Use self-join via Cartesian product.
+- Match supervisor of one row with person of another row.
+Recursive hierarchy requires repeated joining or recursive queries (later topic).
+### 6. String Operations
+#### 6.1 LIKE Operator
+Used for pattern matching.
+Special characters:
+- % → matches any substring (including empty)
+- _ → matches any single character
+#### 6.2 Example
+Find instructors whose name contains "`dar`":
+```
+select name
+from instructor
+where name like '%dar%';
+```
+Matches:
+- Darwin
+- Majumdar
+- Sardar
+#### 6.3 Pattern Examples
+- 'Intro%' → begins with "Intro"
+- '%Comp%' → contains "Comp"
+- '___' → exactly 3 characters
+- '___%' → at least 3 characters
+
+#### 6.4 Escape Character
+To match literal %:
+like '100\%' escape '\';
+#### 6.5 Case Sensitivity
+- Patterns inside quotes are case sensitive.
+- SQL keywords are case insensitive.
+#### 6.6 Other String Operations
+- Concatenation
+- Convert to upper/lower case
+- String length
+- Substring extraction
+### 7. Order By Clause
+List instructor names alphabetically:
+```
+select distinct name
+from instructor
+order by name;
+```
+- Default: ascending order.
+- Descending:
+order by name desc;
+- Can sort by multiple attributes:
+order by dept_name, name;
+### 8. Selecting Limited Number of Tuples
+#### 8.1 SELECT TOP (SQL Server / MS Access)
+`select top 10 distinct name from instructor;`
+#### 8.2 FETCH (Oracle / Standard SQL)
+```
+select distinct name
+from instructor
+order by name
+fetch first 10 rows only;
+```
+#### 8.3 LIMIT (MySQL)
+```
+select distinct name
+from instructor
+order by name
+limit 10;
+```
+Used for:
+- Large tables
+- Pagination
+- Performance control
+### 9. Additional WHERE Clause Predicates
+#### 9.1 BETWEEN
+Find instructors with salary between 90000 and 100000:
+```
+select name
+from instructor
+where salary between 90000 and 100000;
+```
+Equivalent to:
+salary >= 90000 and salary <= 100000
+#### 9.2 Tuple Comparison
+```
+select name, course_id
+from instructor, teaches
+where (instructor.ID, dept_name)
+      = (teaches.ID, 'Biology');
+```
+Compact form of multiple equality comparisons.
+#### 9.3 IN Operator
+```
+select name
+from instructor
+where dept_name in ('Comp. Sci.', 'Biology');
+```
+Equivalent to:
+`dept_name = 'Comp. Sci.' or dept_name = 'Biology'`
+### 10. Duplicates and Multiset Semantics
+#### 10.1 Set vs Multiset
+- Relational algebra → set semantics (no duplicates).
+- SQL → multiset (bag) semantics (duplicates allowed).
+#### 10.2 Multiset Operators
+Given multiset relations r<sub>1</sub> and r<sub>2</sub>:
+a) Selection:
+If tuple t appears c<sub>1</sub> times in r<sub>1</sub> and satisfies condition,
+then it appears c<sub>1</sub> times in σ<sub>(r1)</sub>.
+b) Projection:
+If tuple t appears c<sub>1</sub> times in r<sub>1</sub>,
+then Π(<sub>t</sub>) appears c<sub>1</sub> times in result.
+c) Cartesian Product:
+If t<sub>1</sub> appears c<sub>1</sub> times in r<sub>1</sub> and
+t<sub>2</sub> appears c<sub>2</sub> times in r<sub>2</sub>,
+then (t<sub>1</sub>, t<sub>2</sub>) appears c<sub>1</sub> × c<sub>2</sub> times.
+#### 10.3 Example
+r<sub>1</sub>(A,B) = {(1,a), (2,a)}
+r<sub>2</sub>(C) = {(2), (3), (3)}
+Projection:
+Π<sub>B</sub>(r1) = {(a), (a)}
+Cartesian product:
+Π<sub>B</sub>(r1) × r2 =
+{(a,2),(a,2),(a,3),(a,3),(a,3),(a,3)}
+#### 10.4 SQL Semantics
+```
+select A1, A2, ..., An
+from r1, r2, ..., rm
+where P
+```
+Equivalent to multiset version of:
+Π<sub>A<sub>1</sub>,A<sub>2</sub>,...,A<sub>n</sub></sub>
+(σP(r<sub>1</sub> × r<sub>2</sub> × ... × r<sub>m</sub>))
+### 11. Module Summary
+- Completed understanding of basic SQL query structure.
+- Studied:
+  - Cartesian product
+  - Equi-join
+  - Rename (AS)
+  - String matching (LIKE)
+  - Order by
+  - Select Top / Fetch
+  - BETWEEN, IN, tuple comparison
+  - Duplicate (multiset) semantics
+- SQL corresponds to relational algebra with multiset extensions.
 
 ---
 ---
