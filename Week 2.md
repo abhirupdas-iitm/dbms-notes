@@ -198,8 +198,8 @@ Procedural:
 - Programmer provides algorithm.
 
 Example: Square root of n
-1. Guess x0
-2. xi+1 = (xi + n/xi)/2
+1. Guess x<sub>0</sub>
+2. x<sub>i</sub>+1 = (x<sub>i</sub> + n/x<sub>i</sub>)/2
 3. Repeat until convergence
 
 Declarative:
@@ -208,7 +208,7 @@ Declarative:
 
 Example:
 Find m such that:
-m^2 = n
+m<sup>2</sup> = n
 
 #### 7.2 Relational Query Paradigm
 Relational model uses declarative style.
@@ -240,6 +240,214 @@ Properties:
   - Foreign key
 - Introduced procedural vs declarative paradigms.
 - Previewed relational query languages.
+
+---
+---
+# CS2001 – Week 2, Lecture 2
+## Module 07 – Relational Algebra
+### 1. Module Recap
+- Relational model basics introduced:
+  - Attributes and domains
+  - Schema and instance
+  - Keys (superkey, candidate key, primary key, foreign key)
+- Relational query languages introduced at a high level.
+- Now focus on relational algebra and its operators.
+### 2. Module Objectives
+- Understand relational algebra.
+- Learn core relational algebra operators.
+- Understand aggregation operators.
+- Understand limitations of relational algebra.
+### 3. Basic Properties of Relations
+- A relation is a set.
+- Therefore:
+  - Ordering of tuples is irrelevant.
+  - No duplicate tuples allowed.
+- Example:
+  - If (a1, b1) appears twice → invalid.
+  - Relations must contain distinct tuples only.
+- These properties affect behavior of projection, union, join, etc.
+### 4. Relational Operators
+#### 4.1 Selection (σ) – Row Filtering
+- Syntax:
+  σ_condition(r)
+- Returns:
+  - Subset of tuples in r satisfying condition.
+- Example:
+  σA=B ∧ D>5 (r)
+- Logical operators allowed:
+  - ∧ (AND)
+  - ∨ (OR)
+  - Comparison operators (=, >, <, etc.)
+- Output:
+  - Relation with same schema as r.
+  - Fewer or equal tuples.
+#### 4.2 Projection (π) – Column Selection
+- Syntax:
+  πA,C (r)
+- Keeps only specified attributes.
+- Removes other attributes entirely.
+- Important:
+  - Duplicate tuples generated after projection are eliminated.
+- Example:
+  πA(r)
+  → Only attribute A.
+  → If values repeat, duplicates removed.
+- Output:
+  - Relation with fewer attributes.
+  - Possibly fewer tuples due to duplicate removal.
+#### 4.3 Union (∪)
+- Syntax:
+  r ∪ s
+- Requirement:
+  - r and s must have identical schemas (same attributes, same domains).
+- Result:
+  - All tuples from both.
+  - Duplicate tuples removed (set semantics).
+#### 4.4 Set Difference (−)
+- Syntax:
+  r − s
+- Requirement:
+  - r and s must have identical schemas.
+- Result:
+  - Tuples in r that are not in s.
+#### 4.5 Intersection (∩)
+- Syntax:
+  r ∩ s
+- Result:
+  - Tuples common to both r and s.
+- Not independent:
+  r ∩ s = r − (r − s)
+#### 4.6 Cartesian Product (×)
+- Syntax:
+  r × s
+- Result:
+  - All possible pairings of tuples from r and s.
+- If:
+  - |r| = m
+  - |s| = n
+- Then:
+  - |r × s| = m × n
+- Schema:
+  - Attributes of r followed by attributes of s.
+##### Naming Issue
+- If r and s share attribute names:
+  - Cannot have duplicate attribute names in result.
+  - Use qualification:
+    r.B and s.B
+- Necessary especially for self-product.
+#### 4.7 Renaming (ρ)
+- Syntax:
+  ρX(E)
+- Returns:
+  - Expression E under name X.
+- Used for:
+  - Self joins.
+  - Disambiguation.
+- Example:
+  r × ρs(r)
+#### 4.8 Composition of Operations
+- Operators can be nested.
+- Example:
+  σA=C (r × s)
+- Process:
+  1. Compute r × s.
+  2. Apply selection.
+- Output always a relation.
+### 5. Natural Join (⋈)
+#### 5.1 Definition
+- Let r and s be relations on schemas R and S.
+- Natural join:
+  r ⋈ s
+- Result schema:
+  R ∪ S
+- For each pair (tr, ts):
+  - If values match on attributes in R ∩ S,
+    include combined tuple.
+#### 5.2 Key Characteristics
+- Only tuples agreeing on common attribute names are combined.
+- Duplicate columns from R ∩ S removed in output.
+- Stronger than Cartesian product.
+#### 5.3 Equivalent Expression
+r ⋈ s =
+πA,r.B,C,r.D,E (σr.B=s.B ∧ r.D=s.D (r × s))
+
+Steps:
+1. Cartesian product.
+2. Select tuples where common attributes match.
+3. Project to remove duplicate columns.
+
+- Natural join is widely used in query processing.
+- Core operation in relational querying.
+### 6. Aggregate Operators
+#### 6.1 Purpose
+- Compute summary values.
+- Examples:
+  - SUM
+  - AVG
+  - MAX
+  - MIN
+#### 6.2 Behavior
+- Input:
+  - A relation.
+- Output:
+  - A single value (not a relation).
+- Example:
+  SUM(B)
+  MAX(salary)
+#### 6.3 Difference from Relational Operators
+Relational operators:
+- Input: relation(s)
+- Output: relation
+
+Aggregate operators:
+- Input: relation
+- Output: single scalar value
+
+- Aggregates are not part of pure relational algebra.
+- Used in practical query languages (e.g., SQL).
+### 7. Notes on Relational Languages
+- Each query input:
+  - One or more relations.
+- Each query output:
+  - A relation.
+- Output values must originate from input relations.
+- Relational algebra is not Turing complete.
+  - Cannot express all possible computations.
+  - Requires host programming language for general algorithms.
+### 8. Summary of Core Operators
+Unary Operators:
+- σ (Selection)
+- π (Projection)
+- ρ (Renaming)
+
+Binary Operators:
+- ∪ (Union)
+- − (Difference)
+- ∩ (Intersection)
+- × (Cartesian Product)
+- ⋈ (Natural Join)
+
+Aggregate Operators:
+- SUM
+- AVG
+- MAX
+- MIN
+### 9. Module Summary
+- Introduced relational algebra.
+- Studied:
+  - Selection
+  - Projection
+  - Union
+  - Difference
+  - Intersection
+  - Cartesian Product
+  - Renaming
+  - Natural Join
+- Understood aggregate operators.
+- Noted that relational algebra:
+  - Is declarative.
+  - Is not Turing complete.
+  - Always returns relations (except aggregates).
 
 ---
 ---
