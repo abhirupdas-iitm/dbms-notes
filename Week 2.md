@@ -958,3 +958,199 @@ Equivalent to multiset version of:
 
 ---
 ---
+## CS2001 – Week 2, Lecture 5
+### 1. Module Recap
+- We completed the understanding of basic query structure.
+- We studied select–from–where, joins, ordering, string operations, and duplicates.
+### 2. Module Objectives
+- To understand set operations in SQL.
+- To understand null values and three-valued logic.
+- To understand aggregate functions.
+- To understand group by and having clauses.
+### 3. Set Operations
+Set operations treat relations as sets (not multisets).
+The two queries must have identical structure (same number and compatible types of attributes).
+#### 3.1 Union
+Find courses that ran in Fall 2009 or Spring 2010:
+```
+(select course_id
+ from section
+ where semester = 'Fall' and year = 2009)
+union
+(select course_id
+ from section
+ where semester = 'Spring' and year = 2010);
+```
+- union automatically removes duplicates.
+#### 3.2 Intersection
+Find courses that ran in both Fall 2009 and Spring 2010:
+```
+(select course_id
+ from section
+ where semester = 'Fall' and year = 2009)
+intersect
+(select course_id
+ from section
+ where semester = 'Spring' and year = 2010);
+```
+#### 3.3 Difference (Except)
+Find courses that ran in Fall 2009 but not in Spring 2010:
+```
+(select course_id
+ from section
+ where semester = 'Fall' and year = 2009)
+except
+(select course_id
+ from section
+ where semester = 'Spring' and year = 2010);
+```
+#### 3.4 Largest Salary Using Set Operations
+Step 1: Salaries less than some other salary
+```
+select distinct T.salary
+from instructor as T, instructor as S
+where T.salary < S.salary;
+```
+Step 2: All salaries
+`select distinct salary from instructor;`
+Step 3: Largest salary
+```
+(select distinct salary
+ from instructor)
+except
+(select distinct T.salary
+ from instructor as T, instructor as S
+ where T.salary < S.salary);
+```
+This returns the highest salary as a one-column table.
+#### 3.5 Multiset Versions
+Default behavior:
+- union
+- intersect
+- except
+→ eliminate duplicates.
+
+To retain duplicates:
+- union all
+- intersect all
+- except all
+If a tuple occurs m times in r and n times in s:
+- r union all s → m + n times
+- r intersect all s → min(m, n) times
+- r except all s → max(0, m − n) times
+### 4. Null Values
+Null represents:
+- Unknown value
+- Value that does not exist
+#### 4.1 Properties
+- Any arithmetic involving null → null
+  Example: 5 + null = null
+- Cannot compare using =, <, >, <>
+- Must use:
+  is null
+  is not null
+Example:
+```
+select name
+from instructor
+where salary is null;
+```
+#### 4.2 Three-Valued Logic
+SQL uses:
+- true
+- false
+- unknown
+Any comparison with null → unknown
+Examples:
+5 < null → unknown
+null = null → unknown
+Logical operations:
+OR:
+- unknown or true → true
+- unknown or false → unknown
+- unknown or unknown → unknown
+AND:
+- true and unknown → unknown
+- false and unknown → false
+- unknown and unknown → unknown
+NOT:
+- not unknown → unknown
+Important rule:
+If where clause evaluates to unknown,
+it is treated as false.
+### 5. Aggregate Functions
+Aggregate functions operate on a multiset of values and return a single value.
+Functions:
+- avg
+- min
+- max
+- sum
+- count
+#### 5.1 Examples
+Average salary of Computer Science instructors:
+```
+select avg(salary)
+from instructor
+where dept_name = 'Comp. Sci.';
+```
+Number of instructors teaching in Spring 2010:
+```
+select count(distinct ID)
+from teaches
+where semester = 'Spring' and year = 2010;
+```
+Total number of tuples in course relation:
+`select count(*) from course;`
+Note:
+count(*) counts all tuples.
+### 6. Group By
+Used when aggregation is required per group.
+Find average salary in each department:
+```
+select dept_name, avg(salary) as avg_salary
+from instructor
+group by dept_name;
+```
+Mechanism:
+- group by forms groups based on dept_name.
+- avg is computed separately for each group.
+Rule:
+Attributes in select clause outside aggregate functions must appear in group by list.
+Incorrect:
+```
+select dept_name, ID, avg(salary)
+from instructor
+group by dept_name;
+```
+ID is neither aggregated nor grouped → invalid.
+### 7. Having Clause
+having applies conditions after grouping.
+Find departments whose average salary > 42000:
+```
+select dept_name, avg(salary)
+from instructor
+group by dept_name
+having avg(salary) > 42000;
+```
+Difference:
+- where → applied before grouping.
+- having → applied after grouping.
+### 8. Null Values and Aggregates
+Example:
+`select sum(salary) from instructor;`
+- Null values are ignored.
+- If all values are null:
+  - count returns 0
+  - all other aggregates return null
+All aggregate functions except count(*) ignore null values in the aggregated attribute.
+
+### 9. Module Summary
+- Studied set operations: union, intersect, except.
+ Understood multiset variants.
+- Studied null values and three-valued logic.
+- Learned aggregate functions.
+- Understood group by and having.
+- Understood behavior of null in aggregation.
+
+---
+---
