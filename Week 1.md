@@ -523,6 +523,8 @@ query output
 [ data ] [ statistics about data ]
 ```
 
+### Notes taken from Activity Questions 1.5
+1. 
 ---
 ---
 ### Notes to be taken from GA1
