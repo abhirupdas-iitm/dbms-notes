@@ -524,7 +524,8 @@ query output
 ```
 
 ### Notes taken from Activity Questions 1.5
-1. 
+1. Sybase and INFORMIX are examples of client/server RDBMS. (Question: 1)
+2. Object Relational data Model contains atomic values allows attributes of tuples to have complex data types. (Question: 2)
 ---
 ---
 ### Notes to be taken from GA1
