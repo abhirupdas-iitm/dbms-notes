@@ -484,6 +484,10 @@ end;
 
 **Physical design:** Deciding on the physical layout of the database.
 
+### Notes taken from Activity Questions 1.4
+1. Database schema, integrity constrains and authorizations are the contents of a data dictionary. (Question: 10)
+2. Logical design of a database also tells how should a database be structured to fulfill business requirements. (Question: 11)
+3. The physical layout of the database is a part of the physical design of the database. (Question: 12)
 ---
 ---
 ## CS2001 – Week 1, Lecture 5 
