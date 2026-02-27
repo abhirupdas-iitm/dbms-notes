@@ -53,9 +53,6 @@
   - Human resources: employee records, salaries, tax details.
 - Databases can be very large and they appear in almost every aspect of modern life.
 
-### Notes taken from Activity Questions 1.2
-1. Upper limit on the number of rows is a disadvantage of file systems as compared to DBMS. (Question: 3)
-2. Sybase is a client/server RDBMs. (Question: 5)
 ---
 ---
 ## CS2001 – Week 1, Lecture 2
@@ -191,7 +188,9 @@ Management of data or records is a basic need for human society:
 - **Physical:** Book keeping, ledgers (historical).
 - **Electronic:** Computerized systems (modern).
 
-
+### Notes taken from Activity Questions 1.2
+1. Upper limit on the number of rows is a disadvantage of file systems as compared to DBMS. (Question: 3)
+2. Sybase is a client/server RDBMs. (Question: 5)
 ---
 ---
 ## CS2001 – Week 1, Lecture 3  
@@ -447,6 +446,8 @@ budget numeric(12,2)
 └─────────────┘
 ```
 
+### Notes taken from Activity Questions 1.3
+1. When we compare file handling via Python with a modern DBMS in terms of time and efficiency, the effort to install and configure a database is expensive & time consuming and In order to process a 1GB file, a program in Python would typically take few seconds. (Question: 3)
 ---
 ---
 ## CS2001 – Week 1, Lecture 4
