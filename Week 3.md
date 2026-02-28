@@ -759,3 +759,367 @@ These features enable advanced querying and database manipulation.
 
 ---
 ---
+## CS2001 – Week 3, Lecture 3
+### 1. Module Recap
+
+Previous module covered:
+- Nested subqueries
+- Data modification operations:
+  - delete
+  - insert
+  - update
+
+These features allow advanced querying and database manipulation.
+This module introduces:
+- Join expressions
+- Views
+These enable combining data from multiple relations and creating virtual relations.
+
+### 2. Module Objectives
+
+Primary objectives:
+- Learn SQL join expressions
+- Learn SQL view definitions and usage
+
+### 3. Join Expressions: Definition
+
+Join operation:
+- Takes two relations as input
+- Produces one relation as output
+
+Core mechanism:
+Join = Cartesian product + matching condition
+Cartesian product produces all combinations.
+Join condition filters meaningful matches.
+Join expressions are typically used in the FROM clause.
+General form:
+```
+select attributes  
+from relation1 join relation2  
+on join_condition;
+```
+
+### 4. Cross Join
+
+Definition:
+Produces Cartesian product of two relations.
+If relation A has m rows and relation B has n rows:
+Result contains m × n rows.
+Explicit form:
+```
+select *  
+from employee cross join department;
+```
+Implicit form:
+```
+select *  
+from employee, department;
+```
+Result:
+All possible combinations of rows.
+
+### 5. Inner Join
+
+Definition:
+Returns only tuples that satisfy join condition.
+Unmatched tuples are discarded.
+Example:
+```
+select *  
+from course inner join prereq  
+on course.course_id = prereq.course_id;
+```
+Result:
+Only courses present in both relations.
+Inner join corresponds to set intersection.
+
+### 6. Natural Join
+
+Definition:
+Join automatically performed using common attribute names.
+Duplicate columns removed.
+Example:
+```
+select *  
+from course natural join prereq;
+```
+Difference from inner join:
+- Inner join keeps duplicate join columns
+- Natural join removes duplicate join columns
+
+### 7. Outer Join: Definition
+
+Outer join preserves unmatched tuples.
+Missing values filled using null.
+Purpose:
+Avoid loss of information.
+Types:
+- Left outer join
+- Right outer join
+- Full outer join
+
+### 8. Left Outer Join
+
+Definition:
+All tuples from left relation included.
+Matching tuples from right relation included.
+Non-matching right attributes set to null.
+Example:
+```
+select *  
+from course left outer join prereq  
+on course.course_id = prereq.course_id;
+```
+Result:
+All course tuples preserved.
+Missing prerequisite values become null.
+
+### 9. Right Outer Join
+
+Definition:
+All tuples from right relation included.
+Matching tuples from left relation included.
+Non-matching left attributes set to null.
+Example:
+```
+select *  
+from course right outer join prereq  
+on course.course_id = prereq.course_id;
+```
+Result:
+All prerequisite tuples preserved.
+Missing course values become null.
+
+### 10. Full Outer Join
+
+Definition:
+All tuples from both relations included.
+Matching tuples joined.
+Non-matching attributes filled with null.
+Example:
+```
+select *  
+from course full outer join prereq  
+on course.course_id = prereq.course_id;
+```
+Result:
+Complete combination of both relations.
+No data loss.
+
+### 11. Join Using USING Clause
+
+Definition:
+Specifies join attribute explicitly.
+Example:
+```
+select *  
+from course full outer join prereq  
+using (course_id);
+```
+Condition:
+Attribute must exist in both relations.
+Duplicate attribute automatically removed.
+
+### 12. Join with Additional Conditions (Theta Join)
+
+Definition:
+Join with predicate condition.
+Example:
+```
+select *  
+from course join prereq  
+on course.course_id = prereq.course_id  
+and dept_name = 'Biology';
+```
+Allows filtering during join.
+
+### 13. Join Performance Insight
+
+Join internally computes Cartesian product.
+Example:
+Relation A: 1,000,000 rows  
+Relation B: 1,000,000 rows  
+Cartesian product:
+1,000,000 × 1,000,000 = 10¹² rows
+Filtering reduces result size.
+Join optimization is critical.
+
+### 14. Views: Definition
+
+View is a virtual relation.
+Defined using query expression.
+View does not store data physically.
+Definition syntax:
+```
+create view view_name as  
+select attributes  
+from relation  
+where condition;
+```
+View behaves like a table.
+
+### 15. Purpose of Views
+
+Views used to:
+- Hide sensitive information
+- Simplify queries
+- Provide abstraction
+- Restrict access
+
+Example:
+```
+create view faculty as  
+select ID, name, dept_name  
+from instructor;
+```
+Salary column hidden.
+
+### 16. Using Views
+
+Example:
+```
+select name  
+from faculty  
+where dept_name = 'Biology';
+```
+Database executes underlying query dynamically.
+View behaves like relation.
+
+### 17. Views with Computed Values
+
+Example:
+```
+create view departments_total_salary(dept_name, total_salary) as  
+select dept_name, sum(salary)  
+from instructor  
+group by dept_name;
+```
+Creates virtual relation with computed values.
+
+### 18. Views Defined Using Other Views
+
+Example:
+```
+create view physics_fall_2009 as  
+select course.course_id, sec_id, building, room_number  
+from course, section  
+where course.course_id = section.course_id  
+and course.dept_name = 'Physics'  
+and section.semester = 'Fall'  
+and section.year = '2009';
+```
+Create second view using first view:
+```
+create view physics_fall_2009_watson as  
+select course_id, room_number  
+from physics_fall_2009  
+where building = 'Watson';
+```
+
+### 19. View Expansion
+
+Definition:
+View definition expanded into underlying query.
+Process:
+Replace view name with its defining query.
+Repeat until base relations reached.
+Ensures correct evaluation.
+
+### 20. View Dependencies
+
+Definition:
+View v1 depends on view v2 if v2 used in definition.
+Dependency can be indirect.
+Recursive view:
+View depending on itself.
+Usually avoided.
+
+### 21. Updating Views
+
+Example:
+`insert into faculty values ('30765', 'Green', 'Music');`
+System converts into:
+`insert into instructor values ('30765', 'Green', 'Music', null);`
+Salary set to null.
+Conditions for updatable views:
+- Single base relation
+- No aggregates
+- No group by
+- No distinct
+- No joins
+
+### 22. Views That Cannot Be Updated
+
+Example:
+```
+create view instructor_info as  
+select ID, name, building  
+from instructor, department  
+where instructor.dept_name = department.dept_name;
+```
+Insert:
+`insert into instructor_info values ('69987', 'White', 'Taylor');`
+Problem:
+Department unknown.
+Update cannot be uniquely translated.
+
+### 23. Materialized Views
+
+Definition:
+View stored physically as table.
+Syntax conceptually:
+```
+create materialized view view_name as  
+select query;
+```
+Difference from normal view:
+
+Normal view:
+- Virtual
+- Computed dynamically
+
+Materialized view:
+- Physically stored
+- Faster access
+- Needs maintenance
+
+Problem:
+Underlying data changes → materialized view becomes outdated.
+Requires update.
+
+### 24. Logical vs Physical View Distinction
+
+Normal view:
+- Logical abstraction
+- No storage
+
+Materialized view:
+- Physical storage
+- Requires synchronization
+
+### 25. Module Summary
+
+Join expressions:
+- cross join
+- inner join
+- natural join
+- left outer join
+- right outer join
+- full outer join
+- join using clause
+- join with conditions
+
+Views:
+- create view
+- view abstraction
+- view expansion
+- view dependencies
+- updating views
+- materialized views
+
+Join enables combining relations.
+Views enable virtual relations and abstraction.
+These are core intermediate SQL features.
+
+---
+---
