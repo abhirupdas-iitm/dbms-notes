@@ -1123,3 +1123,535 @@ These are core intermediate SQL features.
 
 ---
 ---
+## CS2001 – Week 3, Lecture 4
+### 1. Module Recap
+
+Previous module covered:
+- Join expressions
+- Inner join, outer join, natural join
+- Views and virtual relations
+
+This module introduces:
+- Transactions
+- Integrity constraints
+- SQL data types and schemas
+- Authorization and privileges
+
+### 2. Module Objectives
+
+Objectives:
+- Understand transactions in SQL
+- Learn integrity constraints
+- Understand additional SQL data types
+- Understand authorization and access control
+
+### 3. Transactions
+
+Definition:
+A transaction is a unit of work performed on a database.
+Examples:
+- Bank money transfer
+- Student course registration
+- Updating employee salary
+
+## 4. Atomicity Property
+
+Atomicity means:
+Transaction is executed fully or not at all.
+
+Two outcomes:
+- Commit → transaction permanently saved
+- Rollback → transaction undone completely
+
+Example:
+transfer money:
+`update account set balance = balance - 500 where id = 'A';`
+`update account set balance = balance + 500 where id = 'B';`
+If error occurs between statements:
+rollback restores original state.
+
+### 5. Isolation Property
+
+Definition:
+Transactions execute independently.
+Concurrent transactions do not interfere with each other.
+Ensures database consistency.
+
+### 6. Transaction Control Commands
+
+Commit transaction:
+`commit;`
+
+Rollback transaction:
+`rollback;`
+
+Explicit transaction block (SQL standard):
+```
+begin atomic
+    SQL statements
+end;
+```
+Note:
+Many databases auto-commit by default.
+
+### 7. Integrity Constraints: Definition
+
+Integrity constraints enforce correctness and consistency of database.
+Examples:
+- Minimum bank balance
+- Employee salary constraints
+- Non-null phone number
+Prevent invalid data entry.
+
+### 8. Types of Integrity Constraints
+
+Single relation constraints:
+- not null
+- primary key
+- unique
+- check
+
+### 9. NOT NULL Constraint
+
+Definition:
+Prevents null values.
+Example:
+`name varchar(20) not null;`
+`budget numeric(12,2) not null;`
+Null insertion not allowed.
+
+### 10. UNIQUE Constraint
+
+Definition:
+Ensures attribute combination is unique.
+Example:
+unique(ID, email);
+Prevents duplicate combinations.
+Note:
+Unique allows null values.
+Primary key does not allow null.
+
+### 11. CHECK Constraint
+
+Definition:
+Ensures attribute values satisfy condition.
+Example:
+```
+create table section (
+    course_id varchar(8),
+    sec_id varchar(8),
+    semester varchar(6),
+    year numeric(4,0),
+    primary key (course_id, sec_id, semester, year),
+    check (semester in ('Fall', 'Winter', 'Spring', 'Summer'))
+);
+```
+Invalid values rejected.
+
+### 12. Referential Integrity
+
+Definition:
+Ensures foreign key value exists in referenced relation.
+
+Example:
+
+Instructor table:
+
+dept_name = 'Biology'
+
+Department table must contain:
+
+dept_name = 'Biology'
+
+---
+
+## 13. Foreign Key Definition
+
+Example:
+
+create table course (
+    course_id char(5) primary key,
+    title varchar(20),
+    dept_name varchar(20),
+    foreign key (dept_name) references department
+);
+
+Foreign key maintains consistency between tables.
+
+---
+
+## 14. Cascading Actions
+
+Definition:
+
+Specifies action when referenced value changes.
+
+Example:
+
+create table course (
+    dept_name varchar(20),
+    foreign key (dept_name)
+    references department
+    on delete cascade
+    on update cascade
+);
+
+Cascade actions:
+
+- delete cascade → delete dependent rows
+- update cascade → update dependent rows
+
+Alternative options:
+
+- no action
+- set null
+- set default
+
+---
+
+## 15. Constraint Violation Example
+
+Person table referencing itself:
+
+create table person (
+    ID char(10),
+    name char(40),
+    mother char(10),
+    father char(10),
+    primary key(ID),
+    foreign key(father) references person,
+    foreign key(mother) references person
+);
+
+Insertion strategies:
+
+Option 1:
+
+Insert parents first.
+
+Option 2:
+
+Insert null temporarily.
+
+Option 3:
+
+Defer constraint checking.
+
+---
+
+## 16. SQL Built-in Data Types
+
+Date type:
+
+date '2025-01-19'
+
+Time type:
+
+time '09:00:30'
+
+Timestamp type:
+
+timestamp '2025-01-19 09:00:30'
+
+Interval type:
+
+interval '1' day
+
+Supports date arithmetic.
+
+---
+
+## 17. Index
+
+Definition:
+
+Data structure that speeds up search.
+
+Example:
+
+create table student (
+    ID varchar(5),
+    name varchar(20),
+    primary key(ID)
+);
+
+create index studentID_index on student(ID);
+
+Query using index:
+
+select *
+from student
+where ID = '12345';
+
+Index improves performance.
+
+---
+
+## 18. User Defined Types (UDT)
+
+Definition:
+
+Custom type alias.
+
+Example:
+
+create type Dollars as numeric(12,2);
+
+Use:
+
+create table department (
+    dept_name varchar(20),
+    budget Dollars
+);
+
+Improves readability.
+
+---
+
+## 19. Domains
+
+Definition:
+
+User defined type with constraints.
+
+Example:
+
+create domain person_name varchar(20) not null;
+
+Domain with check constraint:
+
+create domain degree_level varchar(10)
+check (value in ('Bachelors', 'Masters', 'Doctorate'));
+
+Reusable constrained type.
+
+---
+
+## 20. Large Object Types
+
+Types:
+
+blob → binary large object
+
+clob → character large object
+
+Used for:
+
+- Images
+- Videos
+- Documents
+
+Example:
+
+photo blob
+
+Database stores reference.
+
+Actual data stored externally.
+
+---
+
+## 21. Authorization
+
+Definition:
+
+Controls access to database.
+
+Authorization types:
+
+- select
+- insert
+- update
+- delete
+
+Schema authorization:
+
+- create index
+- create table
+- alter table
+- drop table
+
+---
+
+## 22. Grant Privilege
+
+Syntax:
+
+grant privilege_list
+on relation_name
+to user_list;
+
+Example:
+
+grant select on instructor to Amit;
+
+Grant all privileges:
+
+grant all privileges on instructor to Amit;
+
+---
+
+## 23. Revoke Privilege
+
+Syntax:
+
+revoke privilege_list
+on relation_name
+from user_list;
+
+Example:
+
+revoke select on instructor from Amit;
+
+Revoke all privileges:
+
+revoke all privileges on instructor from Amit;
+
+---
+
+## 24. Grant with Grant Option
+
+Definition:
+
+Allows user to grant privileges to others.
+
+Example:
+
+grant select on department to Amit with grant option;
+
+Amit can grant privilege further.
+
+---
+
+## 25. Roles
+
+Definition:
+
+Group of privileges assigned together.
+
+Create role:
+
+create role instructor;
+
+Grant role to user:
+
+grant instructor to Amit;
+
+Grant privilege to role:
+
+grant select on takes to instructor;
+
+User inherits privileges.
+
+---
+
+## 26. Role Hierarchy
+
+Example:
+
+create role teaching_assistant;
+
+grant teaching_assistant to instructor;
+
+create role dean;
+
+grant instructor to dean;
+
+grant dean to Satoshi;
+
+Satoshi inherits all privileges.
+
+---
+
+## 27. Authorization on Views
+
+Create view:
+
+create view geo_instructor as
+select *
+from instructor
+where dept_name = 'Geology';
+
+Grant privilege:
+
+grant select on geo_instructor to geo_staff;
+
+geo_staff can query view.
+
+Even without base table access.
+
+---
+
+## 28. Reference Privilege
+
+Allows creation of foreign key.
+
+Example:
+
+grant reference(dept_name)
+on department
+to Mariano;
+
+Required for foreign key creation.
+
+---
+
+## 29. Privilege Revocation Options
+
+Cascade revoke:
+
+revoke select on department from Amit cascade;
+
+Restrict revoke:
+
+revoke select on department from Amit restrict;
+
+Cascade removes dependent privileges.
+
+Restrict prevents revoke if dependencies exist.
+
+---
+
+## 30. Module Summary
+
+Topics covered:
+
+Transactions:
+
+- commit
+- rollback
+- atomicity
+- isolation
+
+Integrity constraints:
+
+- not null
+- unique
+- check
+- foreign key
+- cascade actions
+
+SQL data types:
+
+- date
+- time
+- timestamp
+- interval
+- index
+- user defined types
+- domains
+- blob
+- clob
+
+Authorization:
+
+- grant
+- revoke
+- roles
+- privileges
+- authorization on views
+
+These features ensure database consistency, performance, and security.
+
+---
+---
