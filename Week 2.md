@@ -1,4 +1,4 @@
-# CS2001 – Week 2, Lecture 1
+## CS2001 – Week 2, Lecture 1
 ### 1. Week Recap
 - DBMS widely used across domains → motivation for study.
 - File-system based applications are limited compared to DBMS.
@@ -242,7 +242,7 @@ Properties:
 
 ---
 ---
-# CS2001 – Week 2, Lecture 2
+## CS2001 – Week 2, Lecture 2
 ### 1. Module Recap
 - Relational model basics introduced:
   - Attributes and domains
@@ -448,7 +448,7 @@ Aggregate Operators:
 
 ---
 ---
-# CS2001 – Week 2, Lecture 3
+## CS2001 – Week 2, Lecture 3
 ### 1. Module Recap
 - Relational algebra introduced.
 - Studied operators: selection, projection, union, difference, Cartesian product, natural join.
@@ -730,7 +730,7 @@ where instructor.ID = teaches.ID;
 
 ---
 ---
-# CS2001 – Week 2, Lecture 4
+## CS2001 – Week 2, Lecture 4
 ### 1. Module Recap
 - We introduced SQL.
 - We discussed DDL and basic query structure.
