@@ -353,3 +353,409 @@ This module establishes the operational foundation for SQL querying.
 
 ---
 ---
+## CS2001 – Week 3, Lecture 2
+### 1. Module Recap
+
+Previous module covered:
+- Basic SQL query structure
+- SELECT–FROM–WHERE queries
+- Joins
+- Set operations (union, intersect, except)
+- Aggregation functions
+
+Current module builds on these foundations to introduce:
+- Nested subqueries
+- Database modification operations
+These features enable writing more powerful and flexible SQL queries.
+
+### 2. Module Objectives
+
+Primary objectives:
+- Understand nested subqueries in SQL
+- Understand data modification operations
+
+These include:
+- DELETE
+- INSERT
+- UPDATE
+
+### 3. Nested Subqueries: Definition
+
+A nested subquery is a SELECT–FROM–WHERE query embedded inside another SQL query.
+General form:
+```
+select A1, A2, ..., An  
+from r1, r2, ..., rm  
+where P
+```
+Where any of the following can be replaced by a subquery:
+- Attributes in SELECT clause
+- Relations in FROM clause
+- Conditions in WHERE clause
+
+Key principle:
+Output of any SQL query is always a relation.
+Therefore, the output of one query can be used as input to another query.
+
+### 4. Subqueries in the WHERE Clause
+
+Typical uses:
+- Set membership testing
+- Set comparison
+- Set cardinality testing
+
+### 5. Set Membership Using IN
+
+Example problem:
+Find courses offered in Fall 2009 and Spring 2010.
+Query:
+```
+select distinct course_id  
+from section  
+where semester = 'Fall' and year = 2009  
+and course_id in (  
+    select course_id  
+    from section  
+    where semester = 'Spring' and year = 2010  
+);
+```
+Explanation:
+Outer query selects Fall 2009 courses.
+Subquery selects Spring 2010 courses.
+IN checks if course exists in both sets.
+
+### 6. Set Difference Using NOT IN
+
+Example problem:
+Find courses offered in Fall 2009 but not Spring 2010.
+Query:
+```
+select distinct course_id  
+from section  
+where semester = 'Fall' and year = 2009  
+and course_id not in (  
+    select course_id  
+    from section  
+    where semester = 'Spring' and year = 2010  
+);
+```
+Explanation:
+NOT IN removes courses present in Spring 2010.
+
+### 7. Tuple Membership Subquery
+
+Example problem:
+Count number of students taught by instructor ID 10101.
+Query:
+```
+select count(distinct ID)  
+from takes  
+where (course_id, sec_id, semester, year) in (  
+    select course_id, sec_id, semester, year  
+    from teaches  
+    where teaches.ID = 10101  
+);
+```
+Explanation:
+Subquery returns courses taught by instructor.
+Outer query counts students enrolled in those courses.
+
+### 8. Set Comparison Using SOME
+
+Example problem:
+Find instructors whose salary is greater than at least one Biology instructor.
+Query:
+```
+select name  
+from instructor  
+where salary > some (  
+    select salary  
+    from instructor  
+    where dept_name = 'Biology'  
+);
+```
+Definition:
+F > some r
+means:
+There exists at least one tuple in relation r satisfying condition.
+Logical interpretation:
+Existential quantification.
+Meaning:
+At least one value satisfies condition.
+
+### 9. Set Comparison Using ALL
+
+Example problem:
+Find instructors whose salary is greater than all Biology instructors.
+Query:
+```
+select name  
+from instructor  
+where salary > all (  
+    select salary  
+    from instructor  
+    where dept_name = 'Biology'  
+);
+```
+Definition:
+F > all r
+means:
+Condition must be true for every tuple in relation.
+Logical interpretation:
+Universal quantification.
+Meaning:
+Condition must hold for entire set.
+
+### 10. Testing for Empty Relations Using EXISTS
+
+Definition:
+exists r → true if relation r is not empty  
+not exists r → true if relation r is empty  
+
+Example problem:
+Find courses offered in Fall 2009 and Spring 2010.
+Query:
+```
+select course_id  
+from section as S  
+where semester = 'Fall' and year = 2009  
+and exists (  
+    select *  
+    from section as T  
+    where semester = 'Spring' and year = 2010  
+    and S.course_id = T.course_id  
+);
+```
+Explanation:
+Subquery checks if matching Spring course exists.
+If exists, course selected.
+
+### 11. Using NOT EXISTS
+
+Example problem:
+Find students who have taken all Biology courses.
+Query:
+```
+select distinct S.ID, S.name  
+from student as S  
+where not exists (  
+    (select course_id  
+     from course  
+     where dept_name = 'Biology')  
+
+    except  
+
+    (select T.course_id  
+     from takes as T  
+     where S.ID = T.ID)  
+);
+```
+Explanation:
+Checks if student is missing any Biology course.
+If none missing, student selected.
+
+### 12. UNIQUE Clause
+
+Purpose:
+Tests whether subquery result contains duplicate tuples.
+Example problem:
+Find courses offered at most once in 2009.
+Query:
+```
+select T.course_id  
+from course as T  
+where unique (  
+    select R.course_id  
+    from section as R  
+    where T.course_id = R.course_id  
+    and R.year = 2009  
+);
+```
+If duplicates exist, UNIQUE returns false.
+
+### 13. Subqueries in FROM Clause
+
+Example problem:
+Find average salary of departments where average salary > 42000.
+Query:
+```
+select dept_name, avg_salary  
+from (  
+    select dept_name, avg(salary) as avg_salary  
+    from instructor  
+    group by dept_name  
+)  
+where avg_salary > 42000;
+```
+Explanation:
+Subquery creates temporary relation.
+Outer query filters result.
+
+### 14. WITH Clause (Temporary Relations)
+
+Purpose:
+Creates temporary relation usable in query.
+Example problem:
+Find departments with maximum budget.
+Query:
+```
+with max_budget(value) as (  
+    select max(budget)  
+    from department  
+)  
+select department.name  
+from department, max_budget  
+where department.budget = max_budget.value;
+```
+Explanation:
+Temporary relation created using WITH.
+
+### 15. Scalar Subqueries in SELECT Clause
+
+Definition:
+Subquery returning single value.
+Example problem:
+List departments with number of instructors.
+Query:
+```
+select dept_name,  
+(  
+    select count(*)  
+    from instructor  
+    where department.dept_name = instructor.dept_name  
+) as num_instructors  
+from department;
+```
+Important rule:
+Subquery must return single value.
+
+### 16. Database Modification Operations Overview
+Three types:
+- DELETE
+- INSERT
+- UPDATE
+
+### 17. DELETE Operation
+
+`Delete all instructors:`
+`delete from instructor;`
+
+`Delete Finance instructors:`
+
+```
+delete from instructor  
+where dept_name = 'Finance';
+```
+
+Delete instructors in Watson building:
+```
+delete from instructor  
+where dept_name in (  
+    select dept_name  
+    from department  
+    where building = 'Watson'  
+);
+```
+Delete instructors with below-average salary:
+```
+delete from instructor  
+where salary < (  
+    select avg(salary)  
+    from instructor  
+);
+```
+Important behavior:
+Average computed first, then deletion performed.
+
+### 18. INSERT Operation
+
+Insert new course:
+```
+insert into course  
+values ('CS-437', 'Database Systems', 'Comp. Sci.', 4);
+```
+Insert specifying attributes:
+```
+insert into course (course_id, title, dept_name, credits)  
+values ('CS-437', 'Database Systems', 'Comp. Sci.', 4);
+```
+Insert student with null credits:
+```
+insert into student  
+values ('3003', 'Green', 'Finance', null);
+```
+Insert using SELECT:
+```
+insert into student  
+select ID, name, dept_name, 0  
+from instructor;
+```
+
+### 19. UPDATE Operation
+
+Increase salaries conditionally:
+```
+update instructor  
+set salary = salary * 1.03  
+where salary > 100000;
+```
+
+```
+update instructor  
+set salary = salary * 1.05  
+where salary <= 100000;
+```
+Better approach using CASE:
+```
+update instructor  
+set salary = case  
+    when salary <= 100000 then salary * 1.05  
+    else salary * 1.03  
+end;
+```
+
+### 20. UPDATE Using Scalar Subquery
+
+Example problem:
+Recompute total credits for students.
+Query:
+```
+update student S  
+set tot_creds = (  
+    select sum(credits)  
+    from takes, course  
+    where takes.course_id = course.course_id  
+    and S.ID = takes.ID  
+    and takes.grade <> 'F'  
+    and takes.grade is not null  
+);
+```
+
+### 21. Module Summary
+
+Key concepts introduced:
+Nested subqueries:
+- IN
+- NOT IN
+- SOME
+- ALL
+- EXISTS
+- NOT EXISTS
+- UNIQUE
+
+Subqueries in:
+- WHERE clause
+- FROM clause
+- SELECT clause
+
+Temporary relations:
+- WITH clause
+
+Database modification:
+- DELETE
+- INSERT
+- UPDATE
+These features enable advanced querying and database manipulation.
+
+---
+---
