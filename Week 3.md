@@ -1542,3 +1542,350 @@ These features ensure database consistency, performance, and security.
 
 ---
 ---
+## CS2001 – Week 3, Lecture 5
+### Functions and Procedural Constructs
+
+SQL was originally a **declarative language**, but since SQL:1999, it includes **procedural features** like:
+- Functions
+- Procedures
+- Variables
+- Loops
+- Conditionals
+- Exception handling
+These allow SQL to perform more complex logic inside the database itself.
+
+Functions and procedures can be written in:
+- SQL itself
+- External languages like C, Java, Python
+
+External languages are useful for:
+- Complex algorithms
+- Specialized data processing (images, geometry)
+- Better performance in some cases
+
+### SQL Functions
+
+Functions:
+- Accept parameters
+- Return a value
+- Can be used inside SQL queries
+- Behave like parameterized views
+
+Example:
+```
+create function dept_count(dept_name varchar(20))
+returns integer
+begin
+    declare d_count integer;
+    select count(*) into d_count
+    from instructor
+    where instructor.dept_name = dept_name;
+    return d_count;
+end;
+```
+Usage:
+```
+select dept_name, budget
+from department
+where dept_count(dept_name) > 12;
+```
+
+### Table-Valued Functions
+
+These functions return an entire table instead of a single value.
+Example:
+```
+create function instructor_of(dept_name char(20))
+returns table (
+    ID varchar(5),
+    name varchar(20),
+    dept_name varchar(20),
+    salary numeric(8,2)
+)
+returns table
+(
+    select ID, name, dept_name, salary
+    from instructor
+    where instructor.dept_name = instructor_of.dept_name
+);
+```
+Usage:
+```
+select *
+from table(instructor_of('Music'));
+```
+
+### SQL Procedures
+
+Procedures:
+- Do NOT return values directly
+- Use input and output parameters
+- Called using CALL
+
+Example:
+```
+create procedure dept_count_proc(
+    in dept_name varchar(20),
+    out d_count integer
+)
+begin
+    select count(*) into d_count
+    from instructor
+    where instructor.dept_name = dept_count_proc.dept_name;
+end;
+```
+Calling procedure:
+```
+declare d_count integer;
+call dept_count_proc('Physics', d_count);
+```
+
+### Functions vs Procedures
+
+Functions:
+- Return a value
+- Can be used inside queries
+
+Procedures:
+- Do not return a value directly
+- Use output parameters
+- Called explicitly using CALL
+Functions can be used inside SELECT, WHERE, etc.
+Procedures cannot.
+
+### Procedural Language Constructs in SQL
+
+SQL supports programming constructs similar to other languages.
+
+#### Compound Statement
+```
+begin
+    SQL statements
+end;
+```
+
+#### While Loop
+```
+while condition do
+    statements
+end while;
+```
+
+#### Repeat Loop
+```
+repeat
+    statements
+until condition
+end repeat;
+```
+
+#### For Loop
+`declare total integer default 0;`
+
+```
+for r as
+    select budget from department
+do
+    set total = total + r.budget;
+end for;
+```
+
+#### If-Then-Else
+```
+if condition then
+    statements;
+elseif condition then
+    statements;
+else
+    statements;
+end if;
+```
+
+#### Case Statement
+
+Simple case:
+```
+case variable
+    when value1 then statements;
+    when value2 then statements;
+    else statements;
+end case;
+```
+Searched case:
+```
+case
+    when condition then statements;
+    when condition then statements;
+    else statements;
+end case;
+```
+
+### Exception Handling
+
+Used to handle errors.
+Example:
+`declare out_of_seats condition;`
+
+```
+declare exit handler for out_of_seats
+begin
+    -- handle exception
+end;
+signal out_of_seats;
+```
+
+### External Language Functions and Procedures
+
+SQL allows functions written in other languages.
+Example:
+```
+create procedure dept_count_proc(
+    in dept_name varchar(20),
+    out count integer
+)
+language C
+external name '/usr/bin/dept_count_proc';
+```
+Benefits:
+- Higher performance
+- More flexibility
+
+Risks:
+- Security issues
+- Possible database corruption
+
+Safer approaches:
+- Sandbox execution
+- Separate process execution
+
+### Triggers
+
+A trigger is an automatic action performed when certain database events occur.
+Events include:
+- INSERT
+- UPDATE
+- DELETE
+
+Triggers help:
+- Enforce integrity
+- Maintain consistency
+- Log changes
+- Perform automatic updates
+
+### Trigger Structure
+
+```
+create trigger trigger_name
+before | after insert | update | delete
+on table_name
+for each row
+begin
+    statements;
+end;
+```
+
+### BEFORE Triggers
+
+Executed before modification.
+Uses:
+- Validate data
+- Modify values before storing
+
+Example:
+```
+create trigger set_null_trigger
+before update on takes
+referencing new row as nrow
+for each row
+when (nrow.grade = '')
+begin
+    set nrow.grade = null;
+end;
+```
+
+### AFTER Triggers
+
+Executed after modification.
+Uses:
+- Update other tables
+- Maintain logs
+- Enforce consistency
+
+Example:
+```
+create trigger credits_earned
+after update of grade on takes
+referencing new row as nrow
+referencing old row as orow
+for each row
+when nrow.grade <> 'F'
+and nrow.grade is not null
+and (orow.grade = 'F' or orow.grade is null)
+begin
+    update student
+    set tot_cred = tot_cred +
+        (select credits
+         from course
+         where course.course_id = nrow.course_id)
+    where student.id = nrow.id;
+end;
+```
+
+### Row-Level vs Statement-Level Triggers
+
+Row-level trigger:
+- Executes once per row affected
+Statement-level trigger:
+- Executes once per SQL statement
+
+Example:
+Updating 100 rows:
+Row trigger → executes 100 times  
+Statement trigger → executes once
+
+### Uses of Triggers
+
+Recommended uses:
+- Logging changes
+- Auditing user actions
+- Automatic updates
+- Maintaining integrity
+- Adding system values (timestamp, username)
+
+### When NOT to Use Triggers
+
+Avoid triggers when:
+- Too many triggers exist
+- Trigger logic is complex
+- Triggers call other triggers
+- Recursive triggers are used
+- Triggers include loops
+- Triggers call external procedures frequently
+
+Triggers should be:
+- Simple
+- Efficient
+- Minimal
+
+### Summary
+
+Functions:
+- Return values
+- Used inside queries
+
+Procedures:
+- Perform actions
+- Use input/output parameters
+
+Procedural constructs:
+- Loops
+- Conditionals
+- Exceptions
+
+Triggers:
+- Automatic response to database events
+- Used for integrity, automation, logging
+Triggers are powerful but must be used carefully to avoid performance and maintenance problems.
+
+---
+---
