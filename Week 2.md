@@ -451,6 +451,8 @@ Aggregate Operators:
   - Is not Turing complete.
   - Always returns relations (except aggregates).
 
+### Notes taken from Activity Questions 2.2
+1. If two relations are not UNION-compatible then only *CARTESIAN PRODUCT* can be performed. (Question: 7)
 ---
 ---
 ## CS2001 – Week 2, Lecture 3
