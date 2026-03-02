@@ -735,6 +735,9 @@ where instructor.ID = teaches.ID;
 - Understood duplicates behavior.
 - Understood relation to relational algebra.
 
+### Notes taken from Activity Questions 2.3
+1. In SQL the SELECT command performs Projection. (Question: 5)
+2. A table may not have any Primary key and a Foreign key can be a Primary key. (Question: 9)
 ---
 ---
 ## CS2001 – Week 2, Lecture 4
