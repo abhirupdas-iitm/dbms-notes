@@ -966,6 +966,8 @@ Equivalent to multiset version of:
   - Duplicate (multiset) semantics
 - SQL corresponds to relational algebra with multiset extensions.
 
+### Notes taken from Activity Questions 2.4
+1. Given that two tables **r** and **s** have a common named attribute called ‘essn’, consider the given queries.  `SELECT * FROM r, s WHERE r.essn = s.essn; SELECT * FROM r NATURAL JOIN s;`Both queries will return the same answer. (Question: 8)
 ---
 ---
 ## CS2001 – Week 2, Lecture 5
