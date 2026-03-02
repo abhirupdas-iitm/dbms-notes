@@ -240,6 +240,11 @@ Properties:
 - Introduced procedural vs declarative paradigms.
 - Previewed relational query languages.
 
+### Notes taken from Activity Questions 2.1
+1. Primary-key, Super-key and Candidate-key can uniquely identify the tuples of a relation. (Question: 7)
+2. Surrogate and Synthetic keys are keys that uniquely identifies an entity or an object in the database; however, it is not derived from the application data. (Question: 8)
+3. Relational algebra is *not* an example of declarative programming style. (Question: 9)
+
 ---
 ---
 ## CS2001 – Week 2, Lecture 2
@@ -247,7 +252,7 @@ Properties:
 - Relational model basics introduced:
   - Attributes and domains
   - Schema and instance
-  - Keys (superkey, candidate key, primary key, foreign key)
+  - Keys (super-key, candidate key, primary key, foreign key)
 - Relational query languages introduced at a high level.
 - Now focus on relational algebra and its operators.
 ### 2. Module Objectives
