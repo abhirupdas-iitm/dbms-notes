@@ -765,6 +765,9 @@ Database modification:
 - UPDATE
 These features enable advanced querying and database manipulation.
 
+### Notes taken from Activity Questions 3.2
+None! Got them all right!
+
 ---
 ---
 ## CS2001 – Week 3, Lecture 3
