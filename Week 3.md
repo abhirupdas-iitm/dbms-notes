@@ -1909,5 +1909,8 @@ Triggers:
 - Used for integrity, automation, logging
 Triggers are powerful but must be used carefully to avoid performance and maintenance problems.
 
+### Notes taken from Activity Questions 3.5
+None! Got all of them correct.
+
 ---
 ---
