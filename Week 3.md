@@ -1132,6 +1132,11 @@ Join enables combining relations.
 Views enable virtual relations and abstraction.
 These are core intermediate SQL features.
 
+### Notes taken from Activity Questions 3.3
+1. The correct form of CREATE VIEW statement in SQL is `CREATE VIEW view_name AS <query expression>`. (Question: 3)
+2. A view is defined using the **create as view** statement in SQL. (Question: 11)
+3. Creating a new permanent table in the database is *not* true in the context of Materialized Views. (Question: 12)
+4. A view does not need to be updated every time its parent table is updated. (Question: 13)
 ---
 ---
 ## CS2001 – Week 3, Lecture 4
