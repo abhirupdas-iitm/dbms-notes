@@ -1556,6 +1556,12 @@ Authorization:
 - authorization on views
 These features ensure database consistency, performance, and security.
 
+### Notes taken from Activity Questions 3.4
+1. The correct syntax for **grant** statement which is used to confer authorization is `grant < privilege list > on < relation name or view name > **to** < user list >`. (Question: 3)
+2. Supposing we have an attribute named ‘City’ in a table. We want to ensure that the domain of this attribute should incorporate only 3 cities namely ‘Delhi’, ‘Chennai’, ‘Kolkata’. The valid SQL construct that we would use is `Check`. (Question: 6)
+3. The function of ‘on delete cascade’ is to preserve referential integrity constraint. (Question: 8)
+4. GRANT and REVOKE belongs to the category of SQL commands called DCL. (Question: 9)
+5. In a relational DBMS, videos are stored as blob type data and in a relational DBMS, blob data type is used for storing uninterpreted data. (Question: 11)
 ---
 ---
 ## CS2001 – Week 3, Lecture 5
