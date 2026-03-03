@@ -351,6 +351,14 @@ Concepts practiced:
 - grouping using group by and having  
 This module establishes the operational foundation for SQL querying.
 
+### Notes taken from Activity Questions 3.1
+1. Consider the given queries:
+    ```
+    SELECT * FROM employee order by salary asc;  
+    SELECT * FROM employee order by salary ;
+    ```
+Both queries will return the same output because by default, it is always arranged in the ascending order. (Question: 5)
+
 ---
 ---
 ## CS2001 – Week 3, Lecture 2
