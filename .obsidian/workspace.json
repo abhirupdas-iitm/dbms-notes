@@ -1,24 +1,24 @@
 {
   "main": {
-    "id": "eadff7eae81b2832",
+    "id": "109b7099b510cc2f",
     "type": "split",
     "children": [
       {
-        "id": "e81b7322caf4f757",
+        "id": "93bdd9648c381a04",
         "type": "tabs",
         "children": [
           {
-            "id": "91a80c4e3c4ab195",
+            "id": "3c4cd90c539d8e26",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Week 3.md",
+                "file": "Week 4.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Week 3"
+              "title": "Week 4"
             }
           }
         ]
@@ -27,15 +27,15 @@
     "direction": "vertical"
   },
   "left": {
-    "id": "fb9b4be43535520e",
+    "id": "e22d52be7029c256",
     "type": "split",
     "children": [
       {
-        "id": "d5197896f1296be5",
+        "id": "01015a1530e5bbad",
         "type": "tabs",
         "children": [
           {
-            "id": "8f0c0c3900bd3c60",
+            "id": "306cc7dfaf3c4377",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
@@ -48,7 +48,7 @@
             }
           },
           {
-            "id": "6481a054c5cabf5e",
+            "id": "dd1636d3fd2b3757",
             "type": "leaf",
             "state": {
               "type": "search",
@@ -65,7 +65,7 @@
             }
           },
           {
-            "id": "b5890d0b601268a4",
+            "id": "4bbdb05c31a96460",
             "type": "leaf",
             "state": {
               "type": "bookmarks",
@@ -81,20 +81,20 @@
     "width": 300
   },
   "right": {
-    "id": "3037a329b7b9f448",
+    "id": "b7caa06c789744e3",
     "type": "split",
     "children": [
       {
-        "id": "4b1f29e21878896e",
+        "id": "0b40b962e1f9a054",
         "type": "tabs",
         "children": [
           {
-            "id": "096a3107afaf05d8",
+            "id": "aa95c85c0ed765eb",
             "type": "leaf",
             "state": {
               "type": "backlink",
               "state": {
-                "file": "DBMS.md",
+                "file": "Week 4.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,25 +104,25 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for DBMS"
+              "title": "Backlinks for Week 4"
             }
           },
           {
-            "id": "14fa3c6a0767e657",
+            "id": "89f895fd27d22b88",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "DBMS.md",
+                "file": "Week 4.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from DBMS"
+              "title": "Outgoing links from Week 4"
             }
           },
           {
-            "id": "bf0dbc5d518ac166",
+            "id": "a940be26c1f367a2",
             "type": "leaf",
             "state": {
               "type": "tag",
@@ -137,7 +137,7 @@
             }
           },
           {
-            "id": "18eb4a1d3dc89bfd",
+            "id": "ad1f357c7406e72e",
             "type": "leaf",
             "state": {
               "type": "all-properties",
@@ -151,18 +151,18 @@
             }
           },
           {
-            "id": "1bceed8d1f74458d",
+            "id": "6cf549c252c4aca0",
             "type": "leaf",
             "state": {
               "type": "outline",
               "state": {
-                "file": "DBMS.md",
+                "file": "Week 4.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of DBMS"
+              "title": "Outline of Week 4"
             }
           }
         ]
@@ -183,11 +183,10 @@
       "bases:Create new base": false
     }
   },
-  "active": "91a80c4e3c4ab195",
+  "active": "3c4cd90c539d8e26",
   "lastOpenFiles": [
-    "Week 2.md",
     "Week 3.md",
-    "Week 1.md",
+    "Week 4.md",
     "DBMS.md"
   ]
 }
