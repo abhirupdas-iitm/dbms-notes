@@ -285,3 +285,8 @@ Additional relational algebra operations:
 - Division
 - Join
 These operations provide the **mathematical foundation for relational database queries and database design**.
+
+### Notes taken from Activity Questions 4.1
+Nothing! Got all of them correct!
+
+---
