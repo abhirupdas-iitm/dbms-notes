@@ -990,3 +990,415 @@ Additional concepts:
 These concepts form the **foundation of logical database design**, which will later be converted into relational tables and normalized schemas.
 
 ---
+## CS2001 – Week 4, Lecture 4
+### 1. Module Recap
+In the previous module, the **database design process** was introduced.
+Key points discussed:
+- Database design begins with **conceptual modeling**.
+- The **Entity–Relationship (E-R) Model** is used for representing real-world requirements.
+- The E-R model includes:
+  - Entity sets
+  - Attributes
+  - Relationships
+In this module, we move forward to:
+1. Represent E-R models using **E-R diagrams**.
+2. Convert E-R models into **relational schemas (tables)**.
+
+### 2. Module Objective
+Primary objectives:
+- Understand **E-R diagram notation**
+- Learn how to **translate E-R models into relational schemas**
+Thus, this module bridges the gap between:
+```
+Conceptual design → Relational database implementation
+```
+
+### 3. E-R Diagram
+An **E-R diagram** is a graphical representation of the E-R model.
+It visually represents:
+- Entity sets
+- Attributes
+- Relationships
+- Cardinality constraints
+- Participation constraints
+These diagrams were introduced in the early days of database design and later became standardized, especially with the development of **Unified Modeling Language (UML)**.
+
+### 4. Representation of Entity Sets
+Entity sets are represented using **rectangles**.
+Inside the rectangle:
+- The **entity set name** is written
+- Attributes are listed
+Primary key attributes are **underlined**.
+Example representation:
+```
+Instructor
+---------
+ID
+name
+salary
+Student
+---------
+ID
+name
+tot_cred
+```
+This notation indicates that **ID is the primary key** for both entity sets.
+
+### 5. Representation of Relationship Sets
+Relationships between entity sets are represented using **diamonds**.
+Example:
+```
+Instructor  — advisor — Student
+```
+Diagram structure:
+```
+Instructor ◇ advisor ◇ Student
+```
+Meaning:
+- The relationship **advisor** connects Instructor and Student.
+- By default, the relationship connects the **primary keys of the participating entity sets**.
+Thus the relationship contains:
+```
+(instructor_id, student_id)
+```
+
+### 6. Relationships with Attributes
+Sometimes relationships themselves may have attributes.
+Example:
+Advisor relationship may include:
+```
+date
+```
+representing when advising started.
+Graphical notation:
+- Relationship attribute is connected with a **dashed line** to the relationship diamond.
+Example:
+```
+Instructor — advisor — Student
+                  |
+                 date
+```
+Important distinction:
+- **Dashed line → attribute of relationship**
+- **Solid line → relationship with another entity set**
+Thus the relationship becomes:
+```
+(instructor_id, student_id, date)
+```
+
+### 7. Roles in Relationships
+An entity set may participate **multiple times in the same relationship**.
+Example:
+Course prerequisite relationship.
+```
+Course — prereq — Course
+```
+Since both sides refer to the same entity set, **roles** are used.
+Example roles:
+```
+course_id
+prereq_id
+```
+Meaning:
+- course_id → the course
+- prereq_id → its prerequisite course
+Thus roles help distinguish **different functions of the same entity set** in a relationship. 
+
+### 8. Cardinality Constraints
+Cardinality constraints specify **how many entities can participate in a relationship**.
+In E-R diagrams:
+- **Arrow → one**
+- **Plain line → many**
+Example:
+#### One-to-One (1:1)
+Each instructor advises at most one student, and vice versa.
+```
+Instructor → advisor → Student
+```
+
+#### One-to-Many (1:N)
+One instructor may advise many students.
+```
+Instructor → advisor — Student
+```
+Meaning:
+- Instructor → many students
+- Each student → one instructor
+
+#### Many-to-One (N:1)
+Many students may have the same instructor.
+```
+Instructor — advisor → Student
+```
+
+#### Many-to-Many (M:N)
+Multiple students may have multiple advisors.
+```
+Instructor — advisor — Student
+```
+No arrows appear on either side.
+
+### 9. Participation Constraints
+Participation constraints describe **whether participation is mandatory or optional**.
+Two types:
+#### Total Participation
+Represented by **double lines**.
+Meaning:
+Every entity must participate in the relationship.
+Example:
+```
+Student == advisor
+```
+Meaning:
+Every student must have an advisor.
+
+#### Partial Participation
+Represented by **single line**.
+Meaning:
+Participation is optional.
+Example:
+```
+Instructor — advisor
+```
+Meaning:
+Some instructors may not advise any students.
+Thus:
+```
+Student → total participation
+Instructor → partial participation
+```
+
+### 10. Cardinality Bounds
+More detailed constraints may be expressed using **minimum..maximum notation**.
+Example:
+```
+0..*
+```
+Meaning:
+- Minimum = 0
+- Maximum = unlimited
+Example relationship:
+Instructor advising students:
+```
+Instructor 0..* → advisor → Student 1..1
+```
+Interpretation:
+- Instructor may advise **0 or more students**
+- Each student must have **exactly one advisor**. :contentReference[oaicite:2]{index=2}
+
+### 11. Complex Attributes in E-R Diagrams
+E-R diagrams can represent different attribute types.
+#### Composite Attributes
+Example:
+```
+Name
+ ├ first_name
+ ├ middle_initial
+ └ last_name
+```
+Example:
+```
+Address
+ ├ street
+ │   ├ street_number
+ │   ├ street_name
+ │   └ apt_number
+ ├ city
+ ├ state
+ └ zip
+```
+
+#### Multivalued Attributes
+Multivalued attributes are shown using **curly braces**.
+Example:
+```
+{phone_number}
+```
+Meaning:
+An instructor may have multiple phone numbers.
+
+#### Derived Attributes
+Derived attributes are computed from other attributes.
+Example:
+```
+age()
+```
+Age is derived from:
+```
+date_of_birth
+```
+Thus derived attributes are written using **function notation**.
+
+### 12. Weak Entity Sets in E-R Diagrams
+Weak entities are represented using **double rectangles**.
+Example:
+```
+Course → Section
+```
+Section depends on Course.
+Diagram rules:
+1. Weak entity → **double rectangle**
+2. Identifying relationship → **double diamond**
+3. Discriminator → **dashed underline**
+
+Example:
+```
+Section(sec_id, semester, year)
+```
+Discriminator:
+```
+(sec_id, semester, year)
+```
+Primary key becomes:
+```
+(course_id, sec_id, semester, year)
+```
+Thus the weak entity borrows part of its identity from the strong entity.
+
+### 13. E-R Model to Relational Schema
+After creating the E-R diagram, the next step is **converting it into relational tables**.
+This process is called:
+```
+Reduction to relational schema
+```
+Each:
+- Entity set
+- Relationship set
+becomes a **relation schema**.
+A database corresponding to an E-R diagram is represented as a **collection of schemas**. 
+
+### 14. Representing Entity Sets
+For **strong entity sets**:
+The relation contains the same attributes.
+Example:
+```
+student(ID, name, tot_cred)
+```
+For **weak entity sets**:
+Include the **primary key of the identifying strong entity set**.
+Example:
+```
+section(course_id, sec_id, semester, year)
+```
+
+### 15. Representing Relationship Sets
+A relationship set becomes a relation containing:
+- Primary keys of participating entity sets
+- Relationship attributes
+Example:
+Advisor relationship:
+```
+advisor(s_id, i_id)
+```
+Where:
+- s_id → student ID
+- i_id → instructor ID
+If relationship had attribute date:
+```
+advisor(s_id, i_id, date)
+```
+
+### 16. Handling Composite Attributes
+Composite attributes are handled by **flattening**.
+Example:
+Instead of:
+```
+name(first_name, last_name)
+```
+Use separate attributes:
+```
+first_name
+last_name
+```
+Example schema:
+```
+instructor(
+ ID,
+ first_name,
+ middle_initial,
+ last_name,
+ street_number,
+ street_name,
+ apt_number,
+ city,
+ state,
+ zip_code,
+ date_of_birth
+)
+```
+
+### 17. Handling Multivalued Attributes
+Multivalued attributes require **separate relations**.
+Example:
+Instructor has multiple phone numbers.
+Create new schema:
+```
+inst_phone(ID, phone_number)
+```
+Each phone number becomes a separate tuple.
+Example:
+Instructor 22222 with two numbers:
+```
+(22222, 4567890)
+(22222, 1234567)
+```
+Thus multivalued attributes are modeled using **separate relations**.
+
+### 18. Redundancy in Schema
+Some relationships may be redundant.
+Example:
+Relationship:
+```
+inst_dept
+```
+between Instructor and Department.
+Instead of creating a separate table:
+```
+inst_dept(i_id, dept_name)
+```
+We can add attribute directly:
+```
+Instructor(ID, name, salary, dept_name)
+```
+This works when:
+- Relationship is **many-to-one**
+- Participation on the many side is **total**
+This reduces the need for joins.
+However if participation is partial, replacing relationships with attributes may introduce **NULL values**.
+
+### 19. Redundancy with Weak Entities
+The identifying relationship of a weak entity may also become redundant.
+Example:
+Section depends on Course.
+Instead of keeping:
+```
+sec_course
+```
+relationship separately,
+the schema already contains:
+```
+section(course_id, sec_id, semester, year)
+```
+Thus the identifying relationship may not require a separate table.
+
+### 20. Module Summary
+Topics covered:
+E-R diagram representation:
+- Entity sets
+- Relationship sets
+- Relationship attributes
+- Roles
+- Cardinality constraints
+- Participation constraints
+- Cardinality bounds
+
+Advanced E-R concepts:
+- Composite attributes
+- Multivalued attributes
+- Derived attributes
+- Weak entity sets
+Implementation step:
+- Conversion of **E-R models into relational schemas**
+This step transforms conceptual database design into **actual relational table structures**.
+
+---
