@@ -1402,3 +1402,327 @@ Implementation step:
 This step transforms conceptual database design into **actual relational table structures**.
 
 ---
+## CS2001 – Week 4, Lecture 5
+
+### 1. Introduction
+This module concludes the discussion on **logical database design using the Entity–Relationship (ER) model**.
+Previously discussed topics:
+- ER diagrams
+- Translation of ER models to relational schema
+In this module we explore:
+1. **Extended ER features**
+2. **Important design considerations in ER modeling**
+
+### 2. Extended ER Features
+Extended ER features expand the basic ER model to handle **more complex real-world scenarios**.
+Key topics include:
+- Non-binary relationships
+- Specialization (ISA hierarchy)
+- Generalization
+- Aggregation
+
+### 3. Non-Binary Relationship Sets
+Most relationships in database design are **binary relationships** (between two entity sets).
+However, sometimes relationships naturally involve **more than two entities**.
+Example: **Ternary Relationship**
+Entities involved:
+- Project
+- Instructor
+- Student
+
+Relationship:
+```
+proj_guide(student, instructor, project)
+```
+Meaning:
+A **student works on a project under the guidance of an instructor**.
+The ER diagram for this relationship shows a **ternary relationship connecting the three entities**. 
+
+# 4. Cardinality Constraints in Ternary Relationships
+Cardinality constraints become more complex for ternary relationships.
+Example:
+If an arrow points to **Instructor**, it means:
+> For a given student and project, there is **at most one instructor**.
+However, if arrows appear toward multiple entities, ambiguity arises.
+Possible interpretations:
+1. Each **A entity uniquely determines B and C**
+2. Each **pair (A,B)** determines C
+3. Each **pair (A,C)** determines B
+Because of this ambiguity:
+**Rule:**  
+For ternary relationships, **only one arrow is allowed** to indicate a cardinality constraint.
+
+### 5. Specialization (ISA Relationship)
+Specialization represents **hierarchical relationships between entities**.
+It follows a **top-down design approach**.
+Example hierarchy:
+```
+Person
+│
+├── Student
+│     └── tot_credits
+│
+└── Employee
+      └── salary
+          ├── Instructor (rank)
+          └── Secretary (hours_per_week)
+```
+Interpretation:
+- **Student IS A Person**
+- **Employee IS A Person**
+- **Instructor IS A Employee**
+Key property:
+
+### Attribute Inheritance
+Lower-level entities inherit:
+- All attributes of the higher-level entity
+- Participation in relationships
+Example:
+Instructor inherits:
+```
+Person attributes
++ Employee attributes
++ rank
+```
+
+### 6. Types of Specialization
+#### 1. Overlapping Specialization
+An entity may belong to **multiple subclasses**.
+Example:
+```
+Person → Student
+Person → Employee
+```
+A person can be both:
+- Student
+- Employee
+Example: Teaching assistant.
+
+#### 2. Disjoint Specialization
+Entities belong to **only one subclass**.
+Example:
+```
+Employee → Instructor
+Employee → Secretary
+```
+An employee cannot be both instructor and secretary.
+
+### 7. Completeness Constraints
+Specialization may also be classified as:
+#### Total Specialization
+Every entity in the higher-level set **must belong to a subclass**.
+Example:
+```
+Student → UG
+Student → PG
+```
+
+Every student must be either:
+- Undergraduate
+- Postgraduate
+Thus specialization is **total**.
+
+#### Partial Specialization
+Entities in the higher-level set **may or may not belong to subclasses**.
+Example:
+```
+Person → Student
+Person → Employee
+```
+A person might be neither.
+
+### 8. Representing Specialization in Relational Schema
+There are two major approaches.
+#### Method 1: Separate Tables
+Create:
+```
+Person(ID, name, street, city)
+
+Student(ID, tot_credits)
+
+Employee(ID, salary)
+```
+Key of Person becomes key of lower-level entities.
+#### Advantage
+- No redundancy.
+#### Disadvantage
+- Requires **joins** to obtain complete information.
+Example:
+To find student name and credits:
+```
+JOIN Student with Person
+```
+
+#### Method 2: Flattened Tables
+Each subclass stores all attributes.
+Example:
+```
+Student(ID, name, street, city, tot_credits)
+
+Employee(ID, name, street, city, salary)
+```
+#### Advantage
+- No joins required.
+#### Disadvantage
+- Redundant data if entity belongs to multiple subclasses.
+Example:
+If a person is both student and employee → duplicated attributes.
+
+### 9. Generalization
+Generalization is the **reverse of specialization**.
+Instead of top-down design:
+```
+Top-down → Specialization
+Bottom-up → Generalization
+```
+Example:
+Start with:
+```
+Instructor
+Secretary
+```
+Identify common attributes:
+```
+Person
+```
+Thus:
+```
+Instructor IS A Person
+Secretary IS A Person
+```
+Generalization combines entity sets with similar properties into a **higher-level entity set**.
+
+### 10. Aggregation
+Aggregation is used when we need **relationships between relationships**.
+Example scenario:
+We have a ternary relationship:
+```
+proj_guide(student, instructor, project)
+```
+Now suppose we want to record:
+```
+evaluation of a student by instructor for a project
+```
+If we directly add another ternary relationship, redundancy occurs.
+Instead:
+Treat the relationship **proj_guide as an entity**.
+This abstraction is called **aggregation**.
+Result:
+```
+proj_guide → aggregated entity
+eval_for → relationship with evaluation entity
+```
+Meaning:
+A **student–project–instructor combination may have an evaluation**.
+Aggregation eliminates redundancy and improves modeling clarity.
+
+### 11. Representing Aggregation in Relational Schema
+Schema includes:
+- Primary key of aggregated relationship
+- Key of related entity
+- Additional attributes
+Example schema:
+```
+eval_for(student_id, project_id, instructor_id, evaluation_id)
+```
+Here:
+```
+(student_id, project_id, instructor_id)
+```
+comes from the **aggregated relationship**.
+
+### 12. Design Issues in ER Modeling
+Several modeling decisions must be made during database design.
+These choices depend on:
+- Application requirements
+- Data characteristics
+- Query patterns
+#### 12.1 Entities vs Attributes
+Example: Phone number.
+Option 1:
+```
+Instructor(ID, name, salary, phone_number)
+```
+Phone number is an **attribute**.
+Option 2:
+```
+Instructor(ID, name, salary)
+
+Phone(phone_number, location)
+
+inst_phone(Instructor_ID, phone_number)
+```
+Phone is treated as an **entity set**.
+Advantages:
+- Allows multiple phone numbers
+- Can store additional details (location, type)
+
+#### 12.2 Entities vs Relationship Sets
+Sometimes it is unclear whether a concept should be:
+- Entity
+- Relationship
+Guideline:
+Relationships often represent **actions between entities**.
+Example:
+```
+Student — registration — Section
+```
+But sometimes the relationship itself may become an entity.
+
+#### 12.3 Binary vs Non-Binary Relationships
+Any non-binary relationship can theoretically be replaced by binary relationships.
+Example:
+Ternary relationship:
+```
+R(A, B, C)
+```
+Convert to:
+```
+E (artificial entity)
+RA(E, A)
+RB(E, B)
+RC(E, C)
+```
+Each relationship stores part of the information.
+However:
+Some constraints involving all three entities may become harder to enforce.
+
+### 13. Key Design Decisions
+Important ER modeling decisions include:
+1. Attribute vs Entity representation
+2. Entity vs Relationship modeling
+3. Binary vs Ternary relationships
+4. Strong vs Weak entity sets
+5. Use of specialization/generalization
+6. Use of aggregation
+These decisions influence:
+- Data redundancy
+- Query complexity
+- Integrity constraints
+- System performance
+
+### 14. ER Notation
+Standard ER notation symbols include:
+
+| Symbol               | Meaning                       |
+| -------------------- | ----------------------------- |
+| Rectangle            | Entity set                    |
+| Diamond              | Relationship set              |
+| Double rectangle     | Weak entity                   |
+| Underlined attribute | Primary key                   |
+| Dashed underline     | Discriminator                 |
+| Triangle (ISA)       | Specialization/generalization |
+| Double line          | Total participation           |
+These symbols are standardized and commonly used in database design tools.
+### 15. Module Summary
+This module completed the discussion of **Extended ER Modeling**.
+Topics covered:
+- Non-binary relationships
+- Specialization (ISA hierarchy)
+- Generalization
+- Aggregation
+- Schema representation
+- Design issues in ER modeling
+These concepts help create **accurate conceptual database models** that reflect real-world systems before implementation.
+
+---
