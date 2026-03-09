@@ -572,3 +572,421 @@ Important ideas:
 - Queries specify **what result is desired**
 - Relational algebra and relational calculus are **mathematically equivalent**
 In practice, database systems rely primarily on **relational algebra concepts**, while relational calculus provides a **logical theoretical foundation**.
+
+---
+## CS2001 – Week 4, Lecture 3
+### 1. Module Recap
+In the previous modules:
+Topics covered include:
+- Relational Algebra and its operators  
+- Relational Calculus and predicate-based query formulation  
+Both of these form the **formal mathematical foundation of relational databases**.
+Going forward, these ideas will be used **interchangeably** while designing databases and writing queries.
+From this module onward, the course transitions to **database design**.
+
+### 2. Module Objective
+Primary objective:
+- Understand **how to design a database system for a real-world application**
+Key tool introduced:
+- **Entity–Relationship (E-R) Model**
+The E-R model is used for **representing real-world systems in a structured conceptual form** before implementation.
+
+### 3. Design Process Overview
+Design always begins with a **requirement specification**.
+Steps involved:
+1. Understand the **functional specification**
+2. Identify **stakeholders**
+3. Identify **business rules and constraints**
+4. Design a system that satisfies these requirements
+
+Examples of possible applications:
+- Academic systems (students, instructors, courses)
+- Banking systems
+- Financial systems
+- Distributed systems such as national-scale applications
+
+Important design considerations include:
+- Performance requirements  
+- Resource usage  
+- Concurrency requirements  
+- Response time requirements  
+- Distribution of the system  
+
+Example scenarios:
+- A small store database might run on a **single PC**  
+- A banking system requires **high concurrency and fast response time**  
+- Nationwide systems (e.g., large public systems) require **distributed infrastructure**
+Thus, database design must balance **requirements, resources, and system limitations**.
+
+### 4. Key Components of the Design Process
+At the beginning of database design, two important concepts are required:
+1. **Abstraction**
+2. **Modeling**
+These help manage the complexity of real-world systems.
+
+### 5. Abstraction
+Abstraction means representing information at **different levels of detail**.
+Human cognition has limitations:
+- Short-term memory typically handles **5–7 items at a time**
+
+Therefore abstraction helps by:
+- Simplifying information
+- Reducing complexity
+- Ignoring irrelevant details
+Example:
+Consider a binary string:
+```
+110010101001
+```
+This is difficult to remember.
+If grouped into **octal representation**:
+```
+6251
+```
+It becomes easier to remember.
+Similarly, using **hexadecimal representation**:
+```
+CA9
+```
+Both representations contain the **same information**, but the abstraction level is different.
+Thus abstraction allows us to:
+- Handle complex information efficiently
+- Focus only on relevant aspects
+Example in database context:
+When working with **student course data**, relevant attributes may include:
+- Course
+- Grades
+- Attendance
+
+Attributes like:
+- Instructor salary
+- Student date of birth
+may not be relevant for that specific task.
+Abstraction allows focusing only on **relevant attributes**.
+
+### 6. Models
+While abstraction simplifies information, **models represent real-world systems mathematically or logically**.
+A model is a representation that allows reasoning about real-world behavior.
+Examples from other fields:
+Physics:
+```
+S = ut + (1/2)at²
+```
+Where:
+- S = distance
+- u = initial velocity
+- t = time
+- a = acceleration
+This formula models **motion in the real world**.
+Other examples:
+Physics:
+- Newton's laws
+- Quantum mechanics models
+Chemistry:
+- Molecular structure models
+Geography:
+- Map projections
+Electrical engineering:
+- Circuit diagrams
+- Transistor models
+- Kirchhoff’s laws
+These models represent the same real-world system from **different perspectives**.
+Similarly, database systems require **models of real-world information systems**.
+
+### 7. Database Design Approach
+The overall database design process can be divided into three stages:
+1. **Requirement Analysis**
+2. **Database Design**
+3. **Implementation**
+#### Requirement Analysis
+- Gather system requirements
+- Define system functionality
+- Identify stakeholders and constraints
+#### Database Design
+Two levels:
+1. **Logical Design (Conceptual Model)**
+2. **Physical Design**
+
+Logical design focuses on:
+- Structure of the data
+- Relationships between data
+
+Physical design focuses on:
+- Storage structures
+- Indexes
+- Pages
+- Data organization
+In this module, the focus is on **logical design**.
+
+### 8. Entity-Relationship (E-R) Model
+The **Entity-Relationship model** is used to represent the conceptual design of a database.
+Key idea:
+Represent real-world objects and their relationships.
+Two primary components:
+1. **Entities**
+2. **Relationships**
+
+An **entity** is anything that can be distinguished as a separate object.
+Example:
+- Instructor
+- Student
+- Course
+A **collection of similar entities** forms an **entity set**.
+Example:
+- All instructors → Instructor entity set
+- All students → Student entity set
+Entities are described using **attributes**.
+
+### 9. Attributes
+An attribute is a **property associated with an entity set**.
+Example attributes:
+Student:
+- Student_ID
+- Name
+- Age
+
+Instructor:
+- Instructor_ID
+- Name
+- Salary
+Each entity must be **uniquely identifiable** using attribute values.
+
+### 10. Types of Attributes
+Attributes can be categorized into different types.
+#### Simple Attribute
+A simple attribute contains a **single value**.
+Examples:
+- Age
+- Salary
+- Course_ID
+
+#### Composite Attribute
+A composite attribute consists of **multiple sub-attributes**.
+Example:
+Name
+Components:
+- First Name
+- Middle Name
+- Last Name
+
+Example:
+Address
+Components:
+- Street
+- City
+- State
+- Postal Code
+Even a **date** may be considered composite:
+- Day
+- Month
+- Year
+However, if a database system supports a **date data type**, it may be treated as a simple attribute.
+
+#### Multi-Valued Attribute
+A multi-valued attribute can have **multiple values for one entity**.
+Example:
+Phone numbers of a person.
+A person may have:
+- Personal number
+- Work number
+- Messaging number
+Thus phone number is **multi-valued**.
+
+#### Derived Attribute
+A derived attribute is **computed from another attribute**.
+Example:
+Age.
+Age changes every day, so it should not be stored directly.
+Instead store:
+```
+Date_of_birth
+```
+Age is then computed when required.
+
+### 11. Attribute Domain
+Each attribute has a **domain**, which is the set of permitted values.
+Example:
+Age domain:
+
+```
+0 – 150
+```
+
+Course_ID domain:
+
+```
+valid course identifiers
+```
+Domains restrict allowed attribute values.
+
+### 12. Entity Sets
+An **entity set** is a collection of entities that share the same attributes.
+Example:
+Instructor entity set:
+```
+Instructor(ID, Name, Salary)
+```
+Student entity set:
+```
+Student(ID, Name)
+```
+Primary keys are used to uniquely identify entities.
+Primary keys are usually **underlined** in schema notation.
+Example:
+```
+Instructor(_ID_, Name, Salary)
+```
+
+### 13. Relationships
+Relationships represent **associations between entity sets**.
+Example:
+Instructor — teaches — Course
+This relationship indicates:
+- Which instructor teaches which course.
+Relationships may also have **attributes**.
+Example:
+Advisor relationship:
+Student — advisor — Instructor
+Possible relationship attribute:
+```
+Advisor_Start_Date
+```
+This stores when the instructor became the student's advisor.
+
+### 14. Degree of Relationship
+Relationships may involve multiple entity sets.
+Binary relationship:
+Between **two entity sets**.
+Example:
+`Student — takes — Course`
+Ternary relationship:
+Between **three entity sets**.
+
+Example:
+`Instructor — guides — Student — in Project`
+
+Here we need:
+- Instructor
+- Student
+- Project
+Such relationships represent **three-way associations**.
+However, database designs often try to **reduce higher-degree relationships into binary relationships** when possible.
+
+### 15. Redundant Attributes
+Sometimes attributes become **redundant due to relationships**.
+Example:
+Instructor entity:
+```
+Instructor(ID, Name, Dept_Name)
+```
+Department entity:
+```
+Department(Dept_Name, Details)
+```
+Relationship:
+```
+Instructor — works_for — Department
+```
+Since the relationship identifies the department of an instructor, the attribute `Dept_Name` in Instructor may become redundant.
+However, redundancy decisions depend on the **overall schema design**.
+Sometimes redundant attributes may still appear later during **relational table conversion**.
+
+### 16. Cardinality Constraints
+Cardinality constraints describe **how many entities from one set can relate to entities in another set**.
+Types include:
+
+#### One-to-One (1:1)
+Each entity in set A is related to **exactly one entity in set B**.
+Example:
+Passport — Person
+
+#### One-to-Many (1:N)
+One entity in set A relates to **many entities in set B**.
+Example:
+Father → Children
+One father may have multiple children.
+But each child has one father.
+
+#### Many-to-One (N:1)
+Reverse of one-to-many.
+Example:
+Many employees work in **one department**.
+
+#### Many-to-Many (M:N)
+Entities in both sets may have multiple associations.
+Example:
+Students — take — Courses
+- One student takes many courses
+- One course has many students
+
+### 17. Weak Entity Sets
+Normally entity sets must have a **primary key**.
+Such entity sets are called **strong entity sets**.
+However, some entities cannot be uniquely identified using their own attributes.
+These are called **weak entity sets**.
+Weak entities rely on **another entity set for identification**.
+
+### 18. Example of Weak Entity Set
+Consider:
+Building entity set:
+```
+Building(Building_Number, Building_Name, Address)
+```
+Primary key:
+```
+Building_Number
+```
+Apartment entity set:
+```
+Apartment(Door_Number, Floor)
+```
+Door_Number alone cannot uniquely identify apartments because:
+```
+Door_Number 201
+```
+may exist in many buildings.
+Thus Apartment is a **weak entity set**.
+Relationship:
+```
+Building — contains — Apartment
+```
+Every apartment belongs to **one building**.
+A building may have **many apartments**.
+
+### 19. Identifying Relationship
+The relationship connecting a weak entity to a strong entity is called an **identifying relationship**.
+Example:
+```
+Building — BA — Apartment
+```
+Rules:
+1. Weak entity must have **total participation** in this relationship.
+2. The weak entity key is formed by:
+```
+Primary Key of Strong Entity + Weak Entity Discriminator
+```
+Example:
+```
+Primary Key = (Building_Number, Door_Number)
+```
+Thus the weak entity borrows identity from the strong entity.
+
+### 20. Module Summary
+Topics discussed in this module:
+Database design foundations:
+- Requirement analysis
+- Abstraction
+- Modeling
+Conceptual design using **Entity-Relationship model**:
+- Entities
+- Attributes
+- Entity sets
+- Relationships
+Additional concepts:
+- Types of attributes
+- Cardinality constraints
+- Weak entity sets
+- Identifying relationships
+These concepts form the **foundation of logical database design**, which will later be converted into relational tables and normalized schemas.
+
+---
