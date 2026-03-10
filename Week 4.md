@@ -992,6 +992,9 @@ Additional concepts:
 - Identifying relationships
 These concepts form the **foundation of logical database design**, which will later be converted into relational tables and normalized schemas.
 
+### Notes taken from Activity Questions 4.3
+1. An attribute is a set of descriptive properties possessed by all members of an entity set. (Question: 2)
+2. The relationship associating the weak entity set with the identifying entity set is called *identifying relationship*. (Question: 8)
 ---
 ## CS2001 – Week 4, Lecture 4
 ### 1. Module Recap
