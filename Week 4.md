@@ -1733,4 +1733,7 @@ Topics covered:
 - Design issues in ER modeling
 These concepts help create **accurate conceptual database models** that reflect real-world systems before implementation.
 
+### Notes taken from Activity Questions 4.5
+Nothing! Got all of them right!
+
 ---
