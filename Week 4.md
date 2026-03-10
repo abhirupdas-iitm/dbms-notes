@@ -573,6 +573,9 @@ Important ideas:
 - Relational algebra and relational calculus are **mathematically equivalent**
 In practice, database systems rely primarily on **relational algebra concepts**, while relational calculus provides a **logical theoretical foundation**.
 
+### Notes taken from Activity Questions 4.2
+1. Considering the relations **R**(A,B,C) and **P**(B,X,Y), the following expression will result in (A,B,C,X,Y): `R⋈P`. (Question: 7)
+2. TRC is a *non-procedural* query language. (Question: 9)
 ---
 ## CS2001 – Week 4, Lecture 3
 ### 1. Module Recap
