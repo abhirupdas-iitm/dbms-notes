@@ -1407,6 +1407,8 @@ Implementation step:
 - Conversion of **E-R models into relational schemas**
 This step transforms conceptual database design into **actual relational table structures**.
 
+### Notes taken from Activity Questions 4.4
+1. In E-R diagrams, a weak entity set is represented by double rectangle. (Question: 3)
 ---
 ## CS2001 – Week 4, Lecture 5
 
