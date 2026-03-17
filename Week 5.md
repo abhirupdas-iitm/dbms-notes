@@ -204,3 +204,7 @@ Concepts covered:
 - First Normal Form (1NF)  
 Key takeaway:
 Good database design = minimal redundancy + no anomalies + proper normalization
+
+### Notes taken from Activity Questions 5.1
+1. In DBMS, we assume that all the relations are in 1NF, by default. (Question: 6)
+---
