@@ -208,3 +208,194 @@ Good database design = minimal redundancy + no anomalies + proper normalization
 ### Notes taken from Activity Questions 5.1
 1. In DBMS, we assume that all the relations are in 1NF, by default. (Question: 6)
 ---
+## CS2001 – Week 5, Lecture 2
+
+### 1. Module Recap
+Previously covered:
+- Good relational design principles  
+- Redundancy and anomalies  
+- Decomposition (lossy vs lossless)  
+- Atomic domains  
+- First Normal Form (1NF)  
+Key takeaway:
+Normalization is required to reduce redundancy and anomalies.
+
+### 2. Module Objective
+Primary objective:
+- Introduce **Functional Dependencies (FDs)**  
+Purpose:
+To build a **formal mathematical framework** for good relational design.
+
+### 3. Why Functional Dependencies?
+Goals of relational design:
+- Determine whether a relation is in good form  
+- If not → decompose into smaller relations  
+
+Requirements of decomposition:
+- Each resulting relation must be in good form  
+- Decomposition must be **lossless-join**  
+
+Foundation of theory:
+- Functional dependencies  
+- (Later) multivalued dependencies and others  
+
+### 4. Functional Dependencies (FD)
+Definition:
+A functional dependency is written as:
+α → β  
+Where:
+- α ⊆ R (set of attributes)  
+- β ⊆ R  
+Condition:
+For any valid instance r of relation R:
+```
+If
+t₁[α] = t₂[α]
+Then
+t₁[β] = t₂[β]
+```
+Meaning:
+If two tuples match on α → they must match on β.
+
+### 5. Intuition of FD
+Example:
+`dept_name → building, budget  `
+
+Meaning:
+If two rows have same department name → they must have same building and budget.
+Important:
+FDs come from **real-world constraints (business rules)**, not just data observation.
+
+### 6. Important Observation
+From data:
+- You can disprove an FD  
+- But you cannot always prove an FD  
+
+Example:
+If:
+(1,4), (1,5)
+Then:
+`A → B is false`
+But:
+Even if B values are unique, B → A cannot be assumed unless guaranteed by rules.
+
+### 7. Superkey using FD
+Definition:
+K is a superkey if:
+K → R  
+Meaning:
+K uniquely determines all attributes in the relation.
+
+### 8. Candidate Key using FD
+Definition:
+K is a candidate key if:
+- K → R  
+- No subset of K determines R  
+Meaning:
+Minimal superkey.
+
+### 9. Example Functional Dependencies
+Given:
+`inst_dept(ID, name, salary, dept_name, building, budget)`
+Valid FDs:
+```
+- dept_name → building  
+- dept_name → budget  
+- ID → building (via dept_name)  
+```
+Invalid FD:
+`- dept_name → salary  `
+
+### 10. Set of Functional Dependencies
+We consider a **set F of FDs**.
+Definition:
+F holds on R if:
+All valid instances of R satisfy all FDs in F.
+Important insight:
+FDs are **constraints**, not just observations from sample data.
+
+### 11. Trivial Functional Dependency
+Definition:
+```
+α → β is trivial if:
+β ⊆ α  
+```
+Examples:
+- (ID, name) → ID  
+- name → name  
+Reason:
+Left side already contains right side.
+
+### 12. Example Functional Dependencies
+```
+- StudentID → Semester  
+- StudentID, Lecture → TA  
+- {StudentID, Lecture} → {TA, Semester}  
+```
+```
+- EmployeeID → EmployeeName  
+- EmployeeID → DepartmentID  
+- DepartmentID → DepartmentName  
+```
+
+### 13. Armstrong’s Axioms
+These are rules to infer new FDs.
+#### 13.1 Reflexivity
+If:
+`β ⊆ α  `
+Then:
+`α → β  `
+
+#### 13.2 Augmentation
+If:
+`α → β  `
+Then:
+`αγ → βγ`
+(Add same attributes to both sides)
+
+#### 13.3 Transitivity
+If:
+```
+α → β  
+β → γ
+```  
+Then:
+`α → γ`  
+
+### 14. Closure of Functional Dependencies
+Definition:
+Closure of F (denoted F⁺):
+Set of all FDs that can be inferred from F using axioms.
+
+### 15. Example of Closure
+Given:
+`F = { A → B, B → C }`
+Using transitivity:
+`A → C`
+So:
+`F⁺ = { A → B, B → C, A → C }`  
+
+### 16. Properties of Axioms
+Two important properties:
+#### 16.1 Soundness
+All inferred FDs must be correct.
+#### 16.2 Completeness
+All valid FDs can be derived using these axioms.
+
+### 17. Key Insight
+Functional Dependencies:
+- Capture real-world constraints  
+- Help identify keys  
+- Help guide normalization  
+- Help design good schemas  
+
+### 18. Module Summary
+Concepts covered:
+- Functional dependency definition  
+- Relation between FD and keys  
+- Superkey and candidate key (formalized)  
+- Trivial dependencies  
+- Armstrong’s axioms  
+- Closure of FDs  
+Key takeaway:
+Functional dependencies provide a **formal foundation for normalization and database design**.
