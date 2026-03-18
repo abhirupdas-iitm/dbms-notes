@@ -678,3 +678,213 @@ Functional dependencies provide a **complete mathematical framework** for:
 1. A set of all functional dependencies implied by the original set of dependencies is called a closure set of functional dependencies. (Question: 1)
 2. If a relation is in BCNF, then it is also in 3NF. (Question: 9)
 ---
+## CS2001 – Week 5, Lecture 4
+### 1. Module Recap
+Previously covered:
+- Functional Dependencies (FDs)  
+- Closure of attributes (α⁺)  
+- Closure of FDs (F⁺)  
+- BCNF and 3NF basics  
+
+### 2. Module Objective
+- Learn **algorithms for functional dependencies**
+- Compute:
+  - Attribute closure  
+  - Extraneous attributes  
+  - Equivalent FD sets  
+  - Canonical (minimal) cover  
+
+### 3. Attribute Closure (α⁺)
+Definition:
+α⁺ = set of attributes functionally determined by α using F.
+
+### 4. Uses of Attribute Closure
+1. **Check Superkey**
+   - α⁺ = all attributes ⇒ superkey  
+1. **Check Candidate Key**
+   - Superkey + minimal  
+1. **Check Functional Dependency**
+   - α → β holds if β ⊆ α⁺  
+1. **Compute F⁺**
+   - Use closure of different subsets  
+
+### 5. Extraneous Attributes
+Definition:
+An attribute is **extraneous** if removing it does NOT change the meaning of FDs.
+
+### 6. Types of Extraneous Attributes
+#### 6.1 Left-Hand Side (LHS)
+A ∈ α is extraneous if:
+(α − A) → β can still be derived from F  
+Effect:
+FD becomes **stronger**
+
+#### 6.2 Right-Hand Side (RHS)
+A ∈ β is extraneous if:
+α → (β − A) still implies original F  
+Effect:
+FD becomes **weaker**
+
+### 7. Example: Extraneous Attribute (LHS)
+Given:
+`F = { A → C, AB → C }`
+Check:
+Is B extraneous in AB → C?
+Yes:
+Because A → C already exists  
+So:
+`AB → C ⇒ A → C  `
+Thus:
+B is extraneous  
+
+### 8. Example: Extraneous Attribute (RHS)
+Given:
+`F = { A → C, AB → CD }`
+Check:
+Is C extraneous in AB → CD?
+Yes:
+- A → C  
+- So AB → C  
+- Hence AB → D is sufficient  
+Thus:
+C is extraneous  
+
+### 9. Tests for Extraneous Attributes
+#### 9.1 Test for LHS
+To check if A ∈ α is extraneous:
+1. Compute (α − A)⁺ using F  
+2. If β ⊆ (α − A)⁺ → A is extraneous  
+
+#### 9.2 Test for RHS
+To check if A ∈ β is extraneous:
+1. Define:
+   `F' = (F − {α → β}) ∪ {α → (β − A)}`  
+2. Compute α⁺ using F'  
+3. If A ∈ α⁺ → A is extraneous  
+
+### 10. Equivalent Sets of Functional Dependencies
+Definition:
+F and G are equivalent if:
+F⁺ = G⁺  
+
+### 11. Checking Equivalence
+F and G are equivalent if:
+- F covers G (F⁺ ⊇ G)  
+- G covers F (G⁺ ⊇ F)  
+Cases:
+- Both true → Equivalent  
+- One true → One stronger  
+- Both false → Independent  
+
+### 12. Canonical Cover (Minimal Cover)
+Definition:
+A canonical cover F<sub>c</sub> of F satisfies:
+1. F<sub>c</sub> ≡ F (same closure)  
+2. No extraneous attributes  
+3. Unique LHS for each FD  
+
+### 13. Properties of Canonical Cover
+- Minimal set of FDs  
+- No redundancy  
+- No unnecessary attributes  
+- Also called:
+  - Minimal cover  
+  - Irreducible set  
+
+### 14. Example: Removing Redundant FD
+Given:
+`F = { A → B, B → C, A → C }`
+Observation:
+A → C is redundant  
+Because:
+`A → B and B → C ⇒ A → C  `
+
+### 15. Example: RHS Reduction
+Given:
+`{ A → B, B → C, A → CD }`
+Steps:
+```
+- A → CD ⇒ A → C and A → D  
+- A → B, B → C ⇒ A → C  
+```
+Thus:
+C is redundant  
+Final:
+`{ A → B, B → C, A → D }`
+
+### 16. Example: LHS Reduction
+Given:
+`{ A → B, B → C, AC → D }`
+Steps:
+```
+- A → B, B → C ⇒ A → C  
+- AC → D ⇒ A → D  
+```
+Final:
+`{ A → B, B → C, A → D }`
+
+### 17. Algorithm: Canonical Cover
+Repeat until no change:
+1. **Apply Union Rule**
+   - Combine FDs with same LHS  
+1. **Remove Extraneous Attributes**
+   - From LHS and RHS  
+1. **Repeat**
+   - Because new simplifications may arise  
+Termination:
+- Each step reduces size  
+- Finite → algorithm stops  
+
+### 18. Example: Full Reduction
+Given:
+`F = { A → BC, B → C, A → B, AB → C }`
+Steps:
+1. Combine:
+   A → BC  
+2. Remove extraneous:
+   - A extraneous in AB → C → remove FD  
+1. Reduce RHS:
+   - C extraneous in A → BC  
+Final:
+F<sub>c</sub> = { A → B, B → C }
+
+### 19. Key Insight
+Canonical cover = **most efficient representation of constraints**
+
+### 20. Practice Problems Overview
+#### 20.1 FD Checking
+Check if:
+α → β holds using α⁺  
+#### 20.2 Super-keys
+Find α such that:
+α⁺ = R  
+#### 20.3 Candidate Keys
+- Super-key  
+- Minimal  
+#### 20.4 Prime Attributes
+- Attributes in any candidate key  
+#### 20.5 Non-Prime Attributes
+- Not in any candidate key  
+#### 20.6 Equivalence
+Check if:
+F⁺ = G⁺  
+#### 20.7 Canonical Cover
+Reduce FD set to minimal form  
+
+### 21. Important Concepts
+- Closure → core computational tool  
+- Extraneous attributes → redundancy removal  
+- Equivalence → comparison of FD sets  
+- Canonical cover → minimal representation  
+
+### 22. Module Summary
+Concepts covered:
+- Attribute closure algorithm  
+- Extraneous attribute detection  
+- Equivalent FD sets  
+- Canonical cover computation  
+Final takeaway:
+Functional dependency algorithms enable:
+- Efficient schema design  
+- Reduction of redundancy  
+- Preparation for normalization  
