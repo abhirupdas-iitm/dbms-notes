@@ -393,9 +393,13 @@ Functional Dependencies:
 Concepts covered:
 - Functional dependency definition  
 - Relation between FD and keys  
-- Superkey and candidate key (formalized)  
+- Super-key and candidate key (formalized)  
 - Trivial dependencies  
 - Armstrong’s axioms  
 - Closure of FDs  
 Key takeaway:
 Functional dependencies provide a **formal foundation for normalization and database design**.
+
+### Notes taken from Activity Questions 5.2
+1. Given a set of functional dependencies F and its closure F<sup>+</sup>, F<sup>+</sup> *cannot* be infinite even for a finite relation R. (Question: 8)
+2. 
