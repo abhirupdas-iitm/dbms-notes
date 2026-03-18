@@ -673,3 +673,8 @@ Functional dependencies provide a **complete mathematical framework** for:
 - Designing schemas  
 - Detecting redundancy  
 - Performing normalization
+
+### Notes taken from Activity Questions 5.3
+1. A set of all functional dependencies implied by the original set of dependencies is called a closure set of functional dependencies. (Question: 1)
+2. If a relation is in BCNF, then it is also in 3NF. (Question: 9)
+---
