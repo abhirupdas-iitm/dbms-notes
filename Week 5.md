@@ -402,4 +402,274 @@ Functional dependencies provide a **formal foundation for normalization and data
 
 ### Notes taken from Activity Questions 5.2
 1. Given a set of functional dependencies F and its closure F<sup>+</sup>, F<sup>+</sup> *cannot* be infinite even for a finite relation R. (Question: 8)
-2. 
+---
+## CS2001 – Week 5, Lecture 3
+### 1. Module Recap
+Previously covered:
+- Functional Dependencies (FDs)  
+- Armstrong’s Axioms:
+  - Reflexivity  
+  - Augmentation  
+  - Transitivity  
+- Closure of FDs (F⁺)  
+Key idea:
+New functional dependencies can be derived systematically using axioms.
+
+### 2. Module Objective
+- Extend **Functional Dependency Theory**  
+- Learn **closure computation techniques**  
+- Apply FDs for **schema decomposition**  
+- Introduce **BCNF and 3NF**
+
+### 3. Closure of Functional Dependencies (F⁺)
+Definition:
+Closure F⁺ is the set of all FDs that can be inferred from F using Armstrong’s axioms.
+Example:
+`F = { A → B, B → C }  `
+Then:
+`F⁺ = { A → B, B → C, A → C }`
+
+### 4. Example: Deriving New Functional Dependencies
+Given:
+```
+R = (A, B, C, G, H, I)  
+F = {  
+A → B  
+A → C  
+CG → H  
+CG → I  
+B → H  
+}
+```
+Derived FDs:
+- A → H (via transitivity: A → B and B → H)  
+- AG → I (augment A → C with G → AG → CG, then CG → I)  
+- CG → HI (combine CG → H and CG → I)  
+
+### 5. Algorithm to Compute F⁺
+Procedure:
+1. Initialize:
+   F⁺ ← F  
+2. Repeat:
+   - Apply **reflexivity and augmentation** on each FD  
+   - Apply **transitivity** on FD pairs  
+   - Add newly generated FDs  
+1. Stop when:
+   No new FDs are generated  
+Key insight:
+Since attributes are finite → process terminates.
+
+### 6. Derived Rules (From Armstrong’s Axioms)
+These are not primitive but derived:
+#### 6.1 Union
+If:
+```
+α → β  
+α → γ  
+```
+Then:
+`α → βγ  `
+
+#### 6.2 Decomposition
+If:
+`α → βγ  `
+Then:
+```
+α → β  
+α → γ  
+```
+#### 6.3 Pseudotransitivity
+If:
+```
+α → β  
+γβ → δ  
+```
+Then:
+`αγ → δ  `
+
+### 7. Closure of Attribute Sets (α⁺)
+Definition:
+α⁺ = set of attributes functionally determined by α using F.
+
+### 8. Algorithm to Compute α⁺
+1. Initialize:
+   `result ← α ` 
+2. Repeat:
+   For each FD β → γ in F:
+   - `If β ⊆ result → add γ to result  `
+1. Stop when:
+   No changes occur  
+
+### 9. Example: Computing (AG)⁺
+Given:
+```
+R = (A, B, C, G, H, I)  
+F = { A → B, A → C, CG → H, CG → I, B → H }
+```
+Steps:
+- Start: AG  
+- Add B, C (A → B, A → C) → ABCG  
+- Add H (CG → H) → ABCGH  
+- Add I (CG → I) → ABCGHI  
+Thus:
+(AG)⁺ = {A, B, C, G, H, I}  
+
+### 10. Testing for Candidate Key
+Check:
+#### Step 1: Super-key
+If:
+α⁺ = all attributes → α is super-key  
+Here:
+AG⁺ = R → super-key  
+#### Step 2: Minimality
+Check subsets:
+- A⁺ ≠ R  
+- G⁺ ≠ R  
+Therefore:
+AG is a **candidate key**
+
+### 11. Uses of Attribute Closure
+1. **Check Superkey**
+   - α⁺ contains all attributes → superkey  
+1. **Check FD**
+   - `β ⊆ α⁺ → α → β` holds  
+1. **Compute F⁺ efficiently**
+   - Use closures instead of brute-force  
+
+### 12. BCNF (Boyce-Codd Normal Form)
+Definition:
+A relation R is in BCNF if for every FD α → β:
+- Either:
+  - β ⊆ α (trivial)  
+  - α is a super-key  
+
+### 13. Example: Not in BCNF
+Relation:
+`instr_dept(ID, name, salary, dept_name, building, budget)`
+FD:
+`dept_name → building, budget  `
+Problem:
+- Non-trivial  
+- dept_name is NOT a superkey  
+Therefore:
+Not in BCNF  
+
+### 14. BCNF Decomposition Rule
+If α → β violates BCNF:
+Decompose R into:
+```
+1. R₁ = α ∪ β  
+2. R₂ = R − (β − α)  
+```
+
+### 15. Example Decomposition
+Given:
+```
+α = dept_name  
+β = building, budget  
+```
+Result:
+```
+- R₁ = (dept_name, building, budget)  
+- R₂ = (ID, name, salary, dept_name)  
+```
+Both are in BCNF  
+
+### 16. Lossless Join Property
+A decomposition is lossless if:
+```
+1. R₁ ∪ R₂ = R  
+2. R₁ ∩ R₂ ≠ ∅  
+3. (R₁ ∩ R₂) → R₁ or R₂  
+```
+
+### 17. Dependency Preservation
+Definition:
+A decomposition is dependency-preserving if:
+All FDs can be checked without joining relations.
+
+### 18. BCNF vs Dependency Preservation
+Important result:
+- BCNF ensures **lossless join**  
+- BUT may **NOT preserve dependencies**  
+
+### 19. Example: Dependency Not Preserved
+Given:
+```
+R = (C, S, Z)  
+F = { CS → Z, Z → C }
+```
+Decomposition:
+- R₁ = (Z, C)  
+- R₂ = (S, Z)  
+Properties:
+- Lossless join ✔  
+- Cannot check CS → Z without join ❌  
+
+### 20. Third Normal Form (3NF)
+Definition:
+A relation R is in 3NF if for every FD α → β:
+At least one holds:
+1. β ⊆ α (trivial)  
+2. α is a superkey  
+3. Each attribute in (β − α) is part of some candidate key  
+
+### 21. BCNF vs 3NF
+- `BCNF ⊆ 3NF  `
+- 3NF allows slight redundancy  
+- Ensures **dependency preservation**  
+
+### 22. Goals of Normalization
+For relation R:
+- Check if R is in good form  
+- If not → decompose into R₁, R₂, ..., Rₙ  
+Requirements:
+- Each relation in good form  
+- Lossless join  
+- Prefer dependency preservation  
+
+### 23. Problems with Decomposition
+1. Loss of information (lossy join)  
+2. Expensive dependency checking (requires joins)  
+3. Increased query cost  
+Trade-off:
+Normalization vs performance  
+
+### 24. Limitation of BCNF
+Example:
+`inst_info(ID, child_name, phone)`
+Observations:
+- No non-trivial FD → already BCNF  
+- Still has redundancy  
+Problem:
+- Multiple children × multiple phones → duplication  
+
+### 25. Solution Beyond BCNF
+Decompose into:
+```
+- inst_child(ID, child_name)  
+- inst_phone(ID, phone)  
+```
+Result:
+- Removes redundancy  
+- Eliminates anomalies  
+
+### 26. Key Insight
+BCNF is strong, but not always sufficient.  
+Leads to higher normal forms:
+→ Fourth Normal Form (4NF)
+
+### 27. Module Summary
+Concepts covered:
+- Closure of FDs (F⁺)  
+- Closure of attribute sets (α⁺)  
+- Derived rules of FDs  
+- BCNF definition and decomposition  
+- Lossless join and dependency preservation  
+- Introduction to 3NF  
+- Limitations of BCNF  
+Final takeaway:
+Functional dependencies provide a **complete mathematical framework** for:
+- Designing schemas  
+- Detecting redundancy  
+- Performing normalization
