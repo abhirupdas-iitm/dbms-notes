@@ -888,3 +888,7 @@ Functional dependency algorithms enable:
 - Efficient schema design  
 - Reduction of redundancy  
 - Preparation for normalization  
+
+### Notes taken from Activity Questions 5.4
+1. ss
+---
