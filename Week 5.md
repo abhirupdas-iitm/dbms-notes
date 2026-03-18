@@ -1277,3 +1277,7 @@ Final insight:
 
 👉 **Closure is the core engine behind everything**  
 👉 Good design = balance between correctness and efficiency  
+
+### Notes taken from Activity Questions 5.5
+1. ssjkskjs
+---
