@@ -890,284 +890,154 @@ Functional dependency algorithms enable:
 - Preparation for normalization  
 
 ### Notes taken from Activity Questions 5.4
-1. ss
+1. A prime attribute is *not* a proper subset of a super key and a closure set of functional dependencies is the minimal set of functional dependencies for that relation. (Question: 7)
 ---
 ## CS2001 – Week 5, Lecture 5
-
 ### 1. Module Recap
-
 Previously covered:
-
 - Functional Dependency algorithms  
 - Attribute closure  
 - Canonical cover  
 
----
-
 ### 2. Module Objective
-
 Understand two critical properties of decomposition:
-
 1. **Lossless Join Decomposition**
 2. **Dependency Preserving Decomposition**
 
-(From slides page 3 :contentReference[oaicite:0]{index=0})
-
----
-
-## PART 1: LOSSLESS JOIN DECOMPOSITION
-
----
-
+#### PART 1: LOSSLESS JOIN DECOMPOSITION
 ### 3. Definition
-
 A decomposition of R into R₁ and R₂ is **lossless** if:
-
 For every instance r of R:
-
-r = πR₁(r) ⨝ πR₂(r)
-
+`r = πR₁(r) ⨝ πR₂(r)`
 Meaning:
-
 - We can reconstruct the original relation **exactly**
 - No extra tuples  
 - No missing tuples  
 
-(From slides page 6 :contentReference[oaicite:1]{index=1})
-
----
-
 ### 4. Conditions for Lossless Join
-
 A decomposition is lossless if:
-
 1. R₁ ∪ R₂ = R  
 2. R₁ ∩ R₂ ≠ ∅  
 3. (R₁ ∩ R₂) → R₁ OR (R₁ ∩ R₂) → R₂  
-
 Key idea:
-
-👉 Common attributes must be a **superkey in at least one relation**
-
----
+- Common attributes must be a **super-key in at least one relation**
 
 ### 5. Intuition
-
 If common attributes are NOT unique:
-
 - Wrong combinations appear after join  
 - Extra tuples → **lossy decomposition**
-
 If they ARE unique:
-
 - Correct mapping ensured  
 - No spurious tuples  
 
----
-
-### 6. Example: Lossy Decomposition ❌
-
+### 6. Example: Lossy Decomposition
 Schema:
-
-SupplierParts(S#, Sname, City, P#, Qty)
-
+`SupplierParts(S#, Sname, City, P#, Qty)`
 FDs:
-
 - S# → Sname  
 - S# → City  
 - (S#, P#) → Qty  
-
 Decomposition:
-
 - Supplier(S#, Sname, City, Qty)  
 - Parts(P#, Qty)
-
 Problem:
-
 - Common attribute = Qty  
 - Qty is NOT a key  
-
 Result:
-
 - Extra tuples generated  
 - Incorrect join  
 
-(Example illustrated on page 7 :contentReference[oaicite:2]{index=2})
-
----
-
-### 7. Example: Lossless Decomposition ✅
-
+### 7. Example: Lossless Decomposition
 Decomposition:
-
 - Supplier(S#, Sname, City)  
 - Parts(S#, P#, Qty)
-
 Now:
-
 - Common attribute = S#  
 - S# is a key in Supplier  
-
 Result:
-
 - Perfect reconstruction  
 - No extra tuples  
 
-(From slides page 8 :contentReference[oaicite:3]{index=3})
-
----
-
 ### 8. Key Insight
-
 Lossless Join depends ONLY on:
-
-👉 Whether intersection is a **superkey**
-
----
+- Whether intersection is a **superkey**
 
 ### 9. Example: Two Decompositions
-
 Given:
-
-R(A, B, C), F = {A → B, B → C}
-
----
-
+`R(A, B, C), F = {A → B, B → C}`
 #### Case 1:
-
-R₁(A, B), R₂(B, C)
-
+`R₁(A, B), R₂(B, C)`
 - Common = B  
 - B → C  
-
-✔ Lossless  
-✔ Dependency preserving  
-
----
-
+- Lossless  
+- Dependency preserving  
 #### Case 2:
-
-R₁(A, B), R₂(A, C)
-
+`R₁(A, B), R₂(A, C)`
 - Common = A  
 - A → B  
-
-✔ Lossless  
-❌ NOT dependency preserving  
-
+- Lossless  
+- NOT dependency preserving  
 (Because B → C cannot be checked)
 
-(From slides page 9 :contentReference[oaicite:4]{index=4})
-
----
-
-## PART 2: DEPENDENCY PRESERVATION
-
----
-
+#### PART 2: DEPENDENCY PRESERVATION
 ### 10. Definition
-
 A decomposition is **dependency preserving** if:
-
-(F₁ ∪ F₂ ∪ ... ∪ Fₙ)⁺ = F⁺  
-
+`(F₁ ∪ F₂ ∪ ... ∪ Fₙ)⁺ = F⁺  `
 Meaning:
-
 - All original dependencies can be checked  
 - WITHOUT performing joins  
 
-(From slides page 12 :contentReference[oaicite:5]{index=5})
-
----
-
 ### 11. Why Important?
-
 If NOT preserved:
-
 - Must compute joins to check constraints  
 - Very expensive  
-
 Goal:
-
-👉 Avoid joins for validation  
-
----
+- Avoid joins for validation  
 
 ### 12. Basic Idea
-
-For each relation Ri:
-
-- Extract Fi from F⁺ containing only attributes in Ri  
-
+For each relation R<sub>i</sub>:
+- Extract F<sub>i</sub> from F⁺ containing only attributes in R<sub>i</sub>
 Then:
-
-- Combine all Fi  
+- Combine all F<sub>i</sub>
 - Compare with original F  
-
----
 
 ### 13. Dependency Preservation Cases
 
-| Condition | Result |
-|----------|-------|
-| F₁ ∪ F₂ ≡ F | Preserved |
+| Condition   | Result        |
+| ----------- | ------------- |
+| F₁ ∪ F₂ ≡ F | Preserved     |
 | F₁ ∪ F₂ ⊂ F | Not preserved |
 
----
-
 ### 14. Naive Algorithm
-
 1. Compute F⁺  
-2. Extract Fi for each Ri  
-3. Combine all Fi → F'  
+2. Extract F<sub>i</sub> for each R<sub>i</sub>
+3. Combine all F<sub>i</sub> → F'  
 4. Compute F'⁺  
 5. Check:
-
    If F'⁺ = F⁺ → Preserved  
    Else → Not preserved  
+- NOTE: Expensive (exponential time)
 
-⚠️ Expensive (exponential time)
-
----
-
-## PART 3: EFFICIENT CHECK (IMPORTANT)
-
----
-
+#### PART 3: EFFICIENT CHECK (IMPORTANT)
 ### 15. Attribute Closure Based Test
-
 To check if α → β is preserved:
-
 Algorithm:
-
 1. result = α  
 2. Repeat:
-   For each Ri:
-   - t = (result ∩ Ri)⁺ ∩ Ri  
+   For each R<sub>i</sub>:
+   - t = (result ∩ R<sub>i</sub>)⁺ ∩ R<sub>i</sub>  
    - result = result ∪ t  
-
-3. If result ⊇ β → preserved  
-
-(From slides page 16 :contentReference[oaicite:6]{index=6})
-
----
+1. If result ⊇ β → preserved  
 
 ### 16. Complexity
-
 - Uses attribute closure  
 - Runs in **polynomial time**  
 - Much more efficient than computing F⁺  
 
----
-
-## PART 4: EXAMPLES
-
----
-
+#### PART 4: EXAMPLES
 ### 17. Example: Dependency Preserved
-
 R(A, B, C, D, E, F)
-
+```
 F = {  
 A → BCD  
 A → EF  
@@ -1177,107 +1047,66 @@ BC → F
 B → F  
 D → E  
 }
-
+```
 Decomposition:
-
 - R1(A, B, C, D)  
 - R2(B, F)  
 - R3(D, E)
-
----
-
 Check:
-
 - A → E:  
   A → D (R1), D → E (R3) ⇒ A → E  
-
 - A → F:  
   A → B (R1), B → F (R2) ⇒ A → F  
-
 - BC → E:  
   BC → D (R1), D → E (R3)  
-
 - BC → F:  
   B → F (R2) ⇒ BC → F  
-
-✔ All dependencies preserved  
-
-(From slides page 14 :contentReference[oaicite:7]{index=7})
-
----
+- All dependencies preserved  
 
 ### 18. Example: Circular Dependency
-
 R(A, B, C, D)
-
-F = { A → B, B → C, C → D, D → A }
-
+`F = { A → B, B → C, C → D, D → A }`
 Decomposition:
-
 - R1(A, B)  
 - R2(B, C)  
 - R3(C, D)
-
 Even though:
-
 - D → A is not directly present  
-
 But:
-
 D → C → B → A  
+- Preserved via transitivity  
 
-✔ Preserved via transitivity  
-
-(From slides page 15 :contentReference[oaicite:8]{index=8})
-
----
-
-## PART 5: CORE INSIGHT
-
----
-
+#### PART 5: CORE INSIGHT
 ### 19. Lossless vs Dependency Preservation
 
-| Property | Purpose |
-|--------|--------|
-| Lossless Join | No information loss |
+| Property                | Purpose                       |
+| ----------------------- | ----------------------------- |
+| Lossless Join           | No information loss           |
 | Dependency Preservation | Efficient constraint checking |
 
----
-
 ### 20. Trade-Off
-
 - BCNF → always lossless  
 - BUT may lose dependency preservation  
-
 - 3NF → preserves dependencies  
 - Slight redundancy allowed  
 
----
-
 ### 21. Final Takeaway
-
 A **good decomposition** should:
-
 1. Be **lossless**
 2. Preferably be **dependency preserving**
 
----
-
 ### 22. Module Summary
-
 Covered:
-
 - Lossless join conditions  
 - Dependency preservation definition  
 - Efficient checking algorithm  
 - Practical examples  
-
 Final insight:
-
-👉 **Closure is the core engine behind everything**  
-👉 Good design = balance between correctness and efficiency  
+- **Closure is the core engine behind everything**  
+- Good design = balance between correctness and efficiency  
 
 ### Notes taken from Activity Questions 5.5
-1. ssjkskjs
+1. In given relation R(A, B, C, D, E) FD = {B→A,A→E,E→B} is decomposed into three relations as follows: R1(A, B, E),R2(C, E),R3(B, D), then adding B→C and B→D, will make the decomposition lossless. (Question: 3)
+2. The decomposition is lossy if R=(R<sub>1</sub>⋈R<sub>2</sub>⋈R<sub>3</sub>…⋈R<sub>n</sub>). (Question: 4)
+3. If a relation R is decomposed into three relations R<sub>1</sub>, R<sub>2</sub>, R<sub>3</sub>, for the decomposition to be lossless, *R<sub>1</sub>∩R<sub>2</sub>∩R<sub>3</sub>≠ϕ* may not always hold. (Question: 9)
 ---
