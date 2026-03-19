@@ -1106,7 +1106,7 @@ Final insight:
 - Good design = balance between correctness and efficiency  
 
 ### Notes taken from Activity Questions 5.5
-1. In given relation R(A, B, C, D, E) FD = {B→A,A→E,E→B} is decomposed into three relations as follows: R1(A, B, E),R2(C, E),R3(B, D), then adding B→C and B→D, will make the decomposition lossless. (Question: 3)
+1. In given relation R(A, B, C, D, E) FD = {B→A,A→E,E→B} is decomposed into three relations as follows: R<sub>1</sub>(A, B, E),R<sub>2</sub>(C, E),R<sub>3</sub>(B, D), then adding B→C and B→D, will make the decomposition lossless. (Question: 3)
 2. The decomposition is lossy if R=(R<sub>1</sub>⋈R<sub>2</sub>⋈R<sub>3</sub>…⋈R<sub>n</sub>). (Question: 4)
 3. If a relation R is decomposed into three relations R<sub>1</sub>, R<sub>2</sub>, R<sub>3</sub>, for the decomposition to be lossless, *R<sub>1</sub>∩R<sub>2</sub>∩R<sub>3</sub>≠ϕ* may not always hold. (Question: 9)
 ---
