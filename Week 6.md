@@ -530,3 +530,336 @@ R
 → If stricter needed → Apply BCNF decomposition  
 
 ---
+# DBMS NOTES — MODULE 28: CASE STUDY (LIBRARY INFORMATION SYSTEM)
+
+## 1. OBJECTIVE
+
+Apply normalization + FD theory to **real-world database design**
+
+Goal:
+- Convert specification → ER Model → Relational Schema → Refined Design
+
+---
+
+## 2. DESIGN PIPELINE
+
+1. Identify **Entity Sets**
+2. Identify **Relationships**
+3. Create **Initial Schema**
+4. Apply **Schema Refinement (FDs + Normalization)**
+5. Optimize for **Queries**
+6. Finalize Schema
+
+---
+
+## 3. SYSTEM OVERVIEW (LIS)
+
+Library system manages:
+- Books
+- Members
+- Issue/Return process
+
+Key constraints:
+- Multiple copies of same book
+- Members have quotas
+- Issue rules enforced
+
+:contentReference[oaicite:0]{index=0}
+
+---
+
+## 4. ENTITY SETS
+
+### 4.1 BOOKS
+Attributes:
+- title
+- author (fname, lname)
+- publisher
+- year
+- ISBN (unique per publication)
+- accession_no (unique per copy)
+
+---
+
+### 4.2 STUDENTS
+Attributes:
+- member_no (unique)
+- name
+- roll_no (unique)
+- department
+- gender
+- mobile (nullable)
+- dob
+- degree
+
+---
+
+### 4.3 FACULTY
+Attributes:
+- member_no (unique)
+- name
+- id (unique)
+- department
+- gender
+- mobile
+- doj
+
+---
+
+### 4.4 MEMBERS
+Attributes:
+- member_no
+- member_type (ug, pg, rs, fc)
+
+---
+
+### 4.5 QUOTA
+Attributes:
+- member_type
+- max_books
+- max_duration
+
+---
+
+### 4.6 STAFF (Derived / Assumed)
+Attributes:
+- name
+- id
+- gender
+- mobile
+- doj
+
+---
+
+## 5. RELATIONSHIP
+
+### BOOK ISSUE
+
+Between:
+- members (member_no)
+- books (accession_no)
+
+Attributes:
+- doi (date of issue)
+
+Type:
+- Many-to-One (many books → one member)
+
+---
+
+## 6. INITIAL RELATIONAL SCHEMA
+
+- books(title, author_fname, author_lname, publisher, year, ISBN, accession_no)
+- book_issue(member_no, accession_no, doi)
+- members(member_no, member_type)
+- quota(member_type, max_books, max_duration)
+- students(member_no, ..., roll_no, ...)
+- faculty(member_no, ..., id, ...)
+- staff(...)
+
+---
+
+## 7. SCHEMA REFINEMENT
+
+### 7.1 BOOKS — PROBLEM
+
+FDs:
+- ISBN → title, author, publisher, year
+- accession_no → ISBN
+
+Key:
+- accession_no
+
+❌ Redundancy:
+- Same book info repeated across copies
+
+---
+
+### 7.2 BOOKS — DECOMPOSITION
+
+Split into:
+
+1. **book_catalogue**
+   - (ISBN, title, author, publisher, year)
+   - Key: ISBN
+
+2. **book_copies**
+   - (ISBN, accession_no)
+   - Key: accession_no
+
+✔ BCNF  
+✔ Lossless  
+✔ Dependency Preserved
+
+---
+
+### 7.3 BOOK ISSUE
+
+FD:
+- (member_no, accession_no) → doi
+
+Key:
+- (member_no, accession_no)
+
+✔ Already BCNF
+
+---
+
+### 7.4 QUOTA
+
+FD:
+- member_type → max_books, max_duration
+
+Key:
+- member_type
+
+✔ BCNF
+
+---
+
+### 7.5 MEMBERS
+
+FD:
+- member_no → member_type
+
+Key:
+- member_no
+
+✔ BCNF
+
+---
+
+### 7.6 STUDENTS
+
+FDs:
+- roll_no → all attributes
+- member_no ↔ roll_no
+
+Keys:
+- roll_no, member_no
+
+✔ BCNF  
+⚠ Problem:
+- member_no duplicated unnecessarily
+
+---
+
+### 7.7 FACULTY
+
+FDs:
+- id → all attributes
+- member_no ↔ id
+
+✔ BCNF  
+⚠ Same issue as students
+
+---
+
+## 8. REAL-WORLD PROBLEM (VERY IMPORTANT)
+
+Query:
+> Find name of member who issued a book
+
+Problem:
+- member_no exists
+- BUT:
+  - Is member student?
+  - Or faculty?
+
+❌ Cannot decide which table to query
+
+---
+
+## 9. DESIGN FIX (CRITICAL INSIGHT)
+
+Introduce **GENERALIZATION**
+
+### New MEMBERS Schema:
+
+members(
+- member_no
+- member_class (student / faculty)
+- member_type
+- roll_no (nullable)
+- id (nullable)
+)
+
+FDs:
+- member_no → everything
+- member_type → member_class
+
+---
+
+### Relationship:
+- student IS-A member
+- faculty IS-A member
+
+---
+
+## 10. UPDATED SCHEMA
+
+### STUDENTS (Simplified)
+- roll_no → all attributes
+- No member_no
+
+---
+
+### FACULTY (Simplified)
+- id → all attributes
+- No member_no
+
+---
+
+## 11. FINAL SCHEMA
+
+- book_catalogue(title, author_fname, author_lname, publisher, year, ISBN)
+- book_copies(ISBN, accession_no)
+- book_issue(member_no, accession_no, doi)
+- quota(member_type, max_books, max_duration)
+- members(member_no, member_class, member_type, roll_no, id)
+- students(student_fname, student_lname, roll_no, department, gender, mobile, dob, degree)
+- faculty(faculty_fname, faculty_lname, id, department, gender, mobile, doj)
+- staff(staff_fname, staff_lname, id, gender, mobile, doj)
+
+---
+
+## 12. KEY TAKEAWAYS
+
+### 1. Theory ≠ Complete Design
+- Even BCNF schemas may fail in practice
+
+---
+
+### 2. Query Efficiency Matters
+- Design must support real queries
+
+---
+
+### 3. Hidden Information Exists
+- Not all constraints are explicitly given
+- Must infer from problem
+
+---
+
+### 4. Generalization is Powerful
+- Helps unify multiple entity types
+
+---
+
+## 13. FINAL FLOW (VERY IMPORTANT)
+
+Specification  
+→ Extract Entities  
+→ Build ER Model  
+→ Convert to Schema  
+→ Apply Normalization (3NF / BCNF)  
+→ Check Queries  
+→ Refine Design  
+
+---
+
+## 14. CORE INSIGHT 🔴
+
+> A "perfect" normalized schema is useless if queries become impractical.
+
+---
