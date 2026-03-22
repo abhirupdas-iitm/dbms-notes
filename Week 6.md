@@ -251,3 +251,282 @@ Goal:
 - Logical data structure
 
 ---
+# DBMS NOTES — MODULE 27: DECOMPOSITION (3NF & BCNF)
+
+## 1. MOTIVATION
+
+Even though BCNF removes more redundancy, it **may not preserve dependencies**.
+
+### Problem:
+- BCNF → Lossless ✔ but Dependency Preservation ❌ (sometimes)
+
+### Solution:
+Use **3NF decomposition**
+- Slight redundancy allowed
+- Dependency preservation guaranteed
+
+---
+
+## 2. 3NF RECAP
+
+A relation is in 3NF if for every FD X → A:
+
+At least one holds:
+- A ⊆ X (trivial)
+- X is a superkey
+- A is a prime attribute (part of some candidate key)
+
+---
+
+## 3. TESTING FOR 3NF
+
+To check if a relation is in 3NF:
+
+- Check only F (not F⁺) ✔
+- For each FD α → β:
+  - If α is a superkey → OK
+  - Else check: β attributes must be part of some candidate key
+
+⚠️ Issue:
+- Finding candidate keys is expensive
+- Testing 3NF is **NP-hard** :contentReference[oaicite:0]{index=0}
+
+---
+
+## 4. 3NF DECOMPOSITION ALGORITHM
+
+Given:
+- Relation R
+- Functional Dependencies F
+
+### Steps:
+
+### Step 1: Compute Canonical Cover (Fc)
+- Remove redundant dependencies
+- Minimize FDs
+
+---
+
+### Step 2: Create Relations
+For each FD X → Y in Fc:
+- Create relation Ri = X ∪ Y
+
+---
+
+### Step 3: Ensure Key Presence
+- If no Ri contains a candidate key K:
+  - Add one relation with K
+
+---
+
+### Step 4 (Optional Optimization):
+- Remove redundant relations (subset relations)
+
+---
+
+## 5. PROPERTIES OF 3NF DECOMPOSITION
+
+After decomposition:
+- Each relation is in 3NF ✔
+- Lossless Join ✔
+- Dependency Preserving ✔
+
+---
+
+## 6. 3NF DECOMPOSITION EXAMPLE
+
+Relation:
+(customer_id, employee_id, branch_name, type)
+
+FDs:
+- customer_id, employee_id → type
+- employee_id → branch_name
+- customer_id, branch_name → employee_id
+
+---
+
+### Step 1: Canonical Cover
+Remove redundancy:
+- branch_name is extraneous
+
+Fc:
+- customer_id, employee_id → type
+- employee_id → branch_name
+- customer_id, branch_name → employee_id
+
+---
+
+### Step 2: Create Relations
+- (customer_id, employee_id, type)
+- (employee_id, branch_name)
+- (customer_id, branch_name, employee_id)
+
+---
+
+### Step 3: Remove Redundancy
+- (employee_id, branch_name) is subset → remove
+
+---
+
+### Final 3NF:
+- (customer_id, employee_id, type)
+- (customer_id, branch_name, employee_id)
+
+---
+
+## 7. BCNF (BOYCE-CODD NORMAL FORM)
+
+### Definition:
+A relation is in BCNF if for every FD α → β:
+- α is a superkey OR
+- dependency is trivial
+
+---
+
+## 8. TESTING FOR BCNF
+
+### Method:
+For each FD α → β:
+- Compute α⁺ (closure)
+- If α⁺ ≠ R → violation
+
+---
+
+### Optimization:
+- Only check F (not F⁺) for original relation ✔
+
+⚠️ But:
+- For decomposed relations → must consider F⁺ :contentReference[oaicite:1]{index=1}
+
+---
+
+## 9. BCNF DECOMPOSITION ALGORITHM
+
+If FD α → β violates BCNF:
+
+### Step:
+- R1 = α ∪ β
+- R2 = R − (β − α)
+
+Repeat until all relations are in BCNF
+
+---
+
+### Property:
+- Always Lossless Join ✔
+- Dependency Preservation ❌ (not guaranteed)
+
+---
+
+## 10. BCNF EXAMPLE
+
+R(A, B, C)  
+F = {A → B, B → C}
+
+Key = A
+
+---
+
+### Problem:
+B → C violates BCNF (B not superkey)
+
+---
+
+### Decomposition:
+- R1 = (B, C)
+- R2 = (A, B)
+
+---
+
+## 11. IMPORTANT PITFALL
+
+While checking BCNF on decomposed relation:
+
+- Checking only F may mislead ❌
+- Must consider F⁺
+
+---
+
+### Example Insight:
+Even if FD not visible in F:
+- It may exist in F⁺
+- Can violate BCNF
+
+---
+
+## 12. DEPENDENCY PRESERVATION IN BCNF
+
+Two methods:
+
+### 1. Using F⁺ (Exponential Algorithm)
+- Always correct ✔
+- Expensive ❌
+
+---
+
+### 2. Using Direct F (Polynomial Algorithm)
+- Faster ✔
+- May give false negative ❌
+
+---
+
+### Key Insight:
+- Polynomial method is **safe but conservative**
+- May say "not preserved" even when it is
+
+---
+
+## 13. COMPARISON: 3NF vs BCNF
+
+| Feature | 3NF | BCNF |
+|--------|-----|------|
+| Focus | Primary Key | Candidate Keys |
+| Redundancy | Some | Minimal |
+| Dependency Preservation | Always ✔ | Not guaranteed ❌ |
+| Lossless Join | ✔ | ✔ |
+| Condition | X superkey OR Y prime | X must be superkey |
+
+---
+
+## 14. FINAL UNDERSTANDING
+
+### 3NF:
+- Practical
+- Dependency preserving
+- Slight redundancy
+
+### BCNF:
+- Cleaner design
+- No redundancy
+- May lose dependencies
+
+---
+
+## 15. BIG PICTURE
+
+You always have:
+
+- 3NF → Lossless ✔ + Dependency Preserving ✔
+- BCNF → Lossless ✔ + Minimal Redundancy ✔
+
+But:
+- You **cannot always get both BCNF + Dependency Preservation**
+
+---
+
+## 16. STRATEGY FOR EXAMS
+
+- If question asks:
+  - "Preserve dependencies" → go for 3NF
+  - "Remove redundancy completely" → go for BCNF
+
+---
+
+## 17. KEY FLOW
+
+R  
+→ Check 3NF  
+→ If not → Apply 3NF decomposition  
+→ If stricter needed → Apply BCNF decomposition  
+
+---
