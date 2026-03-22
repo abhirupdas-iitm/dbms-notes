@@ -1191,3 +1191,355 @@ Then:
 MVD-based Normalization → 4NF  
 
 ---
+# DBMS NOTES — MODULE 30: DESIGN SUMMARY & TEMPORAL DATABASES
+
+## 1. OVERALL OBJECTIVE
+
+This module concludes:
+- Database Design Process
+- Practical Design Trade-offs
+- Introduction to Temporal Databases
+
+:contentReference[oaicite:0]{index=0}
+
+---
+
+## 2. DESIGN GOALS (VERY IMPORTANT 🔴)
+
+Ideal database design should achieve:
+
+- BCNF / 4NF
+- Lossless Join
+- Dependency Preservation
+
+---
+
+### Reality Check:
+
+You **cannot always achieve all three simultaneously**
+
+So we compromise:
+
+- Use **3NF** → allow redundancy
+- Or lose dependency preservation
+
+---
+
+### Practical Limitation:
+- SQL **cannot enforce general FDs**
+- Only enforces **keys (superkeys)**
+
+---
+
+## 3. HIGHER NORMAL FORMS (FOR COMPLETENESS)
+
+- 5NF (Join Dependency)
+- 6NF
+- DKNF
+
+⚠️ Rarely used because:
+- Too complex
+- No strong inference systems
+
+---
+
+## 4. DATABASE DESIGN PROCESS
+
+### Starting Point:
+
+Schema R comes from:
+- ER model conversion
+- Universal relation
+- Ad-hoc design
+
+---
+
+### Process Flow:
+
+1. Identify entities & relationships
+2. Convert to relational schema
+3. Apply normalization
+4. Ensure:
+   - Minimal redundancy
+   - No anomalies
+5. Refine for queries
+
+---
+
+## 5. ER MODEL vs NORMALIZATION
+
+### Ideal Case:
+- Good ER design → No normalization needed
+
+---
+
+### Real Case:
+- Hidden dependencies exist
+
+Example:
+- department_name → building
+
+Fix:
+- Create separate **Department entity**
+
+---
+
+### Insight:
+Normalization cannot fix **bad conceptual modeling**
+
+---
+
+## 6. DENORMALIZATION (VERY IMPORTANT 🔴)
+
+### Why?
+- Improve query performance
+
+---
+
+### Example:
+Course + Prerequisite
+
+Instead of:
+- Two tables + JOIN
+
+Use:
+- Single combined table
+
+---
+
+### Trade-off:
+
+| Benefit | Cost |
+|--------|------|
+| Faster queries | Redundancy |
+| No joins | Update overhead |
+| Simple retrieval | More storage |
+
+---
+
+### Alternative:
+- Materialized Views
+
+---
+
+### CORE INSIGHT 🔥
+
+> Perfect normalization ≠ best performance
+
+---
+
+## 7. BAD DESIGN PATTERNS
+
+### ❌ Year-wise Tables:
+earnings_2004, earnings_2005...
+
+Problem:
+- Hard to query across years
+
+---
+
+### ❌ Crosstab Design:
+(company_id, earnings_2004, earnings_2005...)
+
+Problem:
+- Not scalable
+- Difficult queries
+
+---
+
+### ✔ Correct Design:
+(company_id, year, earnings)
+
+---
+
+## 8. LIS EXAMPLE (4NF EXTENSION)
+
+From *page 12–14 diagrams*:
+- book_title has:
+  - multiple authors
+  - multiple editions :contentReference[oaicite:1]{index=1}
+
+---
+
+### MVDs:
+- book_title ↠ author
+- book_title ↠ edition
+
+---
+
+### Problem:
+- BCNF satisfied
+- But NOT 4NF
+
+---
+
+### Decomposition:
+
+- book_author(book_title, author)
+- book_edition(book_title, edition)
+
+✔ Removes redundancy  
+✔ Achieves 4NF  
+
+---
+
+## 9. TEMPORAL DATABASES (NEW CONCEPT)
+
+### Motivation:
+Some data is **time-dependent**
+
+Examples:
+- Medical records
+- Stock prices
+- Exchange rates
+
+---
+
+### Problem:
+Traditional DB stores only **current state**
+
+---
+
+### Need:
+Store:
+- Value + Time Interval
+
+---
+
+## 10. TEMPORAL DATA
+
+Each tuple has:
+- Valid Time Interval
+
+---
+
+### Concepts:
+
+- Snapshot → value at a point
+- Interval → value over time
+
+---
+
+### Example:
+course(course_id, title, start, end)
+
+---
+
+### Constraint:
+- No overlapping intervals
+
+⚠️ Hard to enforce efficiently
+
+---
+
+## 11. TYPES OF TIME
+
+### 1. VALID TIME
+- When fact is true in real world
+
+---
+
+### 2. TRANSACTION TIME
+- When fact is stored in DB
+
+---
+
+## 12. UNI vs BI TEMPORAL
+
+### Uni-Temporal:
+- Only one time dimension
+
+---
+
+### Bi-Temporal:
+- Both:
+  - Valid Time
+  - Transaction Time
+
+---
+
+## 13. EXAMPLE (JOHN CASE)
+
+From *page 21–23 tables* :contentReference[oaicite:2]{index=2}
+
+---
+
+### Problem (Non-temporal DB):
+- Only latest address stored
+- History lost
+
+---
+
+### Uni-Temporal Solution:
+
+Person(Name, City, Valid_From, Valid_Till)
+
+Example:
+- Chennai → (1992 to 2015)
+- Mumbai → (2015 to ∞)
+
+---
+
+### Bi-Temporal Solution:
+
+Person(Name, City, Valid_From, Valid_Till, Entered, Superseded)
+
+---
+
+### Insight:
+- Valid Time = real-world truth
+- Transaction Time = database history
+
+---
+
+## 14. ADVANTAGES OF TEMPORAL DB
+
+- Historical queries possible
+- Rollback support
+- Better real-world modeling
+
+---
+
+## 15. DISADVANTAGES
+
+- More storage
+- Complex queries
+- Difficult maintenance
+
+---
+
+## 16. BIG PICTURE 🔴
+
+Database Design is about balance:
+
+- Theory (Normalization)
+- Practice (Performance)
+- Reality (Time-based data)
+
+---
+
+## 17. FINAL TAKEAWAY 🔥
+
+> A good database designer knows when to normalize, when to denormalize, and when to rethink the model entirely.
+
+---
+
+## 18. COMPLETE NORMALIZATION JOURNEY
+
+1NF → Atomic  
+2NF → No partial dependency  
+3NF → No transitive dependency  
+BCNF → Strong FD rules  
+4NF → Handle MVD  
+
+---
+
+## 19. FINAL FLOW
+
+ER Model  
+→ Relational Schema  
+→ Normalize (3NF / BCNF / 4NF)  
+→ Optimize (Denormalization if needed)  
+→ Extend (Temporal if required)  
+
+---
