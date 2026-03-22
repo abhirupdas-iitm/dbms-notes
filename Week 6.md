@@ -863,3 +863,331 @@ Specification
 > A "perfect" normalized schema is useless if queries become impractical.
 
 ---
+# DBMS NOTES — MODULE 29: MVD & 4NF
+
+## 1. MOTIVATION
+
+Even after BCNF:
+- Redundancy can still exist ❌
+
+Reason:
+- Functional Dependencies (FDs) are **not sufficient**
+
+New concept needed:
+→ **Multivalued Dependencies (MVDs)**
+
+:contentReference[oaicite:0]{index=0}
+
+---
+
+## 2. MULTIVALUED DEPENDENCY (MVD)
+
+### Idea:
+An attribute can determine **multiple independent values**
+
+Notation:
+- X → Y (FD)
+- X ↠ Y (MVD)
+
+---
+
+## 3. INTUITION
+
+Example:
+Person(Man, Phones, Dogs_Like)
+
+- A man can have:
+  - Multiple phones
+  - Multiple dogs he likes
+
+So:
+- Man ↠ Phones
+- Man ↠ Dogs_Like
+
+---
+
+### Key Insight:
+Phones and Dogs are **independent**
+
+But in table:
+→ All combinations appear (Cartesian Product)
+
+Example:
+| Man | Phone | Dog |
+|-----|------|-----|
+| M1 | P1 | D1 |
+| M1 | P1 | D2 |
+| M1 | P2 | D1 |
+| M1 | P2 | D2 |
+
+---
+
+### Problem:
+- Massive redundancy
+- Still satisfies BCNF ❗
+
+---
+
+## 4. WHY BCNF FAILS
+
+- No non-trivial FD exists
+- Whole relation is candidate key
+
+→ BCNF satisfied  
+→ But redundancy exists
+
+🔥 This is the limitation of BCNF
+
+---
+
+## 5. FORMAL DEFINITION
+
+MVD: X ↠ Y holds if:
+
+For tuples t1, t2:
+- If t1[X] = t2[X]
+
+Then:
+- We must have tuples combining values:
+  - t3[Y] = t1[Y]
+  - t3[rest] = t2[rest]
+  - and vice versa
+
+---
+
+### Simple Meaning:
+- Values of Y are independent of rest of attributes
+
+---
+
+## 6. KEY PROPERTY
+
+If:
+X → Y (FD)
+
+Then:
+X ↠ Y (MVD)
+
+✔ Every FD is an MVD  
+❌ Not every MVD is FD
+
+---
+
+## 7. WHEN MVD OCCURS
+
+### Case:
+Two independent relationships stored together
+
+Example:
+- Student(SID, Name)
+- Course(CID, Name)
+
+If merged:
+→ Student_Course
+
+Then:
+- SID ↠ CID
+- SID ↠ Cname
+
+---
+
+## 8. ANOTHER CLASSIC EXAMPLE
+
+Instructor(ID, Child, Phone)
+
+- ID ↠ Child
+- ID ↠ Phone
+
+Combining both → redundant combinations
+
+---
+
+## 9. TRIVIAL MVD
+
+MVD X ↠ Y is trivial if:
+- Y ⊆ X OR
+- X ∪ Y = R
+
+Else:
+→ Non-trivial MVD (problematic)
+
+---
+
+## 10. MVD INFERENCE RULES
+
+### Important ones:
+
+- Complementation:
+  - X ↠ Y ⇒ X ↠ (R − X − Y)
+
+- Augmentation:
+  - WX ↠ YZ
+
+- Transitivity:
+  - X ↠ Y and Y ↠ Z ⇒ X ↠ (Z − Y)
+
+- Replication:
+  - X → Y ⇒ X ↠ Y
+
+---
+
+## 11. USE OF MVD
+
+- Detect redundancy beyond FDs
+- Define constraints on relations
+- Ensure correct data representation
+
+---
+
+## 12. FOURTH NORMAL FORM (4NF)
+
+### Definition:
+
+A relation is in 4NF if for every MVD X ↠ Y:
+
+At least one holds:
+- MVD is trivial OR
+- X is a superkey
+
+---
+
+### Key Insight:
+4NF = BCNF + MVD control
+
+---
+
+## 13. IMPORTANT RESULT
+
+If a relation is in 4NF:
+→ It is automatically in BCNF
+
+---
+
+## 14. 4NF DECOMPOSITION ALGORITHM
+
+### Step 1:
+Find MVD X ↠ Y where:
+- X is NOT a superkey
+
+---
+
+### Step 2:
+Decompose:
+
+- R1 = X ∪ Y
+- R2 = R − (Y − X)
+
+---
+
+### Step 3:
+Repeat until all relations satisfy 4NF
+
+---
+
+### Property:
+- Lossless Join ✔
+- Dependency Preservation ❌ (not guaranteed)
+
+---
+
+## 15. MAIN EXAMPLE
+
+Relation:
+Person(Man, Phones, Dogs_Like, Address)
+
+Dependencies:
+- Man ↠ Phones
+- Man ↠ Dogs_Like
+- Man → Address
+
+---
+
+### Problem:
+- None of LHS are superkeys
+→ Violates 4NF
+
+---
+
+### Decomposition:
+
+1. Person_Phones(Man, Phones)
+2. Person_Dogs(Man, Dogs_Like)
+3. Person_Address(Man, Address)
+
+---
+
+### Result:
+✔ All in 4NF  
+✔ No redundancy  
+✔ Lossless
+
+---
+
+## 16. ADVANCED EXAMPLE FLOW
+
+R(A, B, C, G, H, I)
+
+FDs:
+- A ↠ B
+- B ↠ HI
+- CG ↠ H
+
+---
+
+### Decomposition Steps:
+- R1(A, B)
+- R2(A, C, G, H, I)
+- R3(C, G, H)
+- R4(A, C, G, I)
+- R5(A, I)
+- R6(A, C, G)
+
+Final:
+→ All in 4NF
+
+---
+
+## 17. KEY DIFFERENCE
+
+| Concept | FD | MVD |
+|--------|----|-----|
+| Meaning | Single value | Multiple independent values |
+| Redundancy type | Partial / Transitive | Cartesian explosion |
+| Fix | 3NF / BCNF | 4NF |
+
+---
+
+## 18. BIG PICTURE 🔴
+
+1NF → Atomic  
+2NF → No partial dependency  
+3NF → No transitive dependency  
+BCNF → Strong FD control  
+4NF → Remove MVD redundancy  
+
+---
+
+## 19. CORE INSIGHT 🔥
+
+> Even a perfectly normalized BCNF table can be horribly redundant due to independent multivalued attributes.
+
+---
+
+## 20. PRACTICAL NOTE
+
+- 4NF is **rarely needed in practice**
+- Most systems stop at:
+  → 3NF or BCNF
+
+Reason:
+- MVD situations are limited (phones, emails, etc.)
+
+---
+
+## 21. FINAL FLOW
+
+FD-based Normalization → 3NF → BCNF  
+Then:
+MVD-based Normalization → 4NF  
+
+---
