@@ -1550,4 +1550,6 @@ ER Model
 → Optimize (Denormalization if needed)  
 → Extend (Temporal if required)  
 
+### Notes taken from Activity Questions 6.5
+1. 
 ---
