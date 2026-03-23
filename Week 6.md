@@ -531,6 +531,8 @@ R
 → If not → Apply 3NF decomposition  
 → If stricter needed → Apply BCNF decomposition  
 
+### Notes taken from Activity Questions 6.2
+1. 
 ---
 # DBMS NOTES — MODULE 28: CASE STUDY (LIBRARY INFORMATION SYSTEM)
 
