@@ -250,6 +250,8 @@ Goal:
 - No anomalies
 - Logical data structure
 
+### Notes taken from Activity Questions 6.1
+1. 
 ---
 # DBMS NOTES — MODULE 27: DECOMPOSITION (3NF & BCNF)
 
