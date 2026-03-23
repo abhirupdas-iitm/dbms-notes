@@ -1196,6 +1196,8 @@ FD-based Normalization → 3NF → BCNF
 Then:
 MVD-based Normalization → 4NF  
 
+### Notes taken from Activity Questions 6.4
+1. 
 ---
 # DBMS NOTES — MODULE 30: DESIGN SUMMARY & TEMPORAL DATABASES
 
