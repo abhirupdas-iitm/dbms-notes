@@ -866,6 +866,8 @@ Specification
 
 > A "perfect" normalized schema is useless if queries become impractical.
 
+### Notes taken from Activity Questions 6.3
+1. 
 ---
 # DBMS NOTES — MODULE 29: MVD & 4NF
 
