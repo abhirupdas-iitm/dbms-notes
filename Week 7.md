@@ -199,3 +199,229 @@ Database Design → Application Systems
 Database = Storage  
 Logic = Brain  
 Frontend = Face  
+
+---
+## CS2001 – Week 7, Lecture 2
+### 1. INTRODUCTION TO WEB APPLICATIONS
+Focus:
+→ Understanding the **Web fundamentals** behind applications
+Goal:
+- Understand how web works
+- Learn communication between client and server
+- Learn scripting concepts
+
+### 2. WORLD WIDE WEB (WWW)
+The Web is a:
+- Distributed system
+- Based on **hypertext**
+#### Key Features:
+- Documents are written in **HTML**
+- Contains:
+  - Text + formatting
+  - Hyperlinks
+  - Forms (user input)
+#### Key Insight
+> Web = interconnected documents + user interaction
+
+### 3. URL (UNIFORM RESOURCE LOCATOR)
+Used to **locate resources on the Web**
+#### Structure of URL:
+```
+protocol://machine/path
+```
+#### Example:
+```
+http://www.google.com/search?q=dbms
+```
+#### Components:
+- Protocol → `http`
+- Machine → `www.google.com`
+- Path → `/search?q=dbms`
+#### Key Insight
+> URL tells:
+- **How to access**
+- **Where to access**
+- **What to access**
+
+### 4. URI vs URL vs URN
+- URI → General identifier
+- URL → Location (address)
+- URN → Name (identity)
+#### Analogy:
+- URN → Person’s name  
+- URL → Person’s address  
+
+### 5. HTML AND HTTP
+#### HTML:
+- Used for:
+  - Formatting
+  - Display
+  - Input forms
+#### HTTP:
+- Communication protocol between:
+  - Browser ↔ Server
+#### Key Insight
+> HTML = Structure  
+> HTTP = Communication  
+
+### 6. HTTP PROTOCOL (VERY IMPORTANT 🔴)
+#### Property:
+- **Connectionless**
+#### Meaning:
+- Request sent → Response received → Connection closed
+#### Problem:
+- No memory of previous requests
+#### Example:
+- Login → Server forgets next request user identity
+
+### 7. SESSIONS AND COOKIES
+#### Need:
+Maintain user state across requests
+#### Solution: Cookies
+- Small data sent by server
+- Stored in browser
+- Sent back with every request
+#### Session:
+- Time period during which user is active
+#### Key Insight 🔥
+> HTTP is stateless  
+> Cookies make it **stateful**
+
+### 8. WEB BROWSER
+#### Role:
+- Fetch web pages
+- Render HTML into UI
+#### Functions:
+- Takes URL input
+- Sends HTTP request
+- Displays response
+#### Key Concept:
+Rendering engine:
+- Converts HTML → Visual output
+
+### 9. WEB SERVER
+#### Role:
+- Accepts HTTP requests
+- Sends responses
+#### Functioning:
+- Request received
+- Processed (may involve DB)
+- Response returned (HTML)
+#### Special Case:
+- Can execute programs (dynamic content)
+
+### 10. WEB ARCHITECTURE
+Flow:
+User → Browser → Server → Database/File → Server → Browser
+#### Key Insight
+> Web architecture = Practical implementation of 3-tier architecture
+
+### 11. SCRIPTING (CORE CONCEPT)
+#### Definition:
+- Scripts = small programs executed dynamically
+#### Characteristics:
+- Interpreted (not compiled separately)
+- Embedded in web systems
+- Used for dynamic behavior
+#### Common Languages:
+- JavaScript
+- PHP
+- JSP
+- Python
+
+### 12. TYPES OF SCRIPTING
+#### 1. Client-Side Scripting
+- Runs in browser
+- Example: JavaScript
+##### Features:
+- Input validation
+- UI updates
+- Faster interaction
+##### Advantage:
+- Reduces server load
+- Faster response
+##### Limitation:
+- Security restricted
+#### 2. Server-Side Scripting
+- Runs on server
+##### Features:
+- Database interaction
+- Business logic
+- Generates HTML
+#### Key Insight 🔴
+> Client-side → Speed  
+> Server-side → Power  
+
+### 13. JAVASCRIPT (CLIENT SIDE)
+#### Uses:
+- Input validation
+- Modify page dynamically
+- AJAX (no page reload)
+#### Example:
+- Validate form input before submission
+#### Key Insight
+> JavaScript makes web pages **interactive**
+
+### 14. SERVER-SIDE SCRIPTING
+#### Function:
+- Connect frontend with database
+#### Process:
+- Receive request
+- Execute logic
+- Generate HTML
+- Send response
+#### Languages:
+- JSP
+- PHP
+- Python
+
+### 15. SERVLETS
+##### Definition:
+- Java-based server-side programs
+#### Features:
+- Handle requests
+- Generate dynamic content
+- Run on server
+#### Working:
+- Request → Servlet → DB → HTML → Response
+#### Important:
+- Each request handled as a thread
+
+### 16. JSP (JAVA SERVER PAGES)
+#### Concept:
+- HTML + Embedded Java
+#### Advantage:
+- Easier than servlets
+- Cleaner code
+#### Key Insight
+> JSP = Simplified Servlet
+
+### 17. PHP
+#### Features:
+- Widely used scripting language
+- Strong DB support
+#### Use:
+- Dynamic web pages
+- Server-side processing
+
+### 18. FINAL INSIGHTS
+##### 1.
+> Web apps = DB + Network + UI
+##### 2.
+> HTTP alone is stateless → Cookies fix it
+##### 3.
+> Scripts bring **dynamic behavior**
+#### 4.
+> 3-tier architecture becomes real through web systems
+
+### 19. FINAL TAKEAWAY
+You now understand:
+- How web works internally
+- How browser ↔ server communicate
+- How applications become dynamic
+#### Mental Model:
+Browser = Interface  
+Server = Processor  
+Database = Storage  
+
+---
