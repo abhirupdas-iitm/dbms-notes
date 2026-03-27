@@ -633,3 +633,273 @@ API = Translator
 Database = Storage  
 
 ---
+## CS2001 – Week 7, Lecture 4
+### 1. INTRODUCTION
+Focus:
+→ Building **real applications using Python + PostgreSQL**
+### Goal
+> Move from theory → **actual working system**
+
+### 2. OBJECTIVES
+- Access PostgreSQL using Python
+- Build a **web application**
+- Integrate frontend + backend
+
+### 3. BIG PICTURE
+```
+Frontend (HTML)
+        ↓
+Flask (Python backend)
+        ↓
+psycopg2 (API)
+        ↓
+PostgreSQL (Database)
+```
+#### Key Insight
+> This is a **complete application pipeline**
+
+### 4. PYTHON + POSTGRESQL
+Python uses modules to interact with PostgreSQL.
+#### Common Modules:
+- psycopg2 (MOST IMPORTANT 🔴)
+- pg8000
+- PyGreSQL
+- SQLAlchemy
+
+### 5. WHY psycopg2?
+- Most popular
+- Stable
+- Thread-safe
+- Widely used in frameworks
+#### Install:
+```
+pip install psycopg2
+```
+
+### 6. CORE WORKFLOW (VERY IMPORTANT 🔴)
+From *diagram on page 8*:
+Steps:
+1. Create connection  
+2. Create cursor  
+3. Execute query  
+4. Commit / rollback  
+5. Close cursor  
+6. Close connection  
+#### Key Insight
+> This is SAME pattern as ODBC/JDBC — just Python version
+
+### 7. CONNECTION
+```
+psycopg2.connect(database, user, password, host, port)
+```
+#### Returns:
+→ Connection object
+
+### 8. CURSOR
+```
+conn.cursor()
+```
+#### Purpose:
+- Executes SQL
+- Fetches results
+#### Key Insight
+> Cursor = control handle for DB operations
+
+### 9. EXECUTING SQL
+```
+cursor.execute(SQL, parameters)
+```
+#### Example:
+```
+INSERT INTO table VALUES (%s, %s)
+```
+#### Important
+- `%s` = placeholder
+- Prevents SQL injection
+
+### 10. FETCH METHODS
+- `fetchone()` → 1 row  
+- `fetchmany()` → multiple rows  
+- `fetchall()` → all rows  
+
+### 11. COMMIT & ROLLBACK
+```
+conn.commit()
+conn.rollback()
+```
+#### Meaning:
+- Commit → save changes
+- Rollback → undo changes
+### Key Insight
+> Without commit → changes NOT saved
+
+### 12. FULL EXECUTION FLOW
+```
+Connect → Cursor → Execute → Fetch → Commit → Close
+```
+
+### 13. SQL OPERATIONS FROM PYTHON
+#### CREATE TABLE
+- Execute SQL using cursor
+- Commit
+#### INSERT
+- Use parameterized query
+- Check rowcount
+#### DELETE
+- Condition-based removal
+- rowcount shows affected rows
+#### UPDATE
+- Modify existing rows
+#### SELECT
+- Fetch results into list
+- Iterate and print
+#### Key Insight
+> All SQL operations follow SAME pattern
+
+### 14. WEB DEVELOPMENT WITH PYTHON
+Python supports frameworks:
+- Django (large)
+- Flask (lightweight)
+- Pyramid
+- Bottle
+
+### 15. FLASK FRAMEWORK
+#### Definition:
+- Lightweight web framework
+#### Features:
+- Easy to start
+- Flexible
+- Scalable
+- Uses templates
+#### Install:
+```
+pip install Flask
+```
+
+### 16. SIMPLE FLASK APP
+```
+@app.route("/")
+def hello():
+    return "Hello World"
+```
+#### Run:
+```
+app.run()
+```
+#### Output:
+- Runs server at `127.0.0.1:5000`
+### Key Insight
+> Flask handles web server logic automatically
+
+### 17. ROUTING (VERY IMPORTANT)
+```
+@app.route("/path")
+```
+#### Meaning:
+- URL → function mapping
+#### Example:
+- `/` → homepage  
+- `/add` → add page  
+- `/viewall` → view page  
+
+### 18. TEMPLATE RENDERING
+```
+render_template("file.html")
+```
+#### Purpose:
+- Converts HTML → browser view
+#### Key Insight
+> Flask reduces frontend effort significantly
+
+### 19. FULL APPLICATION EXAMPLE
+(Table: Candidate)
+Columns:
+- cno
+- name
+- email
+
+### 20. FRONTEND (HTML)
+#### index.html
+- Home page
+- Links:
+  - Add Email
+  - View Email
+#### add.html
+- Form:
+  - `cno`
+  - `name`
+  - `email`
+#### viewall.html
+- Displays table data
+
+### 21. BACKEND (FLASK)
+#### ROUTE: HOME
+```
+@app.route("/")
+```
+→ Shows index page
+#### ROUTE: ADD
+```
+@app.route("/add")
+```
+→ Shows form
+#### ROUTE: SAVE DETAILS
+```
+@app.route("/savedetails", methods=["POST"])
+```
+#### Flow:
+1. Get form data  
+2. Connect DB  
+3. Insert record  
+4. Commit  
+5. Show success page  
+#### Key Insight
+> Form → Python → SQL → Database
+
+### 22. VIEW ALL DATA
+```
+@app.route("/viewall")
+```
+### Flow:
+1. Execute SELECT  
+2. Fetch all rows  
+3. Pass to HTML  
+4. Render table  
+#### Key Insight
+> Data flows back to frontend via templates
+
+### 23. FINAL FLOW
+```
+User → Form → Flask → psycopg2 → PostgreSQL
+                         ↓
+                 Result → Flask → HTML → User
+```
+
+### 24. WHAT YOU JUST BUILT
+- Full-stack mini application:
+  - Frontend (HTML)
+  - Backend (Python Flask)
+  - Database (PostgreSQL)
+
+### 25. FINAL INSIGHTS
+#### 1.
+> psycopg2 = Python DB connector
+#### 2.
+> Flask = Web interface builder
+#### 3.
+> Templates = bridge to UI
+#### 4.
+> Commit is critical
+
+### 26. FINAL TAKEAWAY
+You now understand:
+- How real apps connect to DB
+- How frontend interacts with backend
+- How data flows end-to-end
+#### Mental Model
+HTML = Face  
+Flask = Brain  
+psycopg2 = Messenger  
+Database = Memory  
+
+---
