@@ -1143,4 +1143,6 @@ Caching = Efficiency
 Security = Protection  
 Mobile = Constraint-aware design  
 
+### Notes taken from Activity Questions 7.5
+1. 
 ---
