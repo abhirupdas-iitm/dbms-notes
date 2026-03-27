@@ -28,13 +28,13 @@ Applications differ in:
 - Scale
 - Users
 - Response time
-#### 2. Unity (VERY IMPORTANT 🔴)
+#### 2. Unity (VERY IMPORTANT)
 All applications share:
 - Use of **RDBMS**
 - Use of **SQL**
 - Similar **architecture**
 
-### 4. THREE-TIER ARCHITECTURE (CORE CONCEPT 🔥)
+### 4. THREE-TIER ARCHITECTURE (CORE CONCEPT)
 All major applications follow:
 #### 1. Presentation Layer (Frontend)
 - User Interface
@@ -181,7 +181,7 @@ Extension of 3-tier
 | Data          | Mail storage              |
 | Functionality | Send/Receive mail         |
 
-### 16. KEY INSIGHTS 🔥
+### 16. KEY INSIGHTS
 #### 1.
 > Database design ≠ application design
 #### 2.
@@ -264,7 +264,7 @@ http://www.google.com/search?q=dbms
 > HTML = Structure  
 > HTTP = Communication  
 
-### 6. HTTP PROTOCOL (VERY IMPORTANT 🔴)
+### 6. HTTP PROTOCOL (VERY IMPORTANT)
 #### Property:
 - **Connectionless**
 #### Meaning:
@@ -283,7 +283,7 @@ Maintain user state across requests
 - Sent back with every request
 #### Session:
 - Time period during which user is active
-#### Key Insight 🔥
+#### Key Insight
 > HTTP is stateless  
 > Cookies make it **stateful**
 
@@ -348,7 +348,7 @@ User → Browser → Server → Database/File → Server → Browser
 - Database interaction
 - Business logic
 - Generates HTML
-#### Key Insight 🔴
+#### Key Insight
 > Client-side → Speed  
 > Server-side → Power  
 
@@ -433,7 +433,7 @@ Focus:
 Application (Java/Python)  
 → Needs data  
 → Database understands only **SQL**
-#### Key Question 🔴
+#### Key Question
 > How do we connect **high-level programs ↔ SQL databases?**
 
 ### 2. OVERALL APPROACH
@@ -661,7 +661,7 @@ PostgreSQL (Database)
 ### 4. PYTHON + POSTGRESQL
 Python uses modules to interact with PostgreSQL.
 #### Common Modules:
-- psycopg2 (MOST IMPORTANT 🔴)
+- psycopg2 (MOST IMPORTANT)
 - pg8000
 - PyGreSQL
 - SQLAlchemy
@@ -676,7 +676,7 @@ Python uses modules to interact with PostgreSQL.
 pip install psycopg2
 ```
 
-### 6. CORE WORKFLOW (VERY IMPORTANT 🔴)
+### 6. CORE WORKFLOW (VERY IMPORTANT)
 From *diagram on page 8*:
 Steps:
 1. Create connection  
@@ -901,5 +901,238 @@ HTML = Face
 Flask = Brain  
 psycopg2 = Messenger  
 Database = Memory  
+
+---
+## CS2001 – Week 7, Lecture 5
+### 1. INTRODUCTION
+This lecture focuses on:
+- Rapid Application Development (RAD)
+- Application Performance
+- Application Security
+- Mobile Applications
+#### Goal
+> Understand how real-world systems are built **fast, scalable, and secure**
+
+### 2. RAPID APPLICATION DEVELOPMENT (RAD)
+#### Definition:
+RAD is an **agile development approach** that focuses on:
+- Fast prototyping  
+- Continuous feedback  
+- Iterative improvement  
+#### Key Idea
+> Build → Test → Feedback → Improve (repeat)
+
+### 3. WHY RAD?
+Traditional model (Waterfall):
+```
+Requirements → Design → Implementation → Testing → Delivery
+```
+RAD model:
+```
+Small iterations + continuous feedback
+```
+#### Key Insight
+> Customer is involved throughout (customer-in-loop)
+
+### 4. RAD PHASES
+1. Business Modeling  
+2. Data Modeling  
+3. Process Modeling  
+4. Testing & Turnover  
+#### Explanation:
+##### 1. Business Modeling
+- What problem are we solving?
+##### 2. Data Modeling
+- Entities, attributes, relationships
+##### 3. Process Modeling
+- Workflows (e.g., order → payment → delivery)
+##### 4. Testing & Turnover
+- Validate + deploy
+#### Key Insight
+> All phases happen **in parallel & iteratively**
+
+### 5. RAD TECHNIQUES
+To speed development:
+- UI libraries
+- Drag-and-drop IDEs
+- Auto code generation
+#### Examples:
+- Java Server Faces (JSF)
+- Ruby on Rails (CRUD automation)
+
+### 6. RAD PLATFORMS
+- Google App Engine  
+- Microsoft Azure  
+- AWS EC2  
+- AWS Elastic Beanstalk  
+#### Key Insight
+> Industry EXPECTS you to know at least one platform
+
+### 7. APPLICATION PERFORMANCE
+#### Problem:
+- Millions of users
+- Thousands of requests per second
+#### Solution: CACHING
+#### Types of Caching:
+##### 1. Server-Side
+- Connection pooling  
+- Query result caching  
+- HTML caching  
+##### 2. Client-Side
+- Browser caching  
+- Proxy caching  
+#### Key Insight
+> Avoid re-computation → reuse results
+#### Important
+Cached data can become **stale** (outdated)
+
+### 8. APPLICATION SECURITY
+#### 8.1 SQL INJECTION
+##### Problem:
+User input alters SQL query
+Example:
+```
+Input: X' OR 'Y'='Y
+```
+#### Result:
+```
+SELECT * FROM table WHERE name='X' OR 'Y'='Y'
+```
+→ Always TRUE → security breach
+#### Solution:
+- Use parameterized queries
+- Prepared statements
+#### Key Insight
+> NEVER directly concatenate user input into SQL
+#### 8.2 PASSWORD SECURITY
+#### Problems:
+- Storing passwords in plain text
+- Backup files leaking data
+#### Solutions:
+- Encrypt passwords
+- Restrict file access
+- Limit DB access by IP
+#### Key Insight
+> Security failure = system failure
+#### 8.3 AUTHENTICATION
+#### Weak Method:
+- Password only
+#### Strong Method:
+- Two-Factor Authentication (2FA)
+Examples:
+- Password + OTP  
+- Password + device token  
+#### Key Insight
+> Identity must be VERIFIED, not assumed
+#### 8.4 AUTHORIZATION (VERY IMPORTANT)
+#### Problem:
+SQL supports:
+- Table-level access  
+- Column-level access  
+BUT NOT:
+- Row-level access  
+#### Example:
+> Student should see ONLY their grades
+#### Issue:
+- DB doesn’t know user identity  
+- Cannot restrict per row  
+#### Solution:
+- Implement in application layer  
+- Use views / filters  
+#### Key Insight
+> Authorization logic = application responsibility
+#### 8.5 AUDIT TRAILS
+##### Definition:
+Logs of:
+- Who did what  
+- When  
+- On which data  
+#### Purpose:
+- Detect attacks  
+- Fix issues  
+- Trace responsibility  
+#### Required at:
+- Database level  
+- Application level  
+#### Key Insight
+> If you can't track it, you can't secure it
+
+### 9. CHALLENGES IN WEB APPLICATIONS
+- UI/UX complexity  
+- Scalability  
+- Performance  
+- Security  
+- Framework knowledge  
+
+### 10. MOBILE APPLICATIONS
+#### Definition:
+Apps designed for:
+- Smartphones  
+- Tablets  
+#### Constraints:
+- Limited memory  
+- Limited power  
+- Limited bandwidth  
+- Small screen  
+#### Advantages:
+- Sensors (accelerometer)  
+- Touch interface  
+- Mobility  
+#### Key Insight
+> Mobile ≠ Web (different constraints)
+
+### 11. MOBILE vs WEB
+##### Mobile Website:
+- Runs in browser  
+- Uses HTML  
+- Needs internet  
+##### Mobile App:
+- Installed on device  
+- Can work offline  
+- Uses device features  
+
+### 12. MOBILE ARCHITECTURE
+From *diagram on page 22*:
+#### Layers:
+1. Presentation  
+2. Business  
+3. Data  
+#### Data Layer Split:
+- Local Data (fast)  
+- Remote Data (large)  
+#### Key Insight
+> Mobile apps balance speed vs connectivity
+
+### 13. TYPES OF MOBILE APPS
+#### 1. Native Apps
+- Platform-specific  
+- High performance  
+#### 2. Web Apps
+- Browser-based  
+- Cross-platform  
+#### 3. Hybrid Apps
+- Mix of both  
+#### Key Insight
+> Trade-off: performance vs portability
+
+### 14. DESIGN CONSIDERATIONS
+- Device type  
+- Resources  
+- Bandwidth  
+- UI/UX  
+- Navigation  
+- Flow  
+
+### 15. FINAL TAKEAWAY
+You now understand:
+- How applications are developed rapidly  
+- How performance is optimized  
+- How systems are secured  
+- How mobile systems differ  
+#### Mental Model
+RAD = Speed  
+Caching = Efficiency  
+Security = Protection  
+Mobile = Constraint-aware design  
 
 ---
