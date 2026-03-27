@@ -426,6 +426,8 @@ Browser = Interface
 Server = Processor  
 Database = Storage  
 
+### Notes taken from Activity Questions 7.2
+1. 
 ---
 ## CS2001 – Week 7, Lecture 3
 ### 1. INTRODUCTION
