@@ -636,6 +636,8 @@ Program = Brain
 API = Translator  
 Database = Storage  
 
+### Notes taken from Activity Questions 7.3
+1. 
 ---
 ## CS2001 – Week 7, Lecture 4
 ### 1. INTRODUCTION
