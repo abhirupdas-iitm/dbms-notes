@@ -200,6 +200,8 @@ Database = Storage
 Logic = Brain  
 Frontend = Face  
 
+### Notes taken from Activity Questions 7.1
+1. 
 ---
 ## CS2001 – Week 7, Lecture 2
 ### 1. INTRODUCTION TO WEB APPLICATIONS
