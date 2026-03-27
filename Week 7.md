@@ -425,3 +425,211 @@ Server = Processor
 Database = Storage  
 
 ---
+## CS2001 – Week 7, Lecture 3
+### 1. INTRODUCTION
+Focus:
+→ How **programming languages interact with databases**
+#### Core Problem:
+Application (Java/Python)  
+→ Needs data  
+→ Database understands only **SQL**
+#### Key Question 🔴
+> How do we connect **high-level programs ↔ SQL databases?**
+
+### 2. OVERALL APPROACH
+Applications use **APIs (Application Programming Interfaces)**
+#### Tasks performed:
+- Connect to database
+- Send SQL queries
+- Fetch results
+- Close connection
+#### Key Insight
+> API acts as a **bridge between program and database**
+
+### 3. TWO APPROACHES (VERY IMPORTANT)
+#### 1. Connectionist Approach
+- Uses APIs/drivers
+#### 2. Embedded SQL Approach
+- SQL written inside program
+#### Key Insight
+> Connectionist = External communication  
+> Embedded = Internal integration  
+
+### 4. CONNECTIONIST APPROACH
+#### Concept:
+Program ↔ API ↔ Database
+#### Components:
+- High-level language (Java, Python)
+- SQL queries
+- Connection library
+#### Flow:
+Program → API → SQL → Database → Result → Program
+
+### 5. ODBC (OPEN DATABASE CONNECTIVITY)
+#### Definition:
+- Standard API for database access
+#### Features:
+- DBMS independent
+- OS independent
+- Portable
+#### Functions:
+- Open connection
+- Execute queries
+- Fetch results
+#### Key Insight
+> Write once → Run across multiple databases
+
+### 6. ODBC WORKFLOW (PYTHON EXAMPLE)
+Steps:
+1. Connect to database
+2. Create cursor
+3. Execute SQL
+4. Fetch results
+#### Key Concept: Cursor
+- Acts like **iterator/pointer**
+- Traverses result rows
+#### Flow:
+- Execute query  
+- Fetch one row at a time  
+- Process  
+
+### 7. JDBC (JAVA DATABASE CONNECTIVITY)
+#### Definition:
+- Java-specific database API
+#### Features:
+- Object-oriented
+- Platform independent
+- Exception handling
+#### Workflow:
+1. Establish connection
+2. Create Statement object
+3. Execute query
+4. Process ResultSet
+#### Key Insight
+> Statement = handle to communicate with DB  
+> `ResultSet` = table returned from DB  
+
+### 8. JDBC FLOW
+```
+Connection → Statement → Execute → ResultSet → Iterate
+```
+#### Result Handling:
+- Use `.next()` to iterate rows
+- Extract values using column names
+#### Key Insight
+> ResultSet behaves like a **table iterator**
+
+### 9. BRIDGE DRIVERS
+#### Problem:
+- Different systems support different APIs
+#### Solution:
+Bridge drivers
+#### Types:
+- ODBC ↔ JDBC
+- JDBC ↔ ODBC
+- OLEDB ↔ ODBC
+- ADO.NET ↔ ODBC
+#### Key Insight
+> Bridges ensure **interoperability**
+
+### 10. EMBEDDED SQL APPROACH
+#### Concept:
+- SQL written directly inside program
+#### Syntax:
+```
+EXEC SQL <SQL statement>
+```
+#### Key Idea:
+- SQL becomes part of program code
+
+### 11. HOST LANGUAGE & VARIABLES
+#### Host Language:
+- C, Java, Python, etc.
+#### Variable Usage:
+- Prefix with `:`
+Example:
+```
+:credit_amount
+```
+#### Key Insight
+> Host variables allow data exchange between:
+Program ↔ SQL
+
+### 12. CURSORS (VERY IMPORTANT)
+#### Purpose:
+- Handle multi-row query results
+#### Steps:
+1. Declare cursor
+2. Open cursor
+3. Fetch rows
+4. Close cursor
+#### Example:
+```
+DECLARE c CURSOR FOR SELECT ...
+```
+#### Flow:
+```
+OPEN → FETCH → PROCESS → CLOSE
+```
+### Key Insight
+> Cursor = bridge for handling multiple tuples
+
+### 13. FETCH OPERATION
+#### Function:
+- Retrieves one row at a time
+#### Syntax:
+```
+FETCH c INTO :var1, :var2
+```
+#### Behavior:
+- Repeated fetch → next row
+- Ends when no more data
+
+### 14. UPDATE USING CURSOR
+#### Concept:
+- Modify rows using cursor
+#### Example:
+```
+WHERE CURRENT OF c
+```
+#### Use:
+- Update specific row in iteration
+
+### 15. EMBEDDED SQL FLOW
+```
+Connect → Declare → Open → Fetch → Process → Close
+```
+
+### 16. KEY DIFFERENCE
+
+| Feature      | Connectionist   | Embedded SQL   |
+| ------------ | --------------- | -------------- |
+| SQL Location | Outside program | Inside program |
+| Flexibility  | High            | Moderate       |
+| Control      | API-based       | Language-based |
+
+### 17. BIG PICTURE
+Now full system is complete:
+Frontend → Backend Logic → API → SQL → Database
+
+### 18. FINAL INSIGHTS
+#### 1.
+> SQL alone is not enough → needs integration
+#### 2.
+> APIs make communication possible
+#### 3.
+> Cursors are essential for handling results
+#### 4.
+> Embedded SQL gives tighter integration
+
+### 19. FINAL TAKEAWAY
+You now understand:
+- How programs talk to databases
+- How SQL is executed from code
+- How results flow back into applications
+#### Mental Model:
+Program = Brain  
+API = Translator  
+Database = Storage  
+
+---
