@@ -908,6 +908,8 @@ Flask = Brain
 psycopg2 = Messenger  
 Database = Memory  
 
+### Notes taken from Activity Questions 7.4
+1. 
 ---
 ## CS2001 – Week 7, Lecture 5
 ### 1. INTRODUCTION
