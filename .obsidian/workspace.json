@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "72f2282313bddd55",
+        "id": "40595e7e9a912907",
         "type": "tabs",
         "children": [
           {
-            "id": "58caf9adc82528a7",
+            "id": "d312472f56da0274",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Week 7.md",
+                "file": "Extra Content for Week 2.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Week 7"
+              "title": "Extra Content for Week 2"
             }
           }
         ]
@@ -183,8 +183,10 @@
       "bases:Create new base": false
     }
   },
-  "active": "58caf9adc82528a7",
+  "active": "d312472f56da0274",
   "lastOpenFiles": [
+    "Week 2.md",
+    "Extra Content for Week 2.md",
     "Week 7.md",
     "Week 6.md",
     "Week 5.md",
