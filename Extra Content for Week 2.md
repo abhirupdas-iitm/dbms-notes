@@ -179,3 +179,169 @@ Bits = Letters
 Numbers = Meaning  
 
 ---
+## CS2001 – Week 2, Extra Lecture 2
+### 1. INTRODUCTION
+Till now:
+- Binary numbers  
+- Number representation  
+Now:
+→ **Character representation + Boolean operations**
+#### Goal
+> Understand how computers represent text and perform logical operations  
+
+### 2. CHARACTER ENCODING
+#### Definition:
+Character Encoding maps:
+```
+Character → Number → Binary
+```
+#### Storage:
+- Stored as **binary bits in memory**
+#### Key Insight
+> Computers store characters as **numbers**, not symbols
+
+### 3. ASCII (IMPORTANT)
+#### Full Form:
+American Standard Code for Information Interchange  
+#### Features:
+- Originally **7-bit**
+- Represents **128 characters**
+#### Extended ASCII:
+- **8-bit**
+- Represents **256 characters**
+#### Common ASCII Ranges:
+- Numbers (0–9) → 48–57  
+- Uppercase (A–Z) → 65–90  
+- Lowercase (a–z) → 97–122  
+#### Example:
+Character: `W`
+- ASCII → 87  
+- Binary → 1010111  
+#### Storage:
+- Stored as **1 byte (8 bits)**
+- Extra bit added → padding  
+#### Key Insight
+> Every character = fixed binary pattern in memory  
+
+### 4. UNICODE
+#### Definition:
+- Multilingual character encoding system  
+#### Features:
+- Supports many languages  
+- Uses up to **16 bits (UTF-16)**  
+#### Key Insight
+> ASCII is limited → Unicode solves global language problem  
+
+### 5. INTRO TO BOOLEAN ALGEBRA
+#### Origin:
+- Developed by **George Boole**  
+#### Purpose:
+- Solve logical problems mathematically  
+#### Boolean Variable:
+- Can take only:
+  - 0 (False)  
+  - 1 (True)  
+#### Key Insight
+> Boolean algebra = logic of computers  
+
+### 6. BASIC BOOLEAN OPERATIONS
+#### 1. AND ( . )
+- Logical multiplication  
+#### Rules:
+```
+0 . 0 = 0  
+1 . 0 = 0  
+0 . 1 = 0  
+1 . 1 = 1  
+```
+#### Key Insight
+> AND → both must be 1  
+#### 2. OR ( + )
+- Logical addition  
+#### Rules:
+```
+0 + 0 = 0  
+1 + 0 = 1  
+0 + 1 = 1  
+1 + 1 = 1  
+```
+#### Key Insight
+> OR → at least one is 1  
+#### 3. NOT ( ¬ )
+- Logical negation  
+#### Rules:
+```
+¬0 = 1  
+¬1 = 0  
+```
+#### Key Insight
+> NOT → flips the value  
+
+### 7. DERIVED OPERATIONS
+- XOR  
+- NAND  
+- NOR  
+- XNOR  
+#### Important:
+> All can be derived using AND, OR, NOT  
+
+### 8. XOR (IMPORTANT)
+#### Definition:
+```
+A ^ B = A'B + AB'
+```
+#### Rules:
+```
+0 ^ 0 = 0  
+1 ^ 0 = 1  
+0 ^ 1 = 1  
+1 ^ 1 = 0  
+```
+#### Key Insight
+> XOR → true when inputs are different  
+
+### 9. LOGIC GATES
+- Physical implementation of Boolean operations  
+#### Examples:
+- AND gate  
+- OR gate  
+- NOT gate  
+- XOR gate  
+#### Key Insight
+> Hardware = Boolean algebra in action  
+
+### 10. WHY BOOLEAN OPERATIONS MATTER
+Applications:
+- Memory management  
+- Error correction  
+- Data recovery  
+- Decision making  
+#### Key Insight
+> All computing = applying logic on binary  
+
+### 11. ADVANCED NOTES
+- Complex gates = combination of basic gates  
+- Laws exist:
+  - Associative  
+  - Complementary  
+  - De Morgan’s Laws  
+#### Important:
+> For this course → focus on basic operations  
+
+### 12. BIG PICTURE
+You now have:
+- Binary → Data  
+- Encoding → Meaning  
+- Boolean → Processing  
+
+### 13. FINAL TAKEAWAY
+You now understand:
+- How characters are stored  
+- How logic is applied  
+- How computation happens  
+#### Mental Model
+Binary = Language  
+Encoding = Meaning  
+Boolean = Thinking  
+
+---
