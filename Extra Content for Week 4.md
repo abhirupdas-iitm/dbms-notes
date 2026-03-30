@@ -394,3 +394,266 @@ RA = Step-by-step
 TRC = Pure logic  
 
 ---
+## CS2001 – Week 4, Lecture 3
+### 1. INTRODUCTION
+Focus:
+→ Converting **ER Diagrams → Relational Schema**
+#### Goal
+> Translate ER components into tables while preserving:
+- Constraints  
+- Relationships  
+- Minimal redundancy  
+
+### 2. STRONG ENTITY SET
+#### Definition:
+Entity with:
+- Independent existence  
+- Primary key  
+#### Conversion Rule:
+- Create one table  
+- Include all attributes  
+- Primary key → becomes table PK  
+#### Example:
+`Student(enrollmentNo, name, contact)`
+#### Key Insight
+> Strong entity → direct table mapping  
+
+### 3. COMPOSITE ATTRIBUTE
+#### Definition:
+Attribute composed of smaller attributes  
+Example:
+```
+Name → (Fname, Mname, Lname)
+```
+#### Conversion Rule:
+- Break into components  
+- Store each as separate column  
+#### Result:
+```
+Student(enrollmentNo, Fname, Mname, Lname, contact)
+```
+#### Key Insight
+> Composite attributes are flattened  
+
+### 4. MULTIVALUED ATTRIBUTE
+#### Problem:
+One attribute → multiple values  
+Example:
+```
+contact = {123, 456}
+```
+#### Wrong Approach
+- Store as comma-separated values  
+#### Issue:
+- Difficult queries  
+- Poor design  
+#### Correct Approach
+Create separate table:
+```
+Student(enrollmentNo, Fname, ...)
+Contact(enrollmentNo, contact)
+```
+#### Key Insight
+> Multivalued attribute → separate relation  
+
+### 5. DERIVED ATTRIBUTE
+#### Example:
+- Age derived from DOB  
+#### Rule:
+- Do NOT store derived attributes  
+- Store base attribute instead  
+#### Result:
+```
+Store: DOB  
+Do not store: Age
+```
+#### Key Insight
+> Derived attributes are computed, not stored  
+
+### RELATIONSHIP CONVERSION
+
+### 6. MANY-TO-MANY (M:N)
+#### Example:
+Student ↔ Course  
+#### Rule:
+- Create new table for relationship  
+#### Result:
+```
+Student(sid, name)
+Course(cid, cname)
+Enroll(sid, cid)
+```
+#### If relationship has attributes:
+Add them to relationship table  
+#### Example:
+```
+Enroll(sid, cid, enrollmentDate)
+```
+#### Key Insight
+> M:N → always create new relation  
+
+### 7. ONE-TO-MANY (1:N)
+#### Example:
+Course → Student  
+#### Rule:
+- Add primary key of “1 side” to “N side”  
+#### Result:
+```
+Course(cid, cname)
+Student(sid, name, cid)
+```
+#### Special Case:
+If optional:
+- Foreign key can be NULL  
+#### Key Insight
+> 1:N → no new table needed  
+
+### 8. MANY-TO-ONE (N:1)
+Same as 1:N but reversed  
+#### Rule:
+- Add primary key of “1 side” into “many side”  
+
+### 9. ONE-TO-ONE (1:1)
+#### Options:
+1. Add FK in either table  
+2. Merge both tables  
+#### Special Case
+If **full participation on both sides**:
+→ Merge into single table  
+#### Result:
+```
+ManagerDept(mid, mname, did, dname)
+```
+#### Key Insight
+> 1:1 + full participation → merge tables  
+
+### 10. PARTICIPATION CONSTRAINT
+#### Types:
+- Partial → optional  
+- Total → mandatory  
+#### Rule:
+- Total participation → NOT NULL constraint  
+- Partial → allow NULL  
+#### Key Insight
+> Participation controls NULL constraints  
+
+### WEAK ENTITY SET
+### 11. DEFINITION
+- Depends on strong entity  
+- Has partial key  
+#### Rule:
+- Include:
+  - Partial key  
+  - Primary key of strong entity  
+#### Result:
+```
+Section(courseId, sectionId, semester, year)
+```
+#### Primary Key:
+```
+(courseId + sectionId + semester + year)
+```
+#### Key Insight
+> Weak entity PK = strong PK + partial key  
+
+### TERNARY RELATIONSHIP
+### 12. DEFINITION
+Relationship among 3 entities  
+#### Rule:
+- Create new table  
+- Include PKs of all entities  
+#### Example:
+```
+ProjectGuide(tid, sid, pid, hours)
+```
+#### Primary Key:
+```
+(tid, sid, pid)
+```
+#### Key Insight
+> Ternary → always new relation  
+### AGGREGATION
+### 13. DEFINITION
+Relationship between:
+- Entity  
+- AND another relationship  
+#### Rule:
+- Treat relationship as entity  
+- Create table including:
+  - All involved keys  
+#### Key Insight
+> Aggregation = relationship over relationship  
+
+### SPECIALIZATION
+### 14. TYPES
+#### 1. Overlapping
+- Entity can belong to multiple subclasses  
+#### 2. Disjoint
+- Entity belongs to only one subclass  
+#### 3. Partial
+- Some entities may not belong to any subclass  
+#### 4. Total
+- Every entity must belong to some subclass  
+
+### 15. IMPLEMENTATION
+#### Option 1:
+Separate tables:
+```
+Person(id, name)
+Faculty(id, salary)
+Student(id, grade)
+```
+#### Option 2 (Optimization):
+Add redundancy:
+```
+Faculty(id, name, salary)
+Student(id, name, grade)
+```
+#### Trade-off:
+- Less joins → better performance  
+- More redundancy  
+#### Key Insight
+> Design = balance between redundancy and efficiency  
+
+### 16. COMPLETE SPECIALIZATION
+#### Rule:
+- No need for parent table  
+#### Example:
+```
+PurchasePart(pid, pname, price)
+ManufacturePart(pid, pname, dept)
+```
+#### Key Insight
+> Total specialization → remove parent table  
+
+### FINAL SUMMARY
+### 17. CONVERSION RULES
+
+| ER Component          | Relational Mapping |
+| --------------------- | ------------------ |
+| Strong Entity         | Table              |
+| Composite Attribute   | Split columns      |
+| Multivalued Attribute | New table          |
+| Derived Attribute     | Do not store       |
+| M:N Relationship      | New table          |
+| 1:N Relationship      | FK in N side       |
+| 1:1 Relationship      | FK or merge        |
+| Weak Entity           | Add owner key      |
+| Ternary               | New table          |
+| Aggregation           | Treat as entity    |
+
+### BIG PICTURE
+ER Diagram → Logical Design  
+Relational Schema → Physical Structure  
+#### Key Insight
+> Good schema design = correct mapping + minimal redundancy  
+### FINAL TAKEAWAY
+You now understand:
+- How to systematically convert ER → Tables  
+- How constraints affect schema  
+- How relationships translate into structure  
+#### Mental Model
+ER Diagram = Idea  
+Schema = Implementation  
+
+---
