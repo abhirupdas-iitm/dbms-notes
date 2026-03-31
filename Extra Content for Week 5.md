@@ -202,3 +202,247 @@ You now understand:
 Decompose → Check intersection → Apply FD → Decide  
 
 ---
+## CS2001 – Week 5, Extra Lecture 2
+### 1. INTRODUCTION
+Canonical Cover:
+→ A simplified set of functional dependencies  
+#### Why needed?
+- DBMS must check FD violations after updates  
+- Large FD sets → expensive checking  
+- Reduce FDs without changing meaning  
+#### Goal
+> Simplify FD set while preserving closure  
+
+### 2. DEFINITION
+A canonical cover (or minimal cover):
+- Equivalent to original FD set  
+- Same closure  
+- No redundant dependencies  
+- No extraneous attributes  
+#### Important Note
+Some definitions require:
+- Only **single attribute on RHS**
+Example:
+```
+A → BC  (not minimal form)
+A → B, A → C  (minimal form)
+```
+#### Key Insight
+> Canonical cover = smallest equivalent FD set  
+
+### 3. STEPS TO FIND CANONICAL COVER
+#### Step 1: Make RHS Single Attribute
+```
+A → BC  ⇒  A → B, A → C
+```
+#### Step 2: Remove Extraneous Attributes
+Check if attribute can be removed **without changing closure**
+#### Step 3: Remove Redundant FDs
+Check if FD can be derived from others  
+#### Key Insight
+> Remove unnecessary parts, but preserve meaning  
+
+### 4. EXTRANEOUS ATTRIBUTE
+#### Definition:
+An attribute is extraneous if:
+- It can be removed  
+- Closure remains unchanged  
+#### Example:
+```
+B → C  
+AB → C
+```
+Since B alone determines C:
+→ A is extraneous  
+#### Result:
+```
+AB → C  ⇒  B → C
+```
+#### Key Insight
+> Stronger FD makes weaker one unnecessary  
+
+### 5. REDUNDANT FUNCTIONAL DEPENDENCY
+#### Definition:
+FD is redundant if:
+- It can be derived from other FDs  
+#### Example:
+```
+A → B  
+B → C  
+A → C
+```
+Since:
+```
+A → B → C
+```
+→ A → C is redundant  
+#### Result:
+```
+A → B, B → C
+```
+#### Key Insight
+> Use transitivity to detect redundancy  
+
+### 6. EXAMPLE 1
+#### Given:
+```
+A → BC  
+A → B  
+B → C  
+AB → C
+```
+#### Step 1: Split RHS
+```
+A → B  
+A → C  
+A → B  
+B → C  
+AB → C
+```
+#### Step 2: Remove Extraneous Attribute
+- From AB → C  
+- Since B → C  
+→ A is extraneous  
+#### Step 3: Remove Redundancy
+- Duplicate A → B → remove one  
+- Duplicate B → C → remove one  
+- A → C is derived via A → B → C → remove  
+#### Final Canonical Cover:
+```
+A → B  
+B → C
+```
+
+### 7. EXAMPLE 2
+#### Given:
+```
+A → BC  
+CD → E  
+B → D  
+E → A
+```
+#### Step 1: Split RHS
+```
+A → B  
+A → C  
+CD → E  
+B → D  
+E → A
+```
+#### Step 2: Check Extraneous Attributes
+- Only CD → E needs checking  
+- Neither C nor D alone determines E  
+→ No extraneous attribute  
+#### Step 3: Check Redundancy
+Compute closures:
+```
+A⁺ = ABCDE  
+(CD)⁺ = ABCDE  
+B⁺ = BD  
+E⁺ = ABCD
+```
+#### Observation:
+- Removing any FD changes closure  
+#### Final Canonical Cover:
+```
+A → B  
+A → C  
+CD → E  
+B → D  
+E → A
+```
+
+### 8. EXAMPLE 3
+#### Given:
+```
+A → BCDE  
+CD → E
+```
+#### Step 1: Split RHS
+```
+A → B  
+A → C  
+A → D  
+A → E  
+CD → E
+```
+#### Step 2: Check Redundancy
+- A → C and A → D ⇒ A → CD  
+- CD → E ⇒ A → E  
+→ A → E is redundant  
+#### Final Canonical Cover:
+```
+A → B  
+A → C  
+A → D  
+CD → E
+```
+
+### 9. EXAMPLE 4 (TRICKY)
+#### Given:
+```
+B → A  
+D → A  
+AB → D
+```
+#### Step 1: Check Extraneous Attribute
+From:
+```
+B → A  
+AB → D
+```
+Using augmentation:
+```
+B → A ⇒ BB → AB
+AB → D ⇒ B → D
+```
+→ A is extraneous in AB → D  
+#### Step 2: Update FD
+```
+B → D
+```
+#### Step 3: Check Redundancy
+Now:
+```
+B → D  
+D → A ⇒ B → A
+```
+→ B → A is redundant  
+#### Final Canonical Cover:
+```
+B → D  
+D → A
+```
+
+### 10. SYSTEMATIC APPROACH
+#### Algorithm:
+1. Convert RHS to single attributes  
+2. Remove extraneous attributes  
+3. Remove redundant FDs  
+4. Verify closure remains same  
+#### Shortcut
+> If removing something does not change closure → remove it  
+
+### 11. COMMON MISTAKES
+- Not splitting RHS  
+- Missing extraneous attributes  
+- Not checking closure properly  
+- Removing necessary FD  
+
+### 12. BIG PICTURE
+Canonical cover is used in:
+- Normalization  
+- Schema design  
+- Dependency checking  
+#### Key Insight
+> Smaller FD set = faster validation + cleaner design  
+### 13. FINAL TAKEAWAY
+You now understand:
+- What canonical cover is  
+- How to compute it step-by-step  
+- How to detect extraneous attributes  
+- How to remove redundant dependencies  
+#### Mental Model
+Split → Simplify → Test → Finalize  
+
+---
