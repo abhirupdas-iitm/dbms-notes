@@ -446,3 +446,224 @@ You now understand:
 Split → Simplify → Test → Finalize  
 
 ---
+## CS2001 – Week 5, Extra Lecture 3
+### 1. INTRODUCTION
+Dependency Preservation:
+→ Ensures functional dependencies are not lost after decomposition  
+#### Problem
+When we decompose a relation:
+- Data is split  
+- Some FDs may not be enforceable locally  
+#### Goal
+> Check whether all original FDs can be enforced without joining tables  
+#### Key Insight
+> If we must join tables to verify an FD → NOT dependency preserving  
+
+### 2. DEFINITION
+A decomposition is dependency preserving if:
+```
+F1 ∪ F2 ∪ ... ∪ Fn = F
+```
+Where:
+- Fi = FDs applicable to relation Ri  
+#### Meaning
+- All original dependencies can be checked in individual tables  
+- No need for join  
+
+### 3. BASIC METHOD
+#### Step 1:
+Project FDs onto each relation  
+#### Step 2:
+Compute:
+```
+F' = F1 ∪ F2 ∪ ... ∪ Fn
+```
+#### Step 3:
+Check if:
+```
+F' = F
+```
+#### Result
+- Equal → Dependency Preserved  
+- Not equal → Not Preserved  
+
+### 4. EXAMPLE 1 (DEPENDENCY PRESERVED)
+#### Given:
+```
+R(A, B, C, D)
+
+F = { A → B, B → C, C → D }
+```
+#### Decomposition:
+```
+R1(A, B)
+R2(B, C)
+R3(C, D)
+```
+#### Projection:
+```
+F1 = { A → B }
+F2 = { B → C }
+F3 = { C → D }
+```
+#### Union:
+```
+F' = F1 ∪ F2 ∪ F3 = F
+```
+#### Result:
+→ Dependency Preserved  
+
+### 5. ADVANCED METHOD (USING CLOSURE)
+#### When needed?
+- When FD is not directly visible in sub-relations  
+#### Strategy:
+Check if missing FD can be derived  
+#### Example:
+```
+F = { A → B, B → C, C → D, D → A }
+```
+#### Decomposition:
+```
+R1(A, B)
+R2(B, C)
+R3(C, D)
+```
+#### Known:
+- A → B (R1)
+- B → C (R2)
+- C → D (R3)
+Missing:
+```
+D → A
+```
+#### Check Closure:
+```
+D⁺ = {D}
+→ C (via inverse chain)
+→ B
+→ A
+```
+#### Result:
+→ D → A is derivable  
+→ Dependency Preserved  
+
+### 6. EXAMPLE 2
+#### Given:
+```
+R(A, B, C, D, E)
+
+F = { A → BC, C → DE, D → E }
+```
+#### Decomposition:
+```
+R1(A, B, C, D)
+R2(D, E)
+```
+#### Step 1: Split RHS
+```
+A → B  
+A → C  
+C → D  
+C → E  
+D → E
+```
+#### Step 2: Projection
+From R1:
+```
+A → B  
+A → C  
+C → D
+```
+From R2:
+```
+D → E
+```
+#### Step 3: Check Missing FD
+```
+C → E
+```
+#### Closure Check:
+```
+C → D  
+D → E  
+⇒ C → E
+```
+#### Result:
+→ Dependency Preserved  
+
+### 7. EXAMPLE 3 (NOT PRESERVED)
+#### Given:
+```
+R(P, Q, R, S)
+
+F = { PQ → SR, S → P }
+```
+#### Decomposition:
+```
+R1(P, S)
+R2(Q, R, S)
+```
+#### Projection:
+From R1:
+```
+S → P
+```
+From R2:
+(No direct PQ → SR)
+#### Missing FD:
+```
+PQ → SR
+```
+#### Closure Check:
+```
+(PQ)⁺ = {P, Q}
+```
+- Cannot derive S or R  
+#### Result:
+→ Dependency NOT preserved  
+
+### 8. KEY DIFFERENCE
+#### Lossless vs Dependency Preservation
+
+| Property              | Meaning      |
+| --------------------- | ------------ |
+| Lossless              | No data loss |
+| Dependency Preserving | No FD loss   |
+#### Important
+> A decomposition can be:
+- Lossless but NOT dependency preserving  
+
+### 9. SYSTEMATIC APPROACH
+#### Algorithm
+1. Split RHS  
+2. Project FDs on each relation  
+3. Combine projected FDs  
+4. Check missing dependencies using closure  
+#### Shortcut
+> If every FD appears in some Ri → preserved  
+
+### 10. COMMON MISTAKES
+- Not splitting RHS  
+- Ignoring indirect derivation  
+- Not computing closure  
+- Assuming preservation visually  
+
+### 11. BIG PICTURE
+Dependency preservation ensures:
+- Efficient constraint checking  
+- No expensive joins  
+- Better DB performance  
+#### Key Insight
+> Always try for BOTH:
+- Lossless  
+- Dependency preserving  
+
+### 12. FINAL TAKEAWAY
+You now understand:
+- What dependency preservation is  
+- How to test it (basic + closure method)  
+- When dependencies are lost  
+#### Mental Model
+Project → Combine → Check → Decide  
+
+---
