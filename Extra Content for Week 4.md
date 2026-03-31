@@ -657,3 +657,193 @@ ER Diagram = Idea
 Schema = Implementation  
 
 ---
+## CS2001 – Week 4, Extra Lecture 4
+### 1. INTRODUCTION
+Focus:
+→ Understanding **E-R Diagrams (concepts + case study design)**  
+#### Goal
+> Learn how to:
+- Identify entities and relationships  
+- Apply constraints correctly  
+- Design a complete ER model from requirements  
+
+### 2. BASIC CONCEPTS
+#### Entity
+- A real-world object distinguishable from others  
+- Represented by attributes  
+#### Entity Set
+- Collection of similar entities  
+#### Relationship
+- Association among entities  
+#### Relationship Set
+- Collection of similar relationships  
+#### Key Insight
+> Entities = objects  
+> Relationships = connections  
+
+### 3. ER DIAGRAM SYMBOLS
+#### Entity Types
+- Strong Entity → single rectangle  
+- Weak Entity → double rectangle  
+#### Attributes
+- Simple attribute → oval  
+- Key attribute → underlined  
+- Multivalued → double oval  
+- Derived → dashed oval  
+- Composite → split into sub-parts  
+#### Relationships
+- Normal → diamond  
+- Identifying → double diamond  
+#### Key Insight
+> Weak entities depend on strong entities for identification  
+
+### 4. MAPPING CONSTRAINTS
+#### Cardinality Types
+- One-to-One (1:1)  
+- One-to-Many (1:N)  
+- Many-to-One (N:1)  
+- Many-to-Many (M:N)  
+#### Participation
+- Total Participation → must participate  
+- Partial Participation → optional  
+#### Key Insight
+> Cardinality = how many  
+> Participation = mandatory or not  
+
+### 5. STEPS TO DRAW ER DIAGRAM
+1. Identify entities  
+2. Add attributes  
+3. Identify relationships  
+4. Assign cardinality  
+5. Assign participation  
+#### Key Insight
+> Always go from requirements → structure  
+
+### 6. CASE STUDY ANALYSIS
+#### 6.1 ENTITIES IDENTIFIED
+From requirements:
+- Patient  
+- Doctor  
+- Drug  
+- Pharmacy  
+- Pharmaceutical Company  
+#### 6.2 ATTRIBUTES
+#### Patient
+- SSN (primary key)  
+- Name  
+- Address  
+- Age  
+#### Doctor
+- SSN (primary key)  
+- Name  
+- Specialty  
+- Experience  
+#### Drug
+- Trade Name (partial key)  
+- Formula  
+#### Pharmaceutical Company
+- Name (primary key)  
+- Phone  
+#### Pharmacy
+- Name (primary key)  
+- Address  
+- Phone  
+#### 6.3 RELATIONSHIPS
+#### 1. Primary Physician
+- Between Patient and Doctor  
+Constraint:
+- Each patient has exactly one primary physician  
+- A doctor can have multiple patients  
+#### Interpretation:
+- Patient has total participation in Primary Physician  
+- Doctor has partial participation  
+#### 2. Prescription
+- Between Doctor and Patient  
+Attributes:
+- Date  
+- Quantity  
+#### Constraint:
+- A doctor can prescribe multiple drugs  
+- A patient can receive prescriptions from multiple doctors  
+#### Interpretation:
+- Many-to-Many relationship  
+#### 3. Drug Production
+- Between Drug and Pharmaceutical Company  
+#### Constraint:
+- Each drug is produced by exactly one company  
+#### Interpretation:
+- Drug has total participation  
+- Company has one-to-many relationship with Drug  
+#### 4. Contract
+- Between Pharmacy and Pharmaceutical Company  
+Attributes:
+- Start Date  
+- End Date  
+- Text  
+#### Constraint:
+- Many-to-Many relationship  
+#### 5. Supervision
+- Between Pharmacy and Contract  
+#### Constraint:
+- Each contract must have a supervisor  
+- Supervisor may change over time  
+#### Interpretation:
+- Total participation from Contract side  
+#### 6. Selling
+- Between Pharmacy and Drug  
+Attributes:
+- Price  
+#### Constraint:
+- A pharmacy sells multiple drugs  
+- A drug can be sold at multiple pharmacies  
+#### Interpretation:
+- Many-to-Many relationship  
+
+### 7. WEAK ENTITY IDENTIFICATION
+#### Drug
+- Identified using:
+  - Trade Name  
+  - Company  
+#### Interpretation:
+- Drug is a weak entity  
+- Company is the identifying entity  
+#### Key Insight
+> Weak entity requires:
+- Owner entity  
+- Partial key  
+
+### 8. IMPORTANT DESIGN DECISIONS
+#### 1. Avoid redundancy
+- Do not store derived attributes  
+#### 2. Maintain constraints
+- Use participation rules carefully  
+#### 3. Handle relationships properly
+- M:N → separate relation later  
+- 1:N → foreign key later  
+#### Key Insight
+> Good ER design ensures correct database schema later  
+
+### 9. COMMON MISTAKES
+- Missing participation constraints  
+- Treating weak entity as strong  
+- Ignoring relationship attributes  
+- Confusing M:N with 1:N  
+
+### 10. BIG PICTURE
+ER Diagram:
+- Conceptual design  
+Relational Schema:
+- Implementation  
+#### Key Insight
+> ER Diagram is the blueprint of the database  
+
+### 11. FINAL TAKEAWAY
+You now understand:
+- How to interpret requirements  
+- How to identify entities and relationships  
+- How to apply constraints properly  
+- How to structure a real-world database design  
+#### Mental Model
+Requirements → Entities → Relationships → Constraints → ER Diagram → Tables  
+
+---
