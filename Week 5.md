@@ -1110,3 +1110,4 @@ Final insight:
 2. The decomposition is lossy if R=(R<sub>1</sub>⋈R<sub>2</sub>⋈R<sub>3</sub>…⋈R<sub>n</sub>). (Question: 4)
 3. If a relation R is decomposed into three relations R<sub>1</sub>, R<sub>2</sub>, R<sub>3</sub>, for the decomposition to be lossless, *R<sub>1</sub>∩R<sub>2</sub>∩R<sub>3</sub>≠ϕ* may not always hold. (Question: 9)
 ---
+[[Extra Content for Week 5]]
