@@ -818,6 +818,8 @@ Tape → Archival
 Next step:
 → Database storage structures and indexing
 
+### Notes taken from Activity Questions 8.4
+1. 
 ---
 ## CS2001 – Week 8, Lecture 5
 ### 1. INTRODUCTION TO FILE ORGANIZATION
