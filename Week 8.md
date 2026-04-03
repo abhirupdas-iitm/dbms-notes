@@ -1031,4 +1031,6 @@ Buffer → Bridge between both
 Next step:
 → Indexing and faster data access
 
+### Notes taken from Activity Questions 8.5
+1. 
 ---
