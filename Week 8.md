@@ -597,3 +597,219 @@ Next step:
 → Advanced trees (Red-Black, B-Tree)
 
 ---
+## CS2001 – Week 8, Lecture 4
+### 1. INTRODUCTION TO PHYSICAL STORAGE
+Focus:
+→ Move from in-memory structures to **persistent storage**
+Requirement:
+- Data must survive:
+  - Program termination
+  - Power failure
+  - System crashes
+#### Key Insight
+> Databases require permanent storage
+
+### 2. STORAGE REQUIREMENTS
+Key needs:
+- Large data volume
+- Persistence
+- Reliability
+- Efficient access
+
+### 3. CLASSIFICATION OF STORAGE
+Two types:
+#### 1. Volatile Storage
+- Data lost on power failure
+#### 2. Non-Volatile Storage
+- Data persists
+
+### 4. PERFORMANCE FACTORS
+Storage evaluated based on:
+- Speed
+- Cost per unit data
+- Reliability
+#### Key Insight
+> Trade-off between speed and cost
+
+### 5. VOLATILE STORAGE
+#### Cache
+- Fastest memory
+- Very expensive
+- Very small
+#### Main Memory (RAM)
+- Fast access
+- Larger than cache
+- Still volatile
+#### Key Insight
+> Used for active computation only
+
+### 6. FLASH MEMORY
+Properties:
+- Non-volatile
+- Faster than disk
+- Slower than RAM
+Limitations:
+- Limited write cycles
+- Requires erase before rewrite
+#### Key Insight
+> Bridge between RAM and disk
+
+### 7. MAGNETIC DISK
+Main storage for databases
+Properties:
+- Non-volatile
+- Large capacity
+- Direct access
+#### Key Insight
+> Backbone of database storage
+
+### 8. DISK ORGANIZATION
+Components:
+- Platters (disks)
+- Spindle (rotation)
+- Read/Write heads
+#### Key Insight
+> Data accessed via rotating disks
+
+### 9. TRACKS AND SECTORS
+#### Track
+- Circular path on disk
+#### Sector
+- Subdivision of track
+#### Block (Cluster)
+- Group of sectors
+#### Key Insight
+> Block = unit of read/write
+
+### 10. CYLINDER
+Definition:
+- Set of tracks aligned vertically across disks
+#### Key Insight
+> Same position across all platters
+
+### 11. DISK ACCESS MECHANISM
+Steps:
+1. Move head to track → Seek
+2. Wait for sector → Rotation
+3. Read/write data
+
+### 12. ACCESS TIME
+Components:
+#### Seek Time
+- Time to locate track
+#### Rotational Latency
+- Time to locate sector
+#### Key Insight
+> Access time = Seek + Rotation
+
+### 13. DATA TRANSFER RATE
+Definition:
+- Speed of data transfer
+Factors:
+- Disk speed
+- Track position
+#### Key Insight
+> Outer tracks → faster transfer
+
+### 14. RELIABILITY (MTTF)
+Definition:
+- Mean Time To Failure
+Typical:
+- Several years
+#### Key Insight
+> Lower failure probability is critical
+
+### 15. OPTICAL STORAGE
+Examples:
+- CD
+- DVD
+- Blu-ray
+Properties:
+- Write once, read many
+- Used for archival
+
+### 16. MAGNETIC TAPE
+Properties:
+- Sequential access
+- Very high capacity
+- Low cost
+Limitation:
+- Slow access
+#### Key Insight
+> Best for backup and archival
+
+### 17. STORAGE HIERARCHY
+Order:
+- Cache
+- Main Memory
+- Flash
+- Magnetic Disk
+- Optical Disk
+- Tape
+#### Key Insight
+> Top → Fast, Expensive  
+> Bottom → Slow, Cheap
+
+### 18. DISK CONTROLLER
+Function:
+- Manages disk operations
+- Controls:
+  - Seek
+  - Rotation
+  - Read/Write
+Ensures:
+- Error detection
+- Data integrity
+
+### 19. CLOUD STORAGE
+Examples:
+- Google Drive
+- Amazon Drive
+- OneDrive
+Advantages:
+- Scalable
+- Accessible anywhere
+- Backup handled
+#### Key Insight
+> Growing trend in databases
+
+### 20. FLASH DRIVES & SD CARDS
+Properties:
+- Portable
+- Non-volatile
+- Limited cycles
+Usage:
+- Small-scale storage
+
+### 21. SOLID STATE DRIVE (SSD)
+Properties:
+- No moving parts
+- Very fast
+- Expensive
+Comparison with HDD:
+- Faster access
+- Higher cost
+#### Key Insight
+> SSD replaces HDD in performance-critical systems
+
+### 22. FUTURE STORAGE
+#### DNA Storage
+- Extremely high density
+- Experimental
+#### Quantum Storage
+- Based on qubits
+- Future technology
+
+### 23. FINAL TAKEAWAY
+You now understand:
+- Storage types
+- Disk structure
+- Performance factors
+#### Mental Model:
+Memory → Speed  
+Disk → Capacity  
+Tape → Archival  
+Next step:
+→ Database storage structures and indexing
+
+---
