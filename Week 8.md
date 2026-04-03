@@ -175,6 +175,8 @@ Algorithm = Process
 Data Structure = Organization  
 Complexity = Cost
 
+### Notes taken from Activity Questions 8.1
+1. 
 ---
 ## CS2001 – Week 8, Lecture 2
 ### 1. INTRODUCTION TO DATA STRUCTURES
