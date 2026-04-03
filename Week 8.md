@@ -384,3 +384,216 @@ Next step:
 → Non-linear data structures (to overcome limitations)
 
 ---
+## CS2001 – Week 8, Lecture 3
+### 1. INTRODUCTION TO NON-LINEAR DATA STRUCTURES
+Focus:
+→ Move beyond limitations of linear data structures
+Goal:
+- Improve:
+  - Search
+  - Insert
+  - Delete performance
+
+### 2. RECAP OF LINEAR DATA STRUCTURES
+Observations:
+- Space complexity → O(n)
+- Trade-offs exist:
+Array:
+- Fast access
+- Slow insert/delete
+Linked List:
+- Fast insert/delete
+- Slow access/search
+#### Key Insight
+> No linear structure optimizes all operations
+
+### 3. NEED FOR NON-LINEAR STRUCTURES
+Problem:
+- Cannot achieve efficient:
+  - Search
+  - Insert
+  - Delete together
+Solution:
+→ Use hierarchical / network structures
+
+### 4. NON-LINEAR DATA STRUCTURE
+Definition:
+- Data organized in non-sequential form
+- Multiple relationships possible
+Properties:
+- Multiple paths between elements
+- Hierarchical or graph-based structure
+
+### 5. TYPES OF NON-LINEAR DATA STRUCTURES
+- Graph
+- Tree
+- Hash Table
+- Skip List (advanced)
+
+### 6. GRAPH
+Definition:
+- Collection of:
+  - Vertices (nodes)
+  - Edges (connections)
+Types:
+- Directed / Undirected
+- Weighted / Unweighted
+- Cyclic / Acyclic
+- Connected / Disconnected
+Applications:
+- Networks (electric, water)
+- Social networks
+- Knowledge graphs
+- ER diagrams
+
+### 7. TREE
+Definition:
+- Special type of graph
+Properties:
+- Connected
+- Acyclic
+Structure:
+- Hierarchical
+Types:
+- Rooted / Unrooted
+- Binary / n-ary
+- Balanced / Unbalanced
+
+### 8. TREE TERMINOLOGY
+#### Root
+- Node with no parent
+#### Parent
+- Predecessor node
+#### Child
+- Successor node
+#### Leaf Node
+- No children
+#### Internal Node
+- At least one child
+#### Subtree
+- Tree rooted at a node
+#### Path
+- Sequence of nodes
+#### Siblings
+- Same parent
+#### Arity
+- Number of children
+#### Height
+- Maximum level
+
+### 9. TREE PROPERTIES
+- Nodes = n
+- Edges = n - 1
+Binary Tree:
+- Max nodes at level l → 2^l
+- Max nodes in tree → 2^(h+1) - 1
+Height bounds:
+- Minimum → O(log n)
+- Maximum → O(n)
+#### Key Insight
+> Balanced tree → log n height  
+> Unbalanced tree → linear height
+
+### 10. HASH TABLE
+Concept:
+- Use hash function
+Process:
+- Key → Hash function → Index
+Storage:
+- Array-based
+#### Key Insight
+> Fast access using computation
+(Note: Detailed later)
+
+### 11. BINARY SEARCH TREE (BST)
+Goal:
+- Combine:
+  - Fast search (like binary search)
+  - Efficient insert/delete (like linked list)
+
+### 12. BST PROPERTY
+For every node X:
+- Left subtree → values < X
+- Right subtree → values > X
+Condition:
+- Must hold for every node
+#### Key Insight
+> Ordering maintained at every node
+
+### 13. BST CONSTRUCTION
+Process:
+- Insert elements one by one
+- Compare and place:
+  - Left if smaller
+  - Right if larger
+#### Key Insight
+> Structure depends on insertion order
+
+### 14. BST SEARCH
+Process:
+- Start at root
+- Compare:
+  - Equal → Found
+  - Smaller → Go left
+  - Larger → Go right
+Repeat until:
+- Found
+- Or NULL reached
+
+### 15. SEARCH COMPLEXITY
+Depends on height (h)
+- Best case → O(log n)
+- Worst case → O(n)
+#### Key Insight
+> Performance depends on tree shape
+
+### 16. INSERT & DELETE IN BST
+Insert:
+- Search position
+- Insert node
+Delete:
+- Search node
+- Adjust pointers
+Complexity:
+- O(h)
+#### Key Insight
+> Insert/Delete = Search + Adjustment
+
+### 17. BALANCED VS UNBALANCED
+#### Balanced Tree
+- Height → O(log n)
+- Efficient operations
+#### Unbalanced Tree
+- Height → O(n)
+- Degrades to linked list
+
+### 18. ADVANTAGE OF BST
+If balanced:
+- Search → O(log n)
+- Insert → O(log n)
+- Delete → O(log n)
+#### Key Insight
+> Achieves overall efficiency
+
+### 19. LINEAR VS NON-LINEAR
+#### Linear
+- Sequential
+- Single path
+- Easier
+#### Non-Linear
+- Hierarchical
+- Multiple paths
+- More complex
+
+### 20. FINAL TAKEAWAY
+Non-linear structures solve:
+- Trade-offs of linear structures
+BST provides:
+- Balanced efficiency (if maintained properly)
+#### Mental Model:
+Linear → Simple but limited  
+Non-linear → Complex but powerful  
+Next step:
+→ Advanced trees (Red-Black, B-Tree)
+
+---
