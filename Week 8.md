@@ -600,6 +600,8 @@ Non-linear → Complex but powerful
 Next step:
 → Advanced trees (Red-Black, B-Tree)
 
+### Notes taken from Activity Questions 8.3
+1. 
 ---
 ## CS2001 – Week 8, Lecture 4
 ### 1. INTRODUCTION TO PHYSICAL STORAGE
