@@ -813,3 +813,214 @@ Next step:
 → Database storage structures and indexing
 
 ---
+## CS2001 – Week 8, Lecture 5
+### 1. INTRODUCTION TO FILE ORGANIZATION
+Focus:
+→ How data is stored inside storage media
+Hierarchy:
+- Database → Collection of files  
+- File → Collection of records  
+- Record → Collection of fields  
+#### Key Insight
+> Database = Files → Records → Fields
+
+### 2. BASIC ASSUMPTIONS
+For simplicity:
+- Records are fixed size
+- Records are of one type
+- One file per relation
+#### Key Insight
+> Simplification helps initial design
+
+### 3. STORAGE UNITS
+- Data stored in blocks
+- Block = fixed size unit
+Constraint:
+- Records should not cross block boundary
+
+### 4. FIXED-LENGTH RECORDS
+Storage method:
+- Stored sequentially (like array)
+Access:
+- Direct calculation using offset
+#### Key Insight
+> Array-like storage enables fast access
+
+### 5. RECORD DELETION METHODS
+Three approaches:
+#### 1. Compaction
+- Shift all records
+#### 2. Move Last Record
+- Replace deleted record with last
+#### 3. Free List
+- Mark as free
+- Link free records
+#### Key Insight
+> Free list is most efficient
+
+### 6. VARIABLE-LENGTH RECORDS
+Problem:
+- Fields like varchar
+Solution:
+- Store:
+  - Offset
+  - Length
+Structure:
+- Fixed part → metadata  
+- Variable part → actual data  
+#### Key Insight
+> Use pointers for flexibility
+
+### 7. NULL VALUES
+Handled using:
+- Null bitmap
+#### Key Insight
+> Efficient representation of missing data
+
+### 8. SLOTTED PAGE STRUCTURE
+Block contains:
+- Header
+- Records
+Header stores:
+- Number of records
+- Location of records
+- Free space pointer
+#### Key Insight
+> Indirection allows record movement
+
+### 9. FILE ORGANIZATION TYPES
+- Heap
+- Sequential
+- Hashing
+- Multi-table clustering
+
+### 10. HEAP ORGANIZATION
+Definition:
+- No order
+- Insert anywhere
+#### Key Insight
+> Simple but inefficient for search
+
+### 11. SEQUENTIAL ORGANIZATION
+Definition:
+- Records stored in sorted order
+Based on:
+- Search key
+Advantages:
+- Efficient sequential processing
+
+### 12. SEQUENTIAL FILE OPERATIONS
+#### Deletion
+- Adjust pointers
+#### Insertion
+- Use free space
+- Or overflow block
+#### Issue
+- Requires periodic reorganization
+
+### 13. MULTI-TABLE CLUSTERING
+Concept:
+- Store related records together
+Example:
+- Department + Instructor
+#### Key Insight
+> Reduces join cost
+
+### 14. MULTI-TABLE CLUSTERING ADVANTAGE
+- Efficient for join queries
+- Faster access for grouped data
+
+### 15. MULTI-TABLE CLUSTERING DISADVANTAGE
+- Poor for independent queries
+- Variable record size
+
+### 16. DATA DICTIONARY
+Definition:
+- Metadata storage
+Stores:
+- Relations
+- Attributes
+- Users
+- Constraints
+- Indexes
+#### Key Insight
+> Database stores data about itself
+
+### 17. DATA DICTIONARY IMPORTANCE
+- Used frequently
+- Should be fast
+Strategy:
+- Keep in memory
+
+### 18. STORAGE ACCESS PROBLEM
+Issue:
+- Disk is slow
+- Memory is fast
+Solution:
+- Minimize disk access
+
+### 19. BLOCK TRANSFER
+- Data moved in blocks
+- Not individual records
+#### Key Insight
+> Optimize number of block transfers
+
+### 20. BUFFER
+Definition:
+- Memory area storing disk blocks
+Purpose:
+- Reduce disk I/O
+
+### 21. BUFFER MANAGER
+Responsibilities:
+- Allocate buffer
+- Manage block transfers
+- Handle replacement
+
+### 22. BUFFER SCENARIOS
+#### Case 1
+- Block already in memory
+#### Case 2
+- Block not in memory
+→ Load from disk
+If full:
+→ Replace existing block
+
+### 23. WRITE BACK POLICY
+- If modified → write to disk
+- Else → discard
+
+### 24. BUFFER REPLACEMENT POLICIES
+#### LRU (Least Recently Used)
+- Replace least used block
+#### Key Insight
+> Past usage predicts future
+
+### 25. LRU LIMITATION
+- Not effective for all queries
+- Example:
+  - Nested loops
+
+### 26. OTHER STRATEGIES
+- Pinned blocks
+- MRU (Most Recently Used)
+- Toss immediately
+
+### 27. OPTIMIZATION STRATEGY
+- Keep frequently used data in memory
+- Example:
+  - Data dictionary
+
+### 28. FINAL TAKEAWAY
+You now understand:
+- File organization
+- Record storage
+- Buffer management
+#### Mental Model:
+Disk → Slow but large  
+Memory → Fast but small  
+Buffer → Bridge between both  
+Next step:
+→ Indexing and faster data access
+
+---
