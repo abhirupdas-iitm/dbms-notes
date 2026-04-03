@@ -174,3 +174,213 @@ Database Systems → Performance Optimization
 Algorithm = Process  
 Data Structure = Organization  
 Complexity = Cost
+
+---
+## CS2001 – Week 8, Lecture 2
+### 1. INTRODUCTION TO DATA STRUCTURES
+Focus:
+→ Data structures for **efficient storage and access**
+Context:
+- Used in physical database design
+- Foundation for indexing and storage optimization
+Definition:
+- A data structure organizes and stores data in memory
+- Enables efficient:
+  - Access
+  - Modification
+#### Key Insight
+> Data Structure = Storage + Operations
+
+### 2. DATA STRUCTURE VS DATABASE
+#### Data Structure
+- In-memory
+- Temporary
+- Exists during program execution
+#### Database
+- Persistent storage
+- Exists beyond program execution
+#### Key Insight
+> Data Structure → Temporary  
+> Database → Permanent
+
+### 3. CLASSIFICATION OF DATA STRUCTURES
+Two types:
+- Linear Data Structures
+- Non-Linear Data Structures
+Focus of this lecture:
+→ Linear Data Structures
+
+### 4. DESIGN PERSPECTIVE
+A data structure consists of:
+#### 1. Container
+- Stores data
+#### 2. Operations
+- Create
+- Insert
+- Delete
+- Search
+- Close
+#### Key Insight
+> Efficiency depends on operations, not just storage
+
+### 5. LINEAR DATA STRUCTURES
+Definition:
+- Elements arranged sequentially
+Property:
+- Given one element → next element is identifiable
+
+### 6. TWO FUNDAMENTAL MEMORY MODELS
+#### 1. Indexed (Sequential)
+- Data stored in contiguous memory
+- Access using index
+- Random access possible
+#### 2. Referential (Pointer-based)
+- Data stored non-contiguously
+- Each element stores address of next
+- Access via pointers
+#### Key Insight
+> All data structures are built on:
+- Indexing
+- Referencing
+
+### 7. TYPES OF LINEAR DATA STRUCTURES
+- Array (Indexed)
+- Linked List (Referential)
+- Stack
+- Queue
+
+### 8. ARRAY
+#### Properties:
+- Contiguous memory
+- Fixed size
+- Random access
+#### Complexity:
+- Access → O(1)
+- Insert → O(n)
+- Delete → O(n)
+#### Reason:
+- Shifting elements required
+#### Key Insight
+> Fast access, slow modification
+
+### 9. LINKED LIST
+#### Properties:
+- Non-contiguous memory
+- Each node:
+  - Data
+  - Pointer
+- Uses header node
+#### Complexity:
+- Access → O(n)
+- Insert → O(1) (if position known)
+- Delete → O(1) (if position known)
+#### Key Insight
+> Flexible size, slow access
+
+### 10. ARRAY VS LINKED LIST
+
+| Operation | Array | Linked List |
+| --------- | ----- | ----------- |
+| Access    | O(1)  | O(n)        |
+| Insert    | O(n)  | O(1)        |
+| Delete    | O(n)  | O(1)        |
+#### Key Insight
+> Trade-off between access and modification
+
+### 11. STACK
+Definition:
+- Last In First Out (LIFO)
+Operations:
+- Push
+- Pop
+- Top
+#### Key Insight
+> Only top element accessible
+
+### 12. QUEUE
+Definition:
+- First In First Out (FIFO)
+Operations:
+- Insert (Enqueue)
+- Delete (Dequeue)
+- Front
+#### Key Insight
+> Oldest element removed first
+
+### 13. IMPORTANT NOTE
+Stack and Queue:
+- Defined by operations
+- Not by storage
+Can be implemented using:
+- Array
+- Linked List
+
+### 14. SEARCHING
+Two types:
+#### 1. Linear Search
+- Works on:
+  - Array (ordered/unordered)
+  - Linked list
+- Complexity:
+  - O(n)
+#### 2. Binary Search
+Condition:
+- Data must be sorted
+Process:
+- Divide into halves
+- Eliminate half each step
+#### Complexity:
+- O(log n)
+#### Key Insight
+> Divide and conquer
+
+### 15. BINARY SEARCH LIMITATION
+- Works only on arrays
+- Requires random access
+Cannot be used efficiently on:
+- Linked lists
+Reason:
+- No direct access to middle element
+
+### 16. SEARCH COMPARISON
+#### Array
+- Linear Search → O(n)
+- Binary Search → O(log n) (if sorted)
+#### Linked List
+- Linear Search → O(n)
+- Binary Search → Not efficient
+
+### 17. INSERT & DELETE SUMMARY
+#### Array
+- Insert:
+  - O(n) (ordered)
+  - O(1) (unordered, at end)
+- Delete:
+  - O(n)
+#### Linked List
+- Insert → O(1)
+- Delete → O(1)
+(If position known)
+
+### 18. FINAL INSIGHT
+Linear data structures have:
+- Efficient operations in some areas
+- Inefficient in others
+#### Problem:
+> No structure supports fast:
+- Search
+- Insert
+- Delete together
+### 19. FINAL TAKEAWAY
+You now understand:
+- Arrays vs Linked Lists
+- Stack and Queue fundamentals
+- Search techniques
+#### Mental Model:
+Array → Fast access  
+Linked List → Fast modification  
+Binary Search → Fast search (with sorting)
+Next step:
+→ Non-linear data structures (to overcome limitations)
+
+---
