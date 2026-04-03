@@ -385,6 +385,8 @@ Binary Search → Fast search (with sorting)
 Next step:
 → Non-linear data structures (to overcome limitations)
 
+### Notes taken from Activity Questions 8.2
+1. 
 ---
 ## CS2001 – Week 8, Lecture 3
 ### 1. INTRODUCTION TO NON-LINEAR DATA STRUCTURES
