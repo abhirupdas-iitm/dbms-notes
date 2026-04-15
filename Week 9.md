@@ -355,3 +355,230 @@ Let n = maximum number of keys
 - Merge → during deletion
 - Disk I/O dominates performance
 ---
+## CS2001 – Week 9, Lecture 3
+### 1. CONTEXT
+#### Recap
+- B+ Trees used for ordered indexing
+- Efficient for range queries
+#### Limitation
+- Tree traversal required
+- Multiple disk accesses
+#### Goal
+- Achieve faster direct access
+
+### 2. INTRO TO HASHING
+#### Definition
+Hashing maps a large domain of keys to a smaller range using a hash function
+#### Core Idea
+- Key → Hash Function → Bucket
+#### Key Insight
+- Direct access instead of hierarchical search
+
+### 3. HASH FUNCTION
+#### Definition
+Function h(K) maps key K to a bucket index
+#### Requirement
+- Uniform distribution
+- Minimize collisions
+#### Key Insight
+- Good hash function spreads data evenly
+
+### 4. BUCKETS
+#### Definition
+- Storage unit where records are stored
+- Typically a disk block
+#### Property
+- One bucket may contain multiple records
+#### Key Insight
+- Hashing reduces search space to one bucket
+
+### 5. COLLISIONS
+#### Definition
+- Two different keys map to same bucket
+#### Example
+- h(K1) = h(K2)
+#### Key Insight
+- Collisions are unavoidable
+
+### 6. COLLISION HANDLING
+#### Method
+- Store multiple records in same bucket
+#### Problem
+- Requires sequential search inside bucket
+#### Insight
+- Performance depends on bucket size
+
+### 7. HASHING VS INDEXING
+#### Hashing
+- Direct access
+- No ordering
+- Fast equality search
+#### Indexing (B+ Tree)
+- Ordered
+- Supports range queries
+- Slightly slower
+#### Key Insight
+- Hashing → equality queries
+- B+ Tree → range queries
+
+### 8. STATIC HASHING
+#### Definition
+- Fixed number of buckets
+#### Process
+- h(K) → fixed range
+#### Problem
+- Does not adapt to data growth
+
+### 9. PROBLEMS WITH STATIC HASHING
+#### Overflow
+- Too many records in one bucket
+#### Causes
+- Small number of buckets
+- Poor hash function
+- Skewed data
+#### Solution
+- Overflow buckets (linked)
+#### Key Insight
+- Leads to extra disk access
+
+### 10. OVERFLOW CHAINS
+#### Definition
+- Linked list of overflow buckets
+#### Problem
+- Multiple block accesses
+#### Insight
+- Degrades performance
+
+### 11. IDEAL HASH FUNCTION
+#### Properties
+- Uniform distribution
+- Minimal collisions
+#### Practical Reality
+- Perfect uniformity not achievable
+
+### 12. HASH FUNCTION EXAMPLE
+#### Method
+- Convert key to numeric value
+- Apply modulo operation
+#### Example
+- Sum of ASCII values % n
+#### Insight
+- Maps large domain → small range
+
+### 13. PERFORMANCE TRADE-OFF
+#### Advantage
+- Fast access (O(1) average)
+#### Disadvantage
+- Collision handling cost
+#### Key Insight
+- Efficiency depends on distribution
+
+### 14. LIMITATION OF STATIC HASHING
+#### Problem
+- Fixed bucket count
+#### Scenario
+- Database grows → buckets overflow
+#### lternative
+- Dynamic hashing required
+
+### 15. INTRO TO DYNAMIC HASHING
+#### Definition
+- Hashing where number of buckets can change
+#### Goal
+- Adapt to data growth
+#### Key Insight
+- Avoid overflow chains
+
+### 16. EXTENDIBLE HASHING
+#### Idea
+- Use hash value as binary number
+#### Mechanism
+- Use prefix bits of hash
+#### Insight
+- Number of buckets depends on prefix length
+
+### 17. GLOBAL DEPTH
+#### Definition
+- Number of bits used from hash value
+#### Effect
+- Determines size of directory
+#### Insight
+- Increasing depth → more buckets
+
+### 18. DIRECTORY
+#### Definition
+- Table mapping hash prefixes to buckets
+#### Property
+- Size = 2<sup>d</sup> (d = global depth)
+
+### 19. LOCAL DEPTH
+#### Definition
+- Number of bits used for a specific bucket
+#### Insight
+- Different buckets may have different depths
+
+### 20. INSERTION IN EXTENDIBLE HASHING
+#### Step 1
+- Compute hash value
+#### Step 2
+- Use prefix to find bucket
+#### Case 1: Space available
+- Insert directly
+#### Case 2: Bucket full
+- Split bucket
+
+### 21. BUCKET SPLIT
+#### Process
+- Increase local depth
+- Redistribute entries
+#### Case 1: Local depth < Global depth
+- Split without directory expansion
+#### Case 2: Local depth = Global depth
+- Double directory size
+- Increase global depth
+#### Key Insight
+- Directory grows only when required
+
+### 22. DELETION
+#### Step 1
+- Remove record
+#### Step 2
+- Check if merge possible
+#### Merge Condition
+- Same local depth
+#### Result
+- Reduce space
+
+### 23. ADVANTAGES OF DYNAMIC HASHING
+#### Properties
+- Adapts to data growth
+- Reduces overflow
+- Efficient lookup
+
+### 24. DISADVANTAGES
+#### Costs
+- Directory overhead
+- Splitting complexity
+
+### 25. FINAL COMPARISON
+#### Static Hashing
+- Simple
+- Poor scalability
+#### Dynamic Hashing
+- Complex
+- Highly scalable
+
+### 26. FINAL TAKEAWAYS
+#### Mental Model
+- Hashing → direct access
+- Buckets → storage units
+- Collisions → unavoidable
+- Dynamic hashing → scalable solution
+
+### 27. MEMORY LINES
+#### Key Reminders
+- Hash → direct access
+- Collision → same bucket
+- Overflow → extra cost
+- Dynamic → adaptive
+---
