@@ -1143,4 +1143,7 @@ CREATE INDEX idx ON emp(UPPER(name));
 - Bitmap → bitwise filtering
 - Stats → optimizer support
 - Drop unused → efficiency
+
+### Notes taken from Activity Questions 9.5
+1. 
 ---
