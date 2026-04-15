@@ -741,6 +741,9 @@
 - Insert → split upward
 - Delete → merge or redistribute
 - B-Tree → key appears once
+
+### Notes taken from Activity Questions 9.2
+1. 
 ---
 ## CS2001 – Week 9, Lecture 4
 ### 1. CONTEXT
