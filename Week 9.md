@@ -226,6 +226,9 @@
 - Sparse → compact, slower
 - Primary → defines order
 - Secondary → alternate search
+
+### Notes taken from Activity Questions 9.1
+1. 
 ---
 ## CS2001 – Week 9, Lecture 2
 ### 1. CONTEXT
