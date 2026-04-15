@@ -440,3 +440,299 @@
 - Split → upward push
 - Root split → height change
 ---
+## CS2001 – Week 9, Lecture 3
+### 1. CONTEXT
+#### Recap
+- 2-3-4 trees provide a balanced multi-way search structure
+- They are a precursor to external indexing structures
+#### Goal
+- Understand B+ Tree index files
+- Understand basic B-Tree idea
+- See why B+ Trees are widely used in databases
+
+### 2. INTRO TO B+ TREE
+#### Definition
+- B+ Tree is a balanced multi-level search tree
+- It generalizes the 2-3-4 tree idea
+#### Core Properties
+- All leaf nodes are at the same height
+- Leaf nodes contain actual data pointers
+- Leaf nodes are linked for sequential access
+#### Key Insight
+- B+ Tree supports both random access and sequential access
+
+### 3. WHY B+ TREE IS NEEDED
+#### Problem with Indexed Sequential Files
+- Performance degrades as file grows
+- Overflow blocks increase
+- Periodic reorganization becomes necessary
+
+#### B+ Tree Advantage
+- Reorganizes itself locally
+- Avoids full file reorganization
+- Maintains efficient access as data grows
+
+### 4. NODE STRUCTURE OF B+ TREE
+#### Internal Nodes
+- Store search keys
+- Store pointers to child nodes
+#### Leaf Nodes
+- Store search keys
+- Store pointers to records or buckets
+- Store pointer to next leaf node
+#### Ordering
+- Keys inside every node are sorted
+
+### 5. FILLING CONDITIONS
+#### Internal Node
+- At least ceil(n / 2) children
+- At most n children
+- Root is an exception
+#### Leaf Node
+- At least ceil((n - 1) / 2) values
+- At most n - 1 values
+#### Root Special Cases
+- If root is not a leaf, it must have at least 2 children
+- If root is also a leaf, it can have between 0 and n - 1 values
+#### Key Insight
+- Every non-root node is at least half full
+
+### 6. LEAF NODE PROPERTIES
+#### Record Pointers
+- Pointer Pi points to a file record with search-key value Ki
+#### Ordering Across Leaves
+- Search keys in left leaf are less than or equal to those in right leaf
+#### Sequential Link
+- Last pointer in leaf points to next leaf node
+#### Key Insight
+- Linked leaves make range queries efficient
+
+### 7. NON-LEAF NODE PROPERTIES
+#### Role
+- Act as multi-level sparse index over leaf nodes
+#### Search Range Rules
+- P1 points to values less than K1
+- Pi points to values between Ki-1 and Ki
+- Last pointer points to values greater than or equal to last key
+#### Insight
+- Internal nodes guide search, leaf nodes hold actual access information
+
+### 8. SEARCH IN B+ TREE
+#### Process
+1. Start at root
+2. Compare search key with keys in current node
+3. Follow the appropriate child pointer
+4. Repeat until a leaf is reached
+5. Search within the leaf
+#### Example Idea
+- To search 55:
+  - Follow branch between 50 and 75
+  - Reach the relevant leaf
+  - Do final search inside that leaf
+#### Key Insight
+- Search always ends at a leaf
+
+### 9. QUERY ALGORITHM IDEA
+#### Rule
+- At internal node, find the least i such that V ≤ Ki
+#### Cases
+- If no such i exists, follow last non-null pointer
+- If V = Ki, move to Pi+1
+- Else move to Pi
+#### Final Step
+- At leaf, if Ki = V, follow record pointer
+- Otherwise record does not exist
+
+### 10. PERFORMANCE OF B+ TREE
+#### Height Bound
+- Height is at most log base ceil(n / 2) of K
+#### Typical Case
+- Node size ≈ disk block
+- n is often around 100
+#### Example
+- 1 million keys
+- n = 100
+- At most about 4 node accesses
+#### Comparison
+- Balanced binary tree for 1 million keys needs around 20 accesses
+#### Key Insight
+- B+ Tree drastically reduces disk I/O
+
+### 11. HANDLING DUPLICATES
+#### Problem
+- Duplicate search keys break strict inequality
+#### New Rule
+- Keys satisfy K1 ≤ K2 ≤ K3 ...
+#### Consequence
+- Search subtree conditions become non-strict
+#### Modified Search
+- Traverse Pi even if V = Ki
+- At leaf, if all keys are still less than V, move to right sibling
+- Continue to find first occurrence
+#### Procedure Idea
+- Find first occurrence
+- Traverse consecutive leaves to find all matches
+
+### 12. INSERTION IN B+ TREE
+#### Step 1
+- Find the leaf where key should appear
+#### If Key Already Exists
+- Add record to file
+- Add pointer to bucket if needed
+#### If Key Does Not Exist
+- Insert into leaf if space is available
+- Otherwise split the leaf
+
+### 13. LEAF SPLIT
+#### Process
+- Take all key-pointer pairs including new one
+- Sort them
+- Keep first ceil(n / 2) in original leaf
+- Put remaining in new leaf
+#### Promotion
+- Let k be least key in new leaf
+- Insert (k, pointer-to-new-leaf) into parent
+#### Key Insight
+- Parent stores separator for new leaf
+
+### 14. NON-LEAF SPLIT
+#### Condition
+- Parent is already full while inserting promoted key
+#### Process
+- Copy node into temporary space
+- Insert new key-pointer pair
+- Split entries into two nodes
+- Promote middle separator upward
+#### Propagation
+- Split may continue upward
+#### Worst Case
+- Root splits
+- Height increases by 1
+
+### 15. DELETION IN B+ TREE
+#### Step 1
+- Locate record
+- Remove from file and bucket if present
+#### Step 2
+- Remove key-pointer entry from leaf if needed
+#### If Underflow Happens
+- Check sibling
+
+### 16. MERGING DURING DELETION
+#### Condition
+- Entries in node and sibling fit in one node
+#### Action
+- Merge both into one node
+- Delete corresponding separator entry from parent
+- Apply recursively upward if needed
+
+### 17. REDISTRIBUTION DURING DELETION
+#### Condition
+- Node and sibling together do not fit in one node
+#### Action
+- Redistribute entries between siblings
+- Update separator key in parent
+#### Key Insight
+- Merge reduces nodes, redistribution preserves nodes
+
+### 18. ROOT CHANGE DURING DELETION
+#### Condition
+- Root left with only one child
+#### Action
+- Delete root
+- Sole child becomes new root
+#### Key Insight
+- Height can decrease only through root collapse
+
+### 19. B+ TREE FILE ORGANIZATION
+#### Idea
+- B+ Tree can organize entire data file, not just index file
+#### Difference
+- In file organization, leaf nodes store actual records
+- In index organization, leaf nodes store pointers to records
+#### Common Rule
+- Leaf nodes still must remain at least half full
+
+### 20. NON-UNIQUE KEYS
+#### Problem
+- Many records may share same key
+#### Possible Handling
+- Use bucket blocks
+- Use list of tuple pointers
+- Add record identifier to make search key unique
+#### Practical Insight
+- Making key unique simplifies insertion and deletion handling
+
+### 21. RELOCATION AND SECONDARY INDICES
+#### Problem
+- If records relocate, stored record pointers become invalid
+#### Difficulty
+- Updating many secondary index pointers is expensive
+#### Practical Solution
+- Use primary index search key instead of raw record pointer
+#### Trade-off
+- Slightly more traversal cost
+- Much easier maintenance
+
+### 22. STRING KEYS
+#### Problem
+- Strings are variable length
+- Fan-out becomes variable
+#### Practical Technique
+- Prefix compression
+- Use distinguishing prefix as index key
+#### Example Idea
+- Similar strings can be separated using useful prefixes
+
+### 23. B-TREE INTRO
+#### Core Difference from B+ TREE
+- In B-Tree, a search key appears only once
+- Keys need not be repeated all the way to leaf level
+#### Consequence
+- Some record pointers may appear in internal nodes
+
+### 24. B+ TREE VS B-TREE
+#### B+ Tree
+- Leaf nodes contain data pointers
+- Internal nodes guide search only
+- Keys may appear multiple times
+- Better for sequential access because leaves are linked
+#### B-Tree
+- Keys appear only once
+- Internal nodes may also store record pointers
+- Can sometimes find record before reaching leaf
+#### Practical Insight
+- B+ Tree is generally preferred in database indexing
+
+### 25. ADVANTAGES OF B+ TREE
+#### Benefits
+- Balanced structure
+- Efficient search, insert, delete
+- Good for both point queries and range queries
+- Self-organizing
+- Scales well for disk-based storage
+
+### 26. DISADVANTAGES OF B+ TREE
+#### Costs
+- Extra insertion overhead
+- Extra deletion overhead
+- Additional space overhead
+- More maintenance than simple sequential files
+
+### 27. FINAL TAKEAWAYS
+#### Core Ideas
+- B+ Tree is a balanced external indexing structure
+- Internal nodes form sparse multi-level index
+- Leaf nodes hold actual access layer and are linked
+- Splits handle insertion overflow
+- Merge or redistribution handles deletion underflow
+- B+ Tree solves degradation problems of indexed sequential files
+
+### 28. MEMORY LINES
+#### Quick Recall
+- B+ Tree → balanced + linked leaves
+- Search → root to leaf
+- Insert → split upward
+- Delete → merge or redistribute
+- B-Tree → key appears once
+---
