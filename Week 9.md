@@ -742,7 +742,7 @@
 - Delete → merge or redistribute
 - B-Tree → key appears once
 
-### Notes taken from Activity Questions 9.2
+### Notes taken from Activity Questions 9.3
 1. 
 ---
 ## CS2001 – Week 9, Lecture 4
@@ -968,6 +968,9 @@ Useful when many records share same value
 - Static → Fixed, Dynamic → Flexible  
 - Extendable hashing → prefix bits  
 - Bitmap → bitwise filtering powerhouse
+
+### Notes taken from Activity Questions 9.4
+1. 
 ---
 ## CS2001 – Week 9, Lecture 5
 ### 1. CONTEXT
