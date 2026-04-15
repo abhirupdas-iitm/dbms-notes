@@ -736,3 +736,227 @@
 - Delete → merge or redistribute
 - B-Tree → key appears once
 ---
+## CS2001 – Week 9, Lecture 4
+### 1. CONTEXT
+#### Recap
+- Previously studied B+ Trees (ordered indexing)
+- Now shifting to **hash-based indexing**
+#### Objective
+- Faster **exact-match retrieval**
+- Avoid tree traversal overhead
+As highlighted in the lecture intro, hashing directly maps keys to locations instead of navigating levels like B+ trees
+
+### 2. WHAT IS HASHING?
+#### Core Idea
+- Map large domain → small range using a function
+#### Definition
+- Hash function:  
+  `h : D → [0, N]`
+- Given key `k`, output = `h(k)`
+#### Important Terms
+- Hash value / hash code / digest
+- Collision: when `k1 ≠ k2` but `h(k1) = h(k2)`
+Hashing compresses a huge search space into manageable buckets
+
+### 3. HASH FUNCTION PROPERTIES
+#### Good Hash Function Should Be:
+- Fast
+- Uniform (even distribution)
+- Minimize collisions
+#### Bad Case
+- All keys → same bucket → O(n) search
+#### Ideal Case
+- Each bucket gets equal records
+Uniform distribution is critical for performance
+
+### 4. STATIC HASHING
+#### Structure
+- Fixed number of buckets
+- Each bucket = disk block
+#### Working
+1. Compute `h(k)`
+2. Go to bucket `h(k)`
+3. Search inside bucket
+#### Key Insight
+- Direct access → no tree traversal
+Buckets store multiple records → need linear scan inside bucket
+
+### 5. COLLISIONS
+#### Why They Happen
+- Domain >> number of buckets
+#### Example
+- Different keys → same hash value
+#### Handling
+- Search within bucket
+Collisions are unavoidable, must be managed efficiently
+
+### 6. BUCKET OVERFLOW
+#### Causes
+- Too few buckets
+- Skewed data
+- Poor hash function
+#### Solution: Overflow Buckets
+##### Overflow Chaining
+- Extra buckets linked like a list
+##### Types
+- Closed hashing → uses overflow buckets
+- Open hashing → not used in DBMS
+Overflow increases disk I/O → performance degradation
+
+### 7. HASH FILE ORGANIZATION
+#### Concept
+- Records stored directly using hash(key)
+#### Example (from slides)
+- `h(dept_name) = sum(char values) mod 10`
+- Example outputs:
+  - Music → 1
+  - Physics → 3
+  - Elec Eng → 3 (collision)
+Same bucket → sequential search required
+
+### 8. HASH INDICES
+#### Idea
+- Hashing used for index instead of file
+#### Key Points
+- Usually **secondary index**
+- Stores:
+  - search key
+  - pointer to record
+Speeds up equality search queries significantly
+
+### 9. LIMITATIONS OF STATIC HASHING
+#### Major Problems
+1. Fixed bucket count
+2. Database growth → overflow chains
+3. Space wastage if over-allocated
+4. Rehashing required (expensive)
+Static hashing fails in dynamic environments
+
+### 10. DYNAMIC HASHING (EXTENDABLE HASHING)
+#### Motivation
+- Handle growing/shrinking databases
+#### Key Idea
+- Use **prefix bits of hash value**
+#### Structure
+- Hash gives large binary value (e.g., 32 bits)
+- Use only first `i` bits
+#### Bucket Table Size
+- `2^i`
+#### Flexibility
+- Increase/decrease `i` dynamically
+No need to change hash function — only use more bits
+
+### 11. KEY CONCEPTS
+#### Global Depth (i)
+- Number of bits used
+#### Local Depth (ij)
+- Bits used by a bucket
+#### Important
+- Multiple table entries can point to same bucket
+Actual buckets < 2^i possible
+
+### 12. SEARCH IN DYNAMIC HASHING
+#### Steps
+1. Compute `h(k)`
+2. Take first `i` bits
+3. Go to bucket table
+4. Follow pointer
+5. Search inside bucket
+Same simplicity as static hashing, but flexible
+
+### 13. INSERTION
+#### Case 1: Space Available
+- Insert directly
+#### Case 2: Bucket Full → Split
+##### If i > ij
+- Split bucket
+- Redistribute entries
+##### If i = ij
+- Increase `i`
+- Double table
+- Then split
+Table doubling is expensive but rare
+
+### 14. DELETION
+#### Steps
+1. Locate record
+2. Delete from bucket
+#### Optimization
+- Merge (coalesce) buckets
+- Reduce table size (rare)
+Coalescing only possible with “buddy” buckets
+
+### 15. ADVANTAGES OF DYNAMIC HASHING
+- No performance degradation with growth
+- Flexible bucket management
+- Efficient equality queries
+
+### 16. DISADVANTAGES
+- Extra indirection (directory lookup)
+- Directory may grow large
+- Splitting & doubling cost
+Trade-off: flexibility vs overhead
+
+### 17. HASHING vs ORDERED INDEXING
+#### Hashing
+- Best for: exact match queries
+- Weak for: range queries
+#### B+ Tree
+- Best for: range queries
+- Slightly slower for exact match
+Real-world DBs often prefer B+ trees
+
+### 18. BITMAP INDICES
+#### Use Case
+- Attributes with few distinct values
+  - gender
+  - state
+  - income levels
+#### Structure
+- One bitmap per value
+- Each bit = record presence
+Example shown on page 35: bitmaps represent attribute values across records
+
+### 19. BITMAP OPERATIONS
+#### Supported Operations
+- AND
+- OR
+- NOT
+#### Example
+- Male AND Income=L1 → bitwise AND
+Extremely fast due to bit-level parallelism
+
+### 20. EFFICIENCY OF BITMAPS
+#### Benefits
+- Very compact
+- Fast logical operations
+- Efficient counting
+#### Example
+- 1M bits processed in ~31K operations
+Much faster than tuple scanning
+
+### 21. ADVANCED NOTES
+#### Deletion Handling
+- Use existence bitmap
+#### NULL Handling
+- Maintain bitmap for NULL values
+#### Hybrid Use
+- Combine with B+ Trees
+Useful when many records share same value
+
+### 22. FINAL TAKEAWAYS
+#### Big Picture
+- Hashing → direct access (O(1) average)
+- B+ Tree → ordered access (O(log n))
+- Bitmap → analytical queries
+#### When to Use What
+- Exact match → Hashing
+- Range queries → B+ Tree
+- Multi-condition filters → Bitmap
+
+### 23. MEMORY LINES
+- Hashing → Direct bucket access  
+- Static → Fixed, Dynamic → Flexible  
+- Extendable hashing → prefix bits  
+- Bitmap → bitwise filtering powerhouse
+---
