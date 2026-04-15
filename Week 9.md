@@ -442,6 +442,9 @@
 - 2-3-4 → multi-key nodes
 - Split → upward push
 - Root split → height change
+
+### Notes taken from Activity Questions 9.2
+1. 
 ---
 ## CS2001 – Week 9, Lecture 3
 ### 1. CONTEXT
