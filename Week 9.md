@@ -960,3 +960,175 @@ Useful when many records share same value
 - Extendable hashing → prefix bits  
 - Bitmap → bitwise filtering powerhouse
 ---
+## CS2001 – Week 9, Lecture 5
+### 1. CONTEXT
+#### Recap
+- Covered B+ Trees, Hashing, Bitmap Indexing
+#### Focus
+- Creating indexes in SQL
+- Designing indexes effectively
+#### Key Insight
+- Shift from theory → practical optimization
+
+### 2. INDEX CREATION IN SQL
+#### Basic Syntax
+`CREATE INDEX <index-name> ON <table-name> (attribute-list);`
+#### Example
+`CREATE INDEX b_index ON branch(branch_name);`
+#### Drop Index
+`DROP INDEX index_name;`
+#### Insight
+- Index is a schema object for faster access
+
+### 3. UNIQUE INDEX
+#### Definition
+- Ensures no duplicate values
+#### Purpose
+- Enforces candidate key constraint
+#### Note
+- Prefer SQL UNIQUE constraint if available
+
+### 4. TYPES OF INDEXES
+#### Single Column Index
+- Index on one attribute
+#### Composite Index
+- Index on multiple attributes
+#### Function-Based Index
+- Index on computed value
+#### Example
+CREATE INDEX idx ON emp(UPPER(name));
+#### Insight
+- Useful when queries apply functions
+
+### 5. STORAGE OPTIONS
+#### Parameters
+- TABLESPACE → storage location
+- INITIAL → initial size
+- NEXT → next allocation
+- PCTINCREASE → growth rate
+- PCTFREE → reserved free space
+#### Insight
+- Controls physical storage behavior
+
+### 6. BITMAP INDEX IN SQL
+#### Syntax
+`CREATE BITMAP INDEX idx ON table(column);`
+#### Use Case
+- Low distinct values (gender, semester)
+#### Query Example
+`SELECT * FROM Student WHERE Gender = 'F' AND Semester = 4;`
+#### Execution
+- Bitwise AND operation
+#### Insight
+- Very fast filtering
+
+### 7. MULTIPLE-KEY ACCESS
+#### Problem
+- Queries with multiple conditions
+#### Strategies
+- Use one index and filter
+- Use another index and filter
+- Use both indices and intersect results
+#### Insight
+- Intersection reduces search space
+
+### 8. COMPOSITE INDEX
+#### Definition
+- Index on multiple attributes
+#### Example
+`CREATE INDEX idx ON instructor(dept_name, salary);`
+#### Advantage
+- Efficient multi-condition queries
+#### Key Insight
+- Column order matters
+
+### 9. ORDERING RULE
+#### Lexicographic Rule
+```
+(a1, a2) < (b1, b2) if:
+- a1 < b1 OR
+- a1 = b1 AND a2 < b2
+```
+#### Insight
+- First column dominates search
+
+### 10. COMPOSITE INDEX BEHAVIOR
+#### Efficient For
+- dept = 'Finance' AND salary = 80000
+- dept = 'Finance' AND salary < 80000
+#### Inefficient For
+- dept < 'Finance' AND salary = 80000
+#### Insight
+- First attribute drives filtering
+
+### 11. PRIVILEGES REQUIRED
+#### Requirements
+- INDEX privilege on table
+- Tablespace quota
+#### Advanced
+- CREATE ANY INDEX for other schemas
+- QUERY REWRITE for function-based index
+#### Insight
+- Index creation is controlled
+
+### 12. WHY INDEX DESIGN MATTERS
+#### Observation
+- Normalization is static
+- Indexing is dynamic
+#### Requirement
+- Adapt based on usage
+#### Insight
+- Performance evolves over time
+
+### 13. NO FIXED THEORY
+#### Fact
+- No universal best indexing strategy
+#### Depends On
+- Data distribution
+- Query patterns
+#### Insight
+- Use heuristics (rules)
+
+### 14. GROUND RULES FOR INDEXING
+#### Rule 0: Trade-off
+- Faster queries
+- Slower updates
+- More storage
+#### Rule 1: Correct Tables
+- Index large tables
+- Use when <15% rows retrieved
+- Index join columns
+- Avoid small tables
+#### Rule 2: Correct Columns
+- High uniqueness → normal index
+- Low uniqueness → bitmap index
+- Avoid many nulls
+- Avoid large data types
+#### Rule 3: Limit Indexes
+- More indexes → slower updates
+- Balance read vs write
+#### Rule 4: Column Order
+- Most selective column first
+#### Rule 5: Gather Statistics
+- Helps optimizer
+- Use COMPUTE STATISTICS
+#### Rule 6: Drop Unused Indexes
+- Remove if not used
+- Improves performance
+
+### 15. FINAL TAKEAWAYS
+#### Core Idea
+- Indexing is a performance optimization tool
+#### Strategy
+- Design based on workload, not assumptions
+#### Mental Model
+- Read speed vs write cost trade-off
+
+### 16. MEMORY LINES
+#### Quick Recall
+- Index → speed vs cost
+- Composite → order matters
+- Bitmap → bitwise filtering
+- Stats → optimizer support
+- Drop unused → efficiency
+---
