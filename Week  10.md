@@ -28,7 +28,7 @@ Transfer $50 from A → B:
 5. B = B + 50
 6. write(B)
 #### Key Insight
-- Transaction = logical unit of work :contentReference[oaicite:2]{index=2}
+- Transaction = logical unit of work
 
 ### 3. PROBLEMS IN TRANSACTIONS
 #### Failures
@@ -38,7 +38,7 @@ Transfer $50 from A → B:
 #### Concurrency
 - Multiple transactions executing simultaneously
 #### Key Insight
-- DBMS must handle both failures and concurrency safely :contentReference[oaicite:3]{index=3}
+- DBMS must handle both failures and concurrency safely
 
 ### 4. ACID PROPERTIES OVERVIEW
 #### Definition
@@ -57,7 +57,7 @@ Transfer $50 from A → B:
 #### Requirement
 - Partial updates must not be reflected
 #### Insight
-- Either complete transaction OR rollback everything :contentReference[oaicite:4]{index=4}
+- Either complete transaction OR rollback everything
 
 ### 6. CONSISTENCY
 #### Definition
@@ -68,7 +68,7 @@ Transfer $50 from A → B:
 - Explicit constraints (PK, FK)
 - Implicit constraints (business rules)
 #### Insight
-- Transaction preserves invariants :contentReference[oaicite:5]{index=5}
+- Transaction preserves invariants 
 
 ### 7. ISOLATION
 #### Definition
@@ -78,7 +78,7 @@ Transfer $50 from A → B:
 #### Solution
 - Execute transactions as if serial
 #### Insight
-- Concurrent execution must appear sequential :contentReference[oaicite:6]{index=6}
+- Concurrent execution must appear sequential
 
 ### 8. DURABILITY
 #### Definition
@@ -86,7 +86,7 @@ Transfer $50 from A → B:
 #### Requirement
 - Survive crashes and failures
 #### Insight
-- Committed data is permanent :contentReference[oaicite:7]{index=7}
+- Committed data is permanent 
 
 ### 9. ACID QUICK RECALL
 #### Atomicity
@@ -112,7 +112,7 @@ Transfer $50 from A → B:
 #### Terminated
 - Finished (commit or abort)
 #### Insight
-- Similar to process states in OS :contentReference[oaicite:8]{index=8}
+- Similar to process states in OS
 
 ### 11. STATE TRANSITIONS
 #### Active → Partially Committed
@@ -140,7 +140,7 @@ Transfer $50 from A → B:
 - Better disk utilization
 - Reduced response time
 #### Insight
-- Improves throughput significantly :contentReference[oaicite:9]{index=9}
+- Improves throughput significantly
 
 ### 13. CONCURRENCY CONTROL
 #### Purpose
@@ -148,7 +148,7 @@ Transfer $50 from A → B:
 #### Goal
 - Maintain isolation and consistency
 #### Insight
-- Required for safe parallel execution :contentReference[oaicite:10]{index=10}
+- Required for safe parallel execution
 
 ### 14. SCHEDULE
 #### Definition
@@ -160,7 +160,7 @@ Transfer $50 from A → B:
 - Commit → success
 - Abort → failure
 #### Insight
-- Schedule defines execution order :contentReference[oaicite:11]{index=11}
+- Schedule defines execution order
 
 ### 15. SERIAL SCHEDULE
 #### Definition
