@@ -436,3 +436,258 @@ Transfer $50 from A → B:
 - Graph → cycle check
 - DAG → safe schedule
 ---
+## CS2001 – Week 10, Lecture 3
+## RECOVERABILITY, TCL & VIEW SERIALIZABILITY
+
+### 1. CONTEXT
+#### Recap
+- Serializability ensures Isolation & Consistency
+#### Problem
+- Failures can still break Atomicity
+#### Goal
+- Ensure database can recover to consistent state
+#### Insight
+- Need recovery mechanisms beyond serializability
+
+### 2. WHAT IS RECOVERY
+#### Definition
+- Process of restoring database to consistent state after failure
+#### Problem Example
+- Transfer A → B interrupted mid-way
+- A updated, B not updated
+#### Result
+- Inconsistent database
+#### Solution
+- Rollback partial changes
+#### Insight
+- Recovery ensures atomicity under failures :contentReference[oaicite:2]{index=2}
+
+### 3. RECOVERABLE SCHEDULE
+#### Definition
+- If Tj reads value written by Ti
+- Then commit(Ti) must occur before commit(Tj)
+#### Reason
+- Prevent using uncommitted data
+#### Insight
+- Read-after-write dependency must be respected :contentReference[oaicite:3]{index=3}
+
+### 4. IRRECOVERABLE SCHEDULE
+#### Problem
+- Tj commits before Ti
+- But Tj read Ti’s data
+#### Failure Scenario
+- If Ti aborts → Tj becomes invalid
+#### Result
+- Cannot rollback safely
+#### Insight
+- Such schedules must be avoided
+
+### 5. CASCADING ROLLBACK
+#### Definition
+- One failure causes multiple rollbacks
+#### Cause
+- Transactions depend on uncommitted data
+#### Chain Effect
+- T1 fails → T2 rollback → T3 rollback
+#### Problem
+- Large amount of work lost
+#### Insight
+- Expensive and undesirable :contentReference[oaicite:4]{index=4}
+
+### 6. CASCADELESS SCHEDULE
+#### Definition
+- Transactions read only committed data
+#### Condition
+- commit(Ti) before read(Tj)
+#### Advantage
+- No cascading rollback
+#### Insight
+- Stronger than recoverable schedules :contentReference[oaicite:5]{index=5}
+
+### 7. RELATION BETWEEN TYPES
+#### Order of Strength
+- Cascadeless ⊂ Recoverable ⊂ All schedules
+#### Insight
+- Cascadeless automatically recoverable
+
+### 8. EXAMPLE INSIGHT
+#### Irrecoverable
+- Commit happens too early
+#### Recoverable with cascading
+- Rollback possible but expensive
+#### Cascadeless
+- Safe and efficient
+#### Insight
+- Best practice → cascadeless schedules
+
+### 9. TRANSACTIONS IN SQL
+#### Start
+- Implicitly begins
+#### End
+- COMMIT or ROLLBACK
+#### Default Behavior
+- Auto-commit after each statement
+#### Control
+- Can disable auto-commit
+#### Insight
+- SQL manages transactions automatically :contentReference[oaicite:6]{index=6}
+
+### 10. TCL (TRANSACTION CONTROL LANGUAGE)
+#### Commands
+- COMMIT
+- ROLLBACK
+- SAVEPOINT
+- SET TRANSACTION
+#### Scope
+- Works with INSERT, UPDATE, DELETE
+#### Insight
+- Controls transaction execution
+
+### 11. COMMIT
+#### Definition
+- Makes changes permanent
+#### Effect
+- Writes data to database
+#### Property
+- Cannot be undone after commit
+#### Insight
+- Marks successful completion :contentReference[oaicite:7]{index=7}
+
+### 12. ROLLBACK
+#### Definition
+- Undo uncommitted changes
+#### Scope
+- Only after last commit
+#### Effect
+- Restores previous state
+#### Insight
+- Ensures atomicity :contentReference[oaicite:8]{index=8}
+
+### 13. SAVEPOINT
+#### Definition
+- Intermediate checkpoint in transaction
+#### Purpose
+- Partial rollback
+#### Syntax
+- SAVEPOINT name
+#### Rollback
+- ROLLBACK TO name
+#### Insight
+- Fine-grained control over transactions :contentReference[oaicite:9]{index=9}
+
+### 14. RELEASE SAVEPOINT
+#### Definition
+- Removes savepoint
+#### Effect
+- Cannot rollback to it anymore
+#### Insight
+- Frees resources
+
+### 15. SET TRANSACTION
+#### Purpose
+- Define transaction properties
+#### Options
+- READ ONLY
+- READ WRITE
+#### Insight
+- Controls behavior of transaction
+
+### 16. VIEW SERIALIZABILITY
+#### Motivation
+- Conflict serializability too restrictive
+#### Goal
+- Allow more valid schedules
+#### Insight
+- Weaker but more flexible condition :contentReference[oaicite:10]{index=10}
+
+### 17. VIEW EQUIVALENCE
+#### Two schedules are equivalent if:
+#### (1) Initial Read
+- Same transaction reads initial value
+#### (2) Read-Write Pair
+- Reads same value written by same transaction
+#### (3) Final Write
+- Same transaction performs last write
+#### Insight
+- Based on data flow, not ordering :contentReference[oaicite:11]{index=11}
+
+### 18. VIEW SERIALIZABLE
+#### Definition
+- Equivalent to a serial schedule under view equivalence
+#### Insight
+- More schedules qualify compared to conflict serializable
+
+### 19. KEY RELATION
+#### Property
+- Conflict serializable ⇒ View serializable
+#### But
+- View serializable ⇏ Conflict serializable
+#### Insight
+- View is more general
+
+### 20. BLIND WRITE
+#### Definition
+- Write without prior read
+#### Role
+- Enables view serializability without conflict serializability
+#### Insight
+- Key concept in weaker schedules
+
+### 21. TESTING VIEW SERIALIZABILITY
+#### Difficulty
+- No simple graph-based method
+#### Complexity
+- NP-complete problem
+#### Meaning
+- No efficient general solution
+#### Insight
+- Harder than conflict serializability :contentReference[oaicite:12]{index=12}
+
+### 22. PRACTICAL APPROACH
+#### Strategy
+- Check sufficient conditions
+#### Limitation
+- May miss valid schedules
+#### Insight
+- Trade-off between accuracy and efficiency
+
+### 23. EXAMPLE STRATEGY
+#### Step 1
+- List all possible serial schedules
+#### Step 2
+- Apply final write condition
+#### Step 3
+- Apply initial read condition
+#### Step 4
+- Apply read-write pairing
+#### Result
+- Identify equivalent serial schedule
+
+### 24. COMPLEX SERIALIZABILITY
+#### Observation
+- Some schedules:
+  - Not conflict serializable
+  - Not view serializable
+  - Still produce correct result
+#### Reason
+- Depends on actual computations
+#### Insight
+- Beyond read-write analysis :contentReference[oaicite:13]{index=13}
+
+### 25. FINAL TAKEAWAYS
+#### Core Ideas
+- Recovery ensures atomicity after failure
+- Cascadeless schedules are safest
+- TCL controls transaction lifecycle
+- View serializability expands valid schedules
+- Testing view serializability is computationally hard
+
+### MEMORY LINES
+#### Quick Recall
+- Recovery → rollback inconsistency
+- Cascading → chain rollback
+- Cascadeless → safest execution
+- COMMIT → permanent
+- ROLLBACK → undo
+- View → weaker than conflict
+---
