@@ -691,3 +691,282 @@ Transfer $50 from A → B:
 - ROLLBACK → undo
 - View → weaker than conflict
 ---
+## CS2001 – Week 10, Lecture 4
+## CONCURRENCY CONTROL & LOCK-BASED PROTOCOLS
+
+### 1. CONTEXT
+#### Recap
+- Serializability ensures correctness
+- Recovery ensures atomicity
+#### Problem
+- Designing correct schedules manually is hard
+#### Goal
+- Automatically ensure safe concurrent execution
+#### Insight
+- Need concurrency control mechanisms
+
+### 2. CONCURRENCY CONTROL
+#### Definition
+- Mechanism to ensure correct concurrent execution
+#### Requirements
+- Conflict serializability
+- Recoverability (preferably cascadeless)
+#### Problem
+- Serial execution → poor performance
+#### Insight
+- Balance between correctness and performance :contentReference[oaicite:2]{index=2}
+
+### 3. KEY IDEA
+#### Approach
+- Control access to shared data
+#### Method
+- Allow only safe interleavings
+#### Insight
+- Prevent conflicts instead of fixing later
+
+### 4. LOCKING CONCEPT
+#### Definition
+- Lock = permission to access data item
+#### Rule
+- Must acquire lock before accessing data
+#### Insight
+- Ensures mutual exclusion
+
+### 5. TYPES OF LOCKS
+#### Shared Lock (S)
+- Read only
+- Multiple transactions allowed
+#### Exclusive Lock (X)
+- Read + Write
+- Only one transaction allowed
+#### Insight
+- Reads can share, writes need exclusivity :contentReference[oaicite:3]{index=3}
+
+### 6. LOCK COMPATIBILITY
+#### Rules
+- S + S → Allowed
+- S + X → Not allowed
+- X + X → Not allowed
+#### Insight
+- Prevents inconsistent reads/writes :contentReference[oaicite:4]{index=4}
+
+### 7. LOCK OPERATIONS
+#### lock-S(Q)
+- Request shared lock
+#### lock-X(Q)
+- Request exclusive lock
+#### unlock(Q)
+- Release lock
+#### Insight
+- Transactions must explicitly manage locks
+
+### 8. LOCKING PROTOCOL
+#### Definition
+- Rules for acquiring and releasing locks
+#### Purpose
+- Restrict unsafe schedules
+#### Insight
+- Ensures serializability indirectly
+
+### 9. LOCK REQUEST PROCESS
+#### Steps
+- Transaction requests lock
+- If compatible → granted
+- Else → wait
+#### Insight
+- Waiting ensures correctness
+
+### 10. HOLDING LOCKS
+#### Rule
+- Must hold lock while accessing data
+#### Important
+- Releasing too early is dangerous
+#### Insight
+- Timing of unlock is critical :contentReference[oaicite:5]{index=5}
+
+### 11. EXAMPLE: SERIAL EXECUTION
+#### Scenario
+- T1 transfers money
+- T2 calculates total
+#### Result
+- Always correct output
+#### Insight
+- Serial execution is safe baseline
+
+### 12. BAD CONCURRENT SCHEDULE
+#### Problem
+- Early unlock of data item
+#### Result
+- Other transaction reads partial update
+#### Example Result
+- Incorrect total (250 instead of 300)
+#### Insight
+- Intermediate state exposed → inconsistency :contentReference[oaicite:6]{index=6}
+
+### 13. GOOD CONCURRENT SCHEDULE
+#### Fix
+- Delay unlocking until safe point
+#### Result
+- Other transaction waits
+#### Outcome
+- Correct result (300)
+#### Insight
+- Proper lock duration ensures correctness :contentReference[oaicite:7]{index=7}
+
+### 14. DEADLOCK
+#### Definition
+- Two or more transactions waiting indefinitely
+#### Example
+- T1 holds A, needs B
+- T2 holds B, needs A
+#### Result
+- Circular waiting
+#### Insight
+- System stuck permanently :contentReference[oaicite:8]{index=8}
+
+### 15. DEADLOCK HANDLING
+#### Solution
+- Abort one transaction
+- Release locks
+#### Insight
+- Break circular dependency
+
+### 16. TRADEOFF
+#### Without Locks
+- Inconsistent data
+#### With Locks
+- Deadlocks possible
+#### Insight
+- Deadlocks preferable over inconsistency :contentReference[oaicite:9]{index=9}
+
+### 17. TWO-PHASE LOCKING (2PL)
+#### Purpose
+- Ensure conflict serializability
+#### Phases
+#### Growing Phase
+- Acquire locks
+- No releases
+#### Shrinking Phase
+- Release locks
+- No new locks
+#### Insight
+- Enforces disciplined locking :contentReference[oaicite:10]{index=10}
+
+### 18. LOCK POINT
+#### Definition
+- Point where last lock is acquired
+#### Property
+- Determines serialization order
+#### Insight
+- Basis for correctness
+
+### 19. LIMITATION OF 2PL
+#### Issue
+- Cannot generate all serializable schedules
+#### But
+- Ensures correctness
+#### Insight
+- Practical compromise
+
+### 20. LOCK CONVERSIONS
+#### Upgrade
+- S → X (during growing phase)
+#### Downgrade
+- X → S (during shrinking phase)
+#### Insight
+- Flexible locking improves efficiency :contentReference[oaicite:11]{index=11}
+
+### 21. AUTOMATIC LOCKING (READ)
+#### Process
+- If no X-lock → grant S-lock
+- Else → wait
+#### Insight
+- DBMS can handle locking internally
+
+### 22. AUTOMATIC LOCKING (WRITE)
+#### Process
+- Need X-lock
+- Upgrade if holding S-lock
+- Else request X-lock
+#### Insight
+- Writes require stricter control
+
+### 23. DEADLOCK IN 2PL
+#### Observation
+- Even 2PL allows deadlocks
+#### Insight
+- Serializability ≠ deadlock-free :contentReference[oaicite:12]{index=12}
+
+### 24. STARVATION
+#### Definition
+- Transaction waits indefinitely
+#### Causes
+- Continuous priority to others
+- Repeated rollbacks
+#### Insight
+- Fairness issue in scheduling :contentReference[oaicite:13]{index=13}
+
+### 25. CASCADING ROLLBACK
+#### Cause
+- Reading uncommitted data
+#### Effect
+- Multiple rollbacks
+#### Insight
+- Still possible under 2PL :contentReference[oaicite:14]{index=14}
+
+### 26. STRICT TWO-PHASE LOCKING
+#### Rule
+- Hold X-locks till commit/abort
+#### Advantage
+- Prevent cascading rollback
+#### Insight
+- Safer than basic 2PL :contentReference[oaicite:15]{index=15}
+
+### 27. RIGOROUS 2PL
+#### Rule
+- Hold ALL locks till commit/abort
+#### Advantage
+- Strongest guarantee
+#### Tradeoff
+- Lower concurrency
+#### Insight
+- Maximum safety, minimum parallelism
+
+### 28. LOCK MANAGER
+#### Role
+- Handles lock requests
+- Grants/denies locks
+#### Communication
+- Transactions send requests
+#### Insight
+- Central control system :contentReference[oaicite:16]{index=16}
+
+### 29. LOCK TABLE
+#### Structure
+- Tracks:
+  - Granted locks
+  - Waiting requests
+#### Implementation
+- In-memory hash table
+#### Behavior
+- Queue for requests
+- Grant if compatible
+#### Insight
+- Core data structure for locking :contentReference[oaicite:17]{index=17}
+
+### 30. FINAL TAKEAWAYS
+#### Core Ideas
+- Concurrency control ensures correctness
+- Locks enforce isolation
+- 2PL ensures serializability
+- Deadlocks are unavoidable
+- Tradeoff: safety vs concurrency
+
+### MEMORY LINES
+#### Quick Recall
+- Lock → control access
+- S → read, X → write
+- 2PL → grow then shrink
+- Deadlock → circular wait
+- Strict 2PL → safer execution
+---
