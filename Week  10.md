@@ -970,3 +970,265 @@ Transfer $50 from A → B:
 - Deadlock → circular wait
 - Strict 2PL → safer execution
 ---
+## CS2001 – Week 10, Lecture 5
+## DEADLOCK HANDLING & TIMESTAMP-BASED PROTOCOLS
+
+### 1. CONTEXT
+#### Recap
+- Locking ensures isolation
+- Two-phase locking ensures serializability
+#### Problem
+- Deadlocks occur frequently
+#### Goal
+- Handle, prevent, or avoid deadlocks
+#### Insight
+- Need systematic deadlock management
+
+### 2. DEADLOCK
+#### Definition
+- Set of transactions waiting on each other
+#### Condition
+- Circular waiting
+#### Example
+- T1 waits for T2
+- T2 waits for T1
+#### Insight
+- System gets stuck indefinitely :contentReference[oaicite:2]{index=2}
+
+### 3. DEADLOCK HANDLING STRATEGIES
+#### Categories
+- Prevention
+- Detection
+- Recovery
+#### Insight
+- Trade-off between complexity and performance
+
+### 4. DEADLOCK PREVENTION
+#### Goal
+- Ensure deadlock never occurs
+#### Methods
+- Pre-declare all locks
+- Impose ordering on data items
+#### Drawback
+- Reduced concurrency
+#### Insight
+- Avoid cycle formation :contentReference[oaicite:3]{index=3}
+
+### 5. TIMESTAMP
+#### Definition
+- Unique identifier assigned to transaction
+#### Meaning
+- Represents relative start time
+#### Rule
+- Smaller timestamp → older transaction
+#### Insight
+- Used to enforce ordering :contentReference[oaicite:4]{index=4}
+
+### 6. WAIT-DIE SCHEME
+#### Type
+- Non-preemptive
+#### Rule
+- Older transaction → wait
+- Younger transaction → rollback (die)
+#### Condition
+- If TS(Ti) < TS(Tj) → Ti waits
+- Else → Ti dies
+#### Insight
+- Older transactions get priority :contentReference[oaicite:5]{index=5}
+
+### 7. WAIT-DIE CHARACTERISTICS
+#### Behavior
+- Younger transactions repeatedly restart
+#### Advantage
+- Prevents deadlock
+#### Drawback
+- More rollbacks
+#### Insight
+- Conservative approach
+
+### 8. WOUND-WAIT SCHEME
+#### Type
+- Preemptive
+#### Rule
+- Older transaction → preempts (wounds)
+- Younger transaction → waits
+#### Condition
+- If TS(Ti) < TS(Tj) → Tj is rolled back
+- Else → Ti waits
+#### Insight
+- Aggressive strategy :contentReference[oaicite:6]{index=6}
+
+### 9. WOUND-WAIT CHARACTERISTICS
+#### Advantage
+- Fewer rollbacks compared to wait-die
+#### Behavior
+- Older transactions dominate
+#### Insight
+- More efficient in practice
+
+### 10. COMMON PROPERTY
+#### Rule
+- Restart with same timestamp
+#### Purpose
+- Maintain priority order
+#### Insight
+- Prevent starvation :contentReference[oaicite:7]{index=7}
+
+### 11. TIMEOUT SCHEME
+#### Idea
+- Wait only for fixed time
+#### If timeout
+- Rollback and restart
+#### Advantage
+- Simple implementation
+#### Drawback
+- Starvation possible
+#### Insight
+- Not very reliable :contentReference[oaicite:8]{index=8}
+
+### 12. DEADLOCK DETECTION
+#### Approach
+- Use Wait-For Graph
+#### Nodes
+- Transactions
+#### Edge Ti → Tj
+- Ti waiting for Tj
+#### Insight
+- Captures dependency structure :contentReference[oaicite:9]{index=9}
+
+### 13. DEADLOCK CONDITION
+#### Rule
+- Cycle in graph ⇒ deadlock
+#### No cycle ⇒ safe
+#### Insight
+- Same principle as precedence graph
+
+### 14. DETECTION PROCESS
+#### Steps
+- Build wait-for graph
+- Periodically check for cycles
+#### Insight
+- Dynamic monitoring required
+
+### 15. DEADLOCK RECOVERY
+#### Action
+- Rollback one or more transactions
+#### Goal
+- Break cycle
+#### Insight
+- Must sacrifice some work :contentReference[oaicite:10]{index=10}
+
+### 16. VICTIM SELECTION
+#### Criteria
+- Minimum cost
+#### Factors
+- Work done
+- Resources used
+- Number of rollbacks
+#### Insight
+- Optimize rollback impact :contentReference[oaicite:11]{index=11}
+
+### 17. ROLLBACK STRATEGIES
+#### Full Rollback
+- Abort entire transaction
+#### Partial Rollback
+- Rollback to safe point
+#### Insight
+- Partial rollback is more efficient
+
+### 18. STARVATION IN RECOVERY
+#### Problem
+- Same transaction repeatedly chosen
+#### Solution
+- Increase cost of repeated rollbacks
+#### Insight
+- Fairness must be ensured :contentReference[oaicite:12]{index=12}
+
+### 19. TIMESTAMP-BASED PROTOCOL
+#### Idea
+- Use timestamps instead of locks
+#### Goal
+- Ensure serializability
+#### Advantage
+- No waiting → no deadlock
+#### Insight
+- Different approach to concurrency :contentReference[oaicite:13]{index=13}
+
+### 20. DATA ITEM TIMESTAMPS
+#### Maintain for each item Q
+- W-timestamp(Q): last write time
+- R-timestamp(Q): last read time
+#### Insight
+- Tracks data usage history :contentReference[oaicite:14]{index=14}
+
+### 21. READ RULE
+#### If TS(Ti) < W-timestamp(Q)
+- Reject read → rollback
+#### Else
+- Allow read
+- Update R-timestamp(Q)
+#### Insight
+- Prevent reading obsolete data :contentReference[oaicite:15]{index=15}
+
+### 22. WRITE RULE (CASE 1)
+#### If TS(Ti) < R-timestamp(Q)
+- Reject write → rollback
+#### Reason
+- Value already used by newer transaction
+#### Insight
+- Prevent inconsistency
+
+### 23. WRITE RULE (CASE 2)
+#### If TS(Ti) < W-timestamp(Q)
+- Reject write → rollback
+#### Reason
+- Writing obsolete value
+#### Insight
+- Maintain correct ordering
+
+### 24. WRITE RULE (CASE 3)
+#### Otherwise
+- Allow write
+- Update W-timestamp(Q)
+#### Insight
+- Valid operation
+
+### 25. KEY PROPERTY
+#### Result
+- Operations follow timestamp order
+#### Outcome
+- Conflict serializability ensured
+#### Insight
+- Implicit ordering replaces locks :contentReference[oaicite:16]{index=16}
+
+### 26. NO DEADLOCK
+#### Reason
+- Transactions never wait
+#### Behavior
+- Immediate rollback instead
+#### Insight
+- Eliminates circular wait :contentReference[oaicite:17]{index=17}
+
+### 27. LIMITATIONS
+#### Issues
+- May not be recoverable
+- May not be cascadeless
+#### Insight
+- Trade-off for deadlock freedom :contentReference[oaicite:18]{index=18}
+
+### 28. FINAL TAKEAWAYS
+#### Core Ideas
+- Deadlocks are inevitable in locking
+- Prevention uses ordering or timestamps
+- Detection uses wait-for graph
+- Recovery requires rollback
+- Timestamp protocol avoids deadlock
+
+### MEMORY LINES
+#### Quick Recall
+- Deadlock → circular wait
+- Wait-die → younger dies
+- Wound-wait → older kills
+- Detection → cycle check
+- Timestamp → no locks, no deadlock
+---
