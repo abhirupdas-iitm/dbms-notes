@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Week  10.md",
+                "file": "Week 11.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Week  10"
+              "title": "Week 11"
             }
           }
         ]
@@ -187,6 +187,7 @@
   "active": "768a1e84e045c93b",
   "lastOpenFiles": [
     "Week  10.md",
+    "Week 11.md",
     "Week 9.md",
     "Week 8.md",
     "DBMS.md",
