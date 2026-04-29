@@ -1018,3 +1018,252 @@
 - Redo → always physical
 - Undo → depends on state
 ---
+## CS2001 – Week 11, Lecture 5
+## RAID (REDUNDANT ARRAY OF INDEPENDENT DISKS)
+
+### 1. WHAT IS RAID?
+#### Definition
+- Multiple disks combined → appear as a single disk
+#### Goals
+- High capacity
+- High speed (parallelism)
+- High reliability (redundancy)
+#### Insight
+- Parallel disks = performance + fault tolerance
+
+### 2. WHY RAID IS NEEDED
+#### Problem
+- More disks → higher chance of failure
+#### Example
+- 100 disks → failure likely within ~41 days
+#### Solution
+- Add redundancy
+#### Insight
+- Reliability comes from redundancy, not fewer failures
+
+### 3. THREE CORE TECHNIQUES
+
+#### (A) MIRRORING
+- Duplicate data across disks
+- Writes → both disks
+- Reads → any disk
+##### Pros
+- Very high reliability
+- Fast reads
+##### Cons
+- 50% storage efficiency
+
+#### (B) STRIPING
+- Split data across disks
+##### Types
+1. Bit-level
+2. Byte-level
+3. Block-level (most used)
+##### Pros
+- High parallelism
+- Faster reads/writes
+##### Cons
+- No redundancy (alone)
+
+#### (C) PARITY
+- Extra bit/block for error detection + correction
+- Uses XOR
+##### Idea
+- Missing data = XOR of remaining + parity
+##### Pros
+- Storage efficient
+- Enables recovery
+##### Cons
+- Computation overhead
+
+### 4. RAID LEVELS OVERVIEW
+#### Important
+- Numbers ≠ ranking
+- Just identifiers
+
+#### Common Levels
+- RAID 0 → Striping
+- RAID 1 → Mirroring
+- RAID 5 → Distributed parity
+- RAID 6 → Dual parity
+- RAID 10 → Hybrid
+
+### 5. RAID 0 (STRIPING)
+#### Features
+- No redundancy
+- 100% storage utilization
+- Highest performance
+
+#### Problem
+- One disk failure → total data loss
+
+#### Use Case
+- Temporary / non-critical data
+
+### 6. RAID 1 (MIRRORING)
+#### Features
+- Duplicate data
+- Excellent fault tolerance
+- Parallel reads
+
+#### Cost
+- 50% storage efficiency
+
+#### Insight
+- Data survives single disk failure
+
+### 7. RAID 2 (HAMMING CODE)
+#### Features
+- Bit-level striping
+- Error correction using Hamming code
+
+#### Problem
+- Complex
+- Not used in practice
+
+### 8. RAID 3 (BYTE STRIPING + PARITY)
+#### Features
+- Byte-level striping
+- Single parity disk
+
+#### Problem
+- Cannot handle multiple requests
+- All disks accessed together
+
+### 9. RAID 4 (BLOCK STRIPING + PARITY)
+#### Features
+- Block-level striping
+- Dedicated parity disk
+
+#### Pros
+- Good read performance
+
+#### Cons
+- Parity disk bottleneck
+- Write performance low
+
+#### Limit
+- Handles only 1 disk failure
+
+### 10. RAID 5 (DISTRIBUTED PARITY)
+#### Features
+- Block striping
+- Parity distributed across disks
+
+#### Pros
+- No bottleneck disk
+- Good read performance
+#### Cons
+- Write overhead (parity updates)
+#### Limit
+- Survives 1 disk failure
+
+### 11. RAID 6 (DUAL PARITY)
+#### Features
+- Two parity blocks (P + Q)
+- Uses Reed-Solomon codes
+#### Pros
+- Survives 2 disk failures
+#### Cons
+- Slow writes
+- Higher computation
+
+### 12. HYBRID RAID
+#### Idea
+- Combine RAID levels
+
+### 13. RAID 01 (0 + 1)
+#### Structure
+- Mirror of stripes
+#### Flow
+- First stripe → then mirror
+#### Issue
+- Less reliable than RAID 10
+
+### 14. RAID 10 (1 + 0)
+#### Structure
+- Stripe of mirrors
+#### Flow
+- First mirror → then stripe
+#### Pros
+- High performance
+- High reliability
+#### Insight
+- Best for databases
+
+### 15. RAID TRADE-OFF TRIANGLE
+#### Three Factors
+- Speed
+- Cost
+- Fault tolerance
+#### Examples
+- RAID 0 → fast + cheap
+- RAID 5 → cheap + safe
+- RAID 10 → fast + safe
+
+### 16. PRACTICAL USAGE
+
+#### RAID 0
+- Logging, rendering
+- Temporary data
+#### RAID 1
+- OS, transactional DB
+#### RAID 5
+- Data warehouse, web servers
+
+#### RAID 6
+- Archival systems
+#### RAID 10
+- Databases, high-performance apps
+
+### 17. CHOOSING RAID LEVEL
+#### Factors
+- Cost
+- Performance
+- Failure handling
+- Rebuild time
+
+### 18. IMPORTANT INSIGHTS
+
+#### RAID 0
+- Not fault tolerant
+#### RAID 2/3/4
+- Rarely used
+#### RAID 5
+- Best balance
+#### RAID 1
+- Better for frequent writes
+
+### 19. PERFORMANCE NOTE
+#### RAID 1 vs RAID 5
+- RAID 1 → faster writes
+- RAID 5 → better storage efficiency
+
+### 20. WHAT RAID DOES NOT DO
+
+#### DOES NOT
+- Guarantee uptime
+- Replace backups
+- Prevent human errors
+- Protect from malware
+- Protect from disasters
+#### Insight
+- RAID ≠ Backup
+
+### 21. FINAL TAKEAWAYS
+
+#### Core Ideas
+- RAID = performance + redundancy
+- Uses:
+  - Mirroring
+  - Striping
+  - Parity
+- Trade-offs always exist
+
+### MEMORY LINES
+
+- Striping → speed
+- Mirroring → safety
+- Parity → balance
+- RAID ≠ Backup
+---
