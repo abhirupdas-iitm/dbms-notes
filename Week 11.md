@@ -547,3 +547,222 @@
 - Redo → reapply
 - Checkpoint → shortcut recovery
 ---
+## CS2001 – Week 11, Lecture 3
+## TRANSACTIONAL LOGGING, HOT BACKUP & CONCURRENT RECOVERY
+
+### 1. CONTEXT
+#### Recap
+- Failures unavoidable
+- Log-based recovery ensures ACID
+#### Focus
+- Hot backup + concurrent recovery
+#### Insight
+- Real systems ≠ serial → concurrency matters
+
+### 2. HOT BACKUP
+#### Definition
+- Backup while DB is running
+#### Use Cases
+- Banking systems
+- Stock trading
+- Real-time systems
+#### Problem
+- Data keeps changing during backup
+#### Insight
+- Backup may become inconsistent
+
+### 3. TRANSACTION LOGGING AS HOT BACKUP
+#### Key Idea
+- Backup logs instead of full data
+#### Why
+- Logs are small
+- Faster backup
+#### Strategy
+- Cold backup → data
+- Hot backup → logs
+#### Insight
+- Logs bridge gap between backup and failure
+
+### 4. WRITE ORDER RULE (CRITICAL)
+#### Mandatory Order
+1. Write to log
+2. Write to database
+#### Reason
+- Enables recovery if crash occurs
+#### Insight
+- This is WAL in action
+
+### 5. CRASH SCENARIO LOGIC
+#### Case
+- Crash before DB write
+#### Result
+- Backup inconsistent
+#### Solution
+1. Recover backup
+2. Replay logs
+#### Insight
+- Logs restore missing updates
+
+### 6. RECOVER vs RESTORE
+#### Recover
+- Load data + logs from backup
+#### Restore
+- Apply logs to reach consistent state
+#### Insight
+- Recover = fetch, Restore = fix
+
+### 7. LOG REPLAY STRATEGY
+#### Approach
+- Replay ALL logs (usually)
+#### Reason
+- Simpler than selective replay
+#### Insight
+- Slight redundancy > complexity
+
+### 8. CONCURRENT TRANSACTIONS
+#### Reality
+- Multiple transactions execute together
+#### Shared Components
+- Same log
+- Same buffer
+#### Insight
+- Logs interleaved across transactions
+
+### 9. CRITICAL ASSUMPTION
+#### Rule
+- No transaction updates item modified by uncommitted transaction
+#### Implementation
+- Strict Two-Phase Locking
+#### Reason
+- Enables correct undo
+#### Insight
+- Prevents cascading rollback
+
+### 10. DATA ACCESS (CONCURRENT)
+#### Structure
+- Shared buffer
+- Private workspace per transaction
+#### Behavior
+- Read → buffer → local
+- Write → local → buffer
+#### Insight
+- Isolation via private copies
+
+### 11. LOG STRUCTURE (SAME AS BEFORE)
+#### Entries
+- < Ti start >
+- < Ti, X, V1, V2 >
+- < Ti commit >
+#### Insight
+- Logging unchanged, complexity ↑
+
+### 12. ROLLBACK (NORMAL)
+#### Steps
+1. Scan log backward
+2. Undo each update
+3. Write CLR (compensation log)
+4. Write < Ti abort >
+#### Insight
+- Same as serial case
+
+### 13. CHECKPOINT RECAP (CONCURRENT)
+#### Categories
+- Ta: commit before checkpoint → ignore
+- Tb: start before, commit after → redo
+- Tc: start after, commit → redo
+- Td: incomplete → undo
+#### Insight
+- Checkpoint limits recovery scope
+
+### 14. CORE RECOVERY STRATEGY
+#### Step 1
+- Redo everything after checkpoint
+#### Step 2
+- Undo incomplete transactions
+#### Insight
+- “Redo first, then undo”
+
+### 15. CRITICAL CONCEPT (VERY IMPORTANT)
+#### Problem
+- Incomplete transactions lost after crash
+#### Solution
+- Redo them first
+- Then undo them
+#### Insight
+- Must reach failure state before rollback
+
+### 16. REDO-UNDO PHASES
+#### Redo Phase
+- Apply ALL updates (committed + uncommitted)
+#### Undo Phase
+- Undo only incomplete transactions
+#### Insight
+- Known as “Repeating History”
+
+### 17. REDO PHASE ALGORITHM
+#### Steps
+1. Find last checkpoint
+2. Initialize undo-list
+3. Scan forward:
+   - Update → redo (write V2)
+   - Start → add to undo-list
+   - Commit/Abort → remove from undo-list
+#### Insight
+- Builds undo-list dynamically
+
+### 18. REDO OPERATIONS
+#### Based on Log
+- INSERT → insert again
+- DELETE → delete again
+- UPDATE → apply V2
+#### Insight
+- Reconstruct state at failure
+
+---
+
+### 19. UNDO PHASE ALGORITHM
+#### Steps
+1. Scan backward
+2. For each Ti in undo-list:
+   - Write V1 (undo)
+   - Write CLR
+3. On < Ti start >:
+   - Write < Ti abort >
+   - Remove from undo-list
+4. Stop when list empty
+#### Insight
+- Full rollback of incomplete transactions
+
+### 20. UNDO OPERATIONS
+#### Based on Log
+- INSERT → delete
+- DELETE → insert
+- UPDATE → restore V1
+#### Insight
+- Reverse effect completely
+
+### 21. COMPLETE FLOW
+#### After Crash
+1. Recover backup
+2. Redo phase
+3. Undo phase
+4. Resume system
+#### Insight
+- Deterministic recovery pipeline
+
+### 22. FINAL TAKEAWAYS
+#### Key Ideas
+- Logs = hot backup backbone
+- Redo everything after checkpoint
+- Undo incomplete transactions
+- Redo first, undo later
+
+### MEMORY LINES
+#### Quick Recall
+- Log first → DB later
+- Recover → load
+- Restore → replay
+- Redo → forward
+- Undo → backward
+- Redo ALL, Undo SOME
+---
