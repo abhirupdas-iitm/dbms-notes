@@ -1388,7 +1388,7 @@ course(course_id, title, start, end)
 
 ## 13. EXAMPLE (JOHN CASE)
 
-From *page 21–23 tables* :contentReference[oaicite:2]{index=2}
+From *page 21–23 tables* :contentReference
 
 ---
 
@@ -1436,8 +1436,7 @@ Person(Name, City, Valid_From, Valid_Till, Entered, Superseded)
 
 ---
 
-## 16. BIG PICTURE 🔴
-
+## 16. BIG PICTURE
 Database Design is about balance:
 
 - Theory (Normalization)
@@ -1446,7 +1445,7 @@ Database Design is about balance:
 
 ---
 
-## 17. FINAL TAKEAWAY 🔥
+## 17. FINAL TAKEAWAY
 
 > A good database designer knows when to normalize, when to denormalize, and when to rethink the model entirely.
 
@@ -1473,3 +1472,4 @@ ER Model
 ### Notes taken from Activity Questions 6.5
 1. 
 ---
+[[Extra Content for Week 6]]
