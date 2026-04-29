@@ -766,3 +766,255 @@
 - Undo → backward
 - Redo ALL, Undo SOME
 ---
+## CS2001 – Week 11, Lecture 4
+## EARLY LOCK RELEASE, LOGICAL UNDO & ADVANCED RECOVERY
+
+### 1. CONTEXT
+#### Recap
+- Log-based recovery handles concurrency
+- Redo → then Undo
+#### Problem
+- Real systems use early lock release
+#### Goal
+- Handle recovery when locks are released before commit
+#### Insight
+- Traditional undo no longer works directly
+
+### 2. EARLY LOCK RELEASE
+#### Definition
+- Locks released before transaction completes
+#### Used In
+- B+ trees (indexes)
+- System data structures
+#### Reason
+- Improve concurrency
+#### Insight
+- Breaks strict 2PL assumption
+
+### 3. PROBLEM WITH EARLY LOCK RELEASE
+#### Scenario
+- T1 inserts (V1, R1)
+- Lock released
+- T2 inserts (V2, R2)
+#### Issue
+- Node structure changes
+#### Result
+- Cannot revert to old value safely
+#### Insight
+- Physical undo becomes incorrect
+
+### 4. WHY PHYSICAL UNDO FAILS
+#### Traditional Undo
+- Replace new value with old value
+#### Problem
+- Also removes changes by other transactions
+#### Example
+- Undo T1 → accidentally undo T2
+#### Insight
+- Violates correctness
+
+### 5. SOLUTION: LOGICAL UNDO
+#### Idea
+- Undo operation logically, not physically
+#### Example
+- Insert → undo by delete
+- Delete → undo by insert
+#### Insight
+- Reverse effect, not state
+
+### 6. LOGICAL UNDO LOGGING
+#### Definition
+- Log contains undo operation (not just old value)
+#### Type
+- Logical operations
+#### Contrast
+- Physical logging → values
+- Logical logging → actions
+#### Insight
+- Needed for early lock release
+
+### 7. PHYSICAL REDO (IMPORTANT)
+#### Rule
+- Redo is always physical
+#### Reason
+- Logical redo is complex
+#### Insight
+- Hybrid system:
+  - Redo → physical
+  - Undo → logical
+
+### 8. OPERATION LOGGING
+#### Structure
+- < Ti, Oj, operation-begin >
+- Physical update logs
+- < Ti, Oj, operation-end, U >
+#### U
+- Logical undo operation
+#### Insight
+- Combines physical + logical logging
+
+### 9. OPERATION LOGGING FLOW
+#### Step 1
+- Log operation begin
+#### Step 2
+- Log physical updates (V1 → V2)
+#### Step 3
+- Log operation end with undo info
+#### Insight
+- Full trace of operation lifecycle
+
+### 10. EXAMPLE (INDEX INSERT)
+#### Operation
+- Insert (K5, RID7) into index
+#### Logs
+- operation-begin
+- physical updates
+- operation-end (delete K5, RID7)
+#### Insight
+- Undo = delete operation
+
+### 11. CRASH BEFORE OPERATION END
+#### Condition
+- operation-end not found
+#### Action
+- Use physical undo
+#### Reason
+- Operation incomplete
+#### Insight
+- Treat as normal rollback
+
+### 12. CRASH AFTER OPERATION END
+#### Condition
+- operation-end exists
+#### Action
+- Use logical undo
+#### Ignore
+- Physical undo logs
+#### Insight
+- Operation already applied
+
+### 13. KEY RULE
+#### If operation incomplete
+- Use physical undo
+#### If operation complete
+- Use logical undo
+#### Insight
+- Decision depends on log state
+
+### 14. TRANSACTION ROLLBACK (LOGICAL UNDO)
+#### Process
+- Scan log backward
+#### Case 1
+- < Ti, X, V1, V2 > → physical undo
+#### Case 2
+- operation-end → logical undo
+#### Case 3
+- operation-abort → skip
+#### Case 4
+- redo-only → ignore
+#### Insight
+- Mixed undo strategy
+
+### 15. LOGICAL UNDO EXECUTION
+#### Steps
+- Execute undo operation (U)
+- Log actions normally
+- Write operation-abort
+#### Insight
+- Undo itself is logged
+
+### 16. SKIPPING LOG RECORDS
+#### When
+- operation-abort found
+#### Action
+- Skip to operation-begin
+#### Reason
+- Avoid duplicate undo
+#### Insight
+- Prevents inconsistency
+
+### 17. END OF ROLLBACK
+#### Condition
+- < Ti start > found
+#### Action
+- Write < Ti abort >
+#### Insight
+- Transaction fully undone
+
+### 18. FAILURE RECOVERY WITH LOGICAL UNDO
+#### Same High-Level Steps
+1. Redo phase
+2. Undo phase
+#### Difference
+- Undo uses logical + physical
+#### Insight
+- Extension of previous algorithm
+
+### 19. REDO PHASE (UNCHANGED)
+#### Rule
+- Redo all updates
+#### Includes
+- Committed
+- Uncommitted
+#### Insight
+- Repeat history principle
+
+### 20. UNDO PHASE (MODIFIED)
+#### Process
+- Backward scan
+#### Use
+- Logical undo for completed operations
+- Physical undo for incomplete ones
+#### Insight
+- Hybrid undo mechanism
+
+### 21. FINAL RECOVERY MODEL
+#### Flow
+1. Recover backup
+2. Redo all updates
+3. Undo incomplete transactions
+   - logical or physical
+#### Insight
+- Fully general recovery system
+
+### 22. WHERE EARLY LOCK RELEASE USED
+#### Systems
+- Index structures (B+ trees)
+- Free space management
+- Block tracking
+#### Insight
+- High-frequency structures
+
+### 23. PLANNING BACKUP & RECOVERY
+#### Factors
+#### Data Importance
+- Critical data → more backups
+#### Frequency of Change
+- Frequent updates → frequent backup
+#### Recovery Speed
+- Business downtime constraints
+#### Equipment
+- Hardware + software capability
+#### Employees
+- Skilled personnel required
+#### Storage
+- Onsite vs offsite backups
+#### Insight
+- Technical + business decision
+
+### 24. FINAL TAKEAWAYS
+#### Core Ideas
+- Early lock release improves concurrency
+- Physical undo fails in such systems
+- Logical undo solves the issue
+- Redo always physical
+- Recovery becomes hybrid
+
+### MEMORY LINES
+#### Quick Recall
+- Early release → logical undo
+- Insert → delete
+- Delete → insert
+- Redo → always physical
+- Undo → depends on state
+---
