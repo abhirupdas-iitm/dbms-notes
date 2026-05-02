@@ -888,3 +888,206 @@ You now understand:
 Big Data → Break RDBMS → Relax guarantees → Scale horizontally
 
 ---
+## CS2001 – Week 12, Lecture 5
+### 1. INTRODUCTION
+Final lecture of DBMS  
+Focus:
+→ Real-world databases + full course consolidation  
+Goal:
+> Understand database ecosystem + connect everything learned
+
+### 2. RELATIONAL DATABASE MODEL
+- Data stored in tables (rows + columns)
+- Each row uniquely identified (Primary Key)
+- Relations via Foreign Keys
+- Query using SQL  
+
+#### Why RDBMS dominates:
+- Simplicity  
+- Reliability  
+- Performance  
+- Flexibility  
+- Enterprise adoption  
+
+#### Key Insight
+> RDBMS = foundation of modern data systems
+
+### 3. TYPES OF DATABASE SYSTEMS
+#### Commercial / Proprietary
+- Oracle  
+- IBM Db2  
+- Microsoft SQL Server  
+- Sybase  
+- Teradata  
+
+#### Open Source
+- PostgreSQL  
+- MySQL  
+- SQLite  
+- MariaDB  
+
+#### Object-Relational
+- Combines relational + object concepts  
+
+#### Key Insight
+> Industry uses both proprietary and open-source systems
+
+### 4. MARKET OVERVIEW
+- Oracle → dominant (~45–48%)  
+- Microsoft → ~19%  
+- IBM → ~15%  
+
+#### Insight:
+> Enterprise world heavily relies on Oracle
+
+### 5. DBMS RANKING
+Top systems:
+1. Oracle  
+2. MySQL  
+3. SQL Server  
+4. PostgreSQL  
+5. Db2  
+
+#### Trend:
+- PostgreSQL rising  
+- Open-source adoption increasing  
+
+#### Key Insight
+> Open-source is catching up fast
+
+### 6. MAJOR DATABASE SYSTEMS
+#### Oracle
+- Multi-model DB  
+- OLTP + analytics  
+- Uses SQL + PL/SQL  
+
+#### IBM Db2
+- Strong enterprise analytics  
+
+#### SQL Server
+- Microsoft DB  
+- Uses Transact-SQL  
+
+#### PostgreSQL
+- Powerful open-source  
+- Handles large-scale systems  
+
+#### MySQL
+- Lightweight  
+- Popular for web apps  
+
+#### SQLite
+- Embedded DB  
+- No server required  
+
+#### Key Insight
+> DB choice depends on use-case, not popularity
+
+### 7. OBJECT-RELATIONAL DB
+- Combines:
+  - Relational model  
+  - Object-oriented concepts  
+- Uses pointers → faster access  
+- Reduces joins  
+
+#### Limitation:
+- Less used compared to NOSQL rise
+
+### 8. COMPARISON FACTORS
+Databases compared on:
+- ACID compliance  
+- Indexing  
+- Partitioning  
+- Security  
+- OS support  
+
+#### Key Insight
+> Core features same, implementation differs
+
+### 9. INDUSTRY REALITY
+- RDBMS still dominant  
+- NOSQL growing  
+
+#### Why RDBMS still strong:
+- Strong consistency  
+- Transactions  
+- Reliability  
+
+#### Key Insight
+> NOSQL complements RDBMS, doesn’t replace it
+
+### 10. FULL COURSE RECAP
+Week 1:
+- DBMS basics  
+
+Week 2–3:
+- Relational model  
+- SQL  
+
+Week 4:
+- Advanced SQL  
+- Transactions  
+
+Week 5–6:
+- Functional dependencies  
+- Normalization  
+
+Week 7:
+- Application architecture  
+
+Week 8–9:
+- Storage  
+- Indexing (B+ Trees, Hashing)  
+
+Week 10:
+- Query processing  
+- Optimization  
+
+Week 11:
+- Transactions  
+- Concurrency  
+- Recovery  
+
+Week 12:
+- Big Data  
+- NOSQL  
+- CAP theorem  
+- DB ecosystem  
+
+#### Key Insight
+> You now understand the entire DB pipeline
+
+### 11. FINAL TAKEAWAY
+You now know:
+- Design databases  
+- Write efficient queries  
+- Optimize performance  
+- Understand real systems  
+
+### Mental Model:
+``Design → Query → Optimize → Scale → Choose DB``
+
+### 12. FINAL MESSAGE
+- Every system uses data  
+- Every company depends on DB  
+- DBMS knowledge = long-term value  
+
+#### Key Insight
+> Databases are permanent in tech
+
+### 13. STRATEGIC NEXT STEPS
+- Master SQL deeply  
+- Practice with:
+  - PostgreSQL  
+  - SQLite  
+- Focus on:
+  - Indexing  
+  - Transactions  
+  - Query optimization  
+
+Then move to:
+→ Distributed systems  
+→ Big Data  
+→ System design  
+
+---
