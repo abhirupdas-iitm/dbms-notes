@@ -871,7 +871,7 @@ Focus:
 - Eventual consistency
 
 #### Key Insight
-> Choose based on problem, not trend :contentReference[oaicite:7]{index=7}
+> Choose based on problem, not trend
 
 ### 19. BIG PICTURE
 Evolution:
