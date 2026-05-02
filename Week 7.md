@@ -149,7 +149,6 @@ Client ↔ Server
 - Weak separation of concerns
 
 ### 13. 3-TIER ARCHITECTURE (MOST IMPORTANT)
-
 #### Structure:
 - Presentation Layer
 - Business Logic Layer
@@ -643,7 +642,7 @@ Database = Storage
 ### 1. INTRODUCTION
 Focus:
 → Building **real applications using Python + PostgreSQL**
-### Goal
+#### Goal
 > Move from theory → **actual working system**
 
 ### 2. OBJECTIVES
@@ -1145,4 +1144,5 @@ Mobile = Constraint-aware design
 
 ### Notes taken from Activity Questions 7.5
 1. 
+---
 ---
