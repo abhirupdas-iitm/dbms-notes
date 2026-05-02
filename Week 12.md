@@ -225,57 +225,45 @@ Two expressions are equivalent if:
 ### 5. EQUIVALENCE RULES (CORE)
 #### Rule 1: Selection Decomposition
 ``σθ1∧θ2(E) = σθ1(σθ2(E))``
-
 #### Rule 2: Selection Commutativity
 ``σθ1(σθ2(E)) = σθ2(σθ1(E))``
-
 #### Rule 3: Projection Simplification
 ``πL1(πL2(...(E))) = πL1(E)``
-
 #### Rule 4: Selection + Join
 ``σθ(E1 × E2) = E1 ⋈θ E2``
 ``σθ1(E1 ⋈θ2 E2) = E1 ⋈(θ1∧θ2) E2``
-
 #### Key Insight
 > Break, reorder, combine operations freely
 
 ### 6. JOIN EQUIVALENCE RULES
 #### Commutativity:
 ``E1 ⋈ E2 = E2 ⋈ E1``
-
 #### Associativity:
 ``(E1 ⋈ E2) ⋈ E3 = E1 ⋈ (E2 ⋈ E3)``
-
 #### Conditional Associativity:
 - Valid when conditions apply only to relevant relations
-
 #### Key Insight
 > Join order ≠ fixed → optimize based on size
 
 ### 7. SELECTION PUSHING (VERY IMPORTANT)
 #### Rule:
 ``σθ(E1 ⋈ E2) = (σθ(E1)) ⋈ E2`` (if θ only uses E1)
-
 #### Extended:
 ``σθ1∧θ2(E1 ⋈ E2) = (σθ1(E1)) ⋈ (σθ2(E2))``
-
 #### Benefit:
 - Reduces relation size early
 - Speeds up joins
-
 #### Key Insight
 > Filter early → smaller joins → faster queries
 
 ### 8. PROJECTION PUSHING
 #### Rule:
 ``πL(E1 ⋈ E2) = πL1(E1) ⋈ πL2(E2)``
-
 #### Condition:
 - Keep attributes needed for join
 #### Extended:
 - Include join attributes:
 ``πL1∪L2(E1 ⋈ E2) = πL1∪L2(πL1∪L3(E1) ⋈ πL2∪L4(E2))``
-
 #### Key Insight
 > Remove unused attributes early
 
@@ -283,16 +271,12 @@ Two expressions are equivalent if:
 #### Commutative:
 ``E1 ∪ E2 = E2 ∪ E1``
 ``E1 ∩ E2 = E2 ∩ E1``
-
 #### Associative:
 ``(E1 ∪ E2) ∪ E3 = E1 ∪ (E2 ∪ E3)``
-
 #### Selection Distribution:
 ``σθ(E1 − E2) = σθ(E1) − σθ(E2)``
-
 #### Projection Distribution:
 ``πL(E1 ∪ E2) = πL(E1) ∪ πL(E2)``
-
 #### Key Insight
 > Operations can be rearranged safely
 
@@ -305,7 +289,6 @@ Push projections down
 Choose join order
 #### Step 4:
 Select best algorithm
-
 #### Example Insight:
 - Filter "dept = Music" before join
 - Filter "year = 2009" before join
@@ -327,11 +310,9 @@ Select best algorithm
 - Apply all rules repeatedly
 #### Problem:
 - Exponential complexity
-
 #### Solution:
 - Heuristics
 - Dynamic programming
-
 #### Key Insight
 > Don’t explore everything → prune smartly
 
@@ -339,18 +320,15 @@ Select best algorithm
 #### Space Optimization:
 - Share common sub-expressions
 - Avoid duplication
-
 #### Time Optimization:
 - Dynamic programming
 - Prune bad plans early
-
 #### Key Insight
 > Optimization itself must be efficient
 
 ### 14. BIG PICTURE
 Pipeline:
 Query → Expressions → Transformations → Plans → Cost → Best Plan
-
 #### Core Principle
 > Reduce data early, join smartly, compute less
 
@@ -361,7 +339,6 @@ You now understand:
 - Selection & projection pushing
 - Join ordering strategy
 - Plan generation
-
 #### Mental Model
 Rewrite → Reduce → Reorder → Evaluate → Choose best
 
@@ -395,17 +372,14 @@ Focus:
 #### Transaction-Level:
 - Concurrency control
 - Query optimization
-
 #### System-Level:
 - System architecture
 - Database architecture
 - Performance tuning
-
 #### Tuning Methods:
 - Hardware: faster CPU, more memory, faster disks
 - DB parameters: buffer size, checkpointing
 - Design: schema, indexes
-
 #### Key Insight
 > Bottlenecks decide performance
 
@@ -458,16 +432,13 @@ Focus:
 - Returns results
 #### Flow:
 Client → SQL → Server → Execute → Return
-
 #### 2. Data Server:
 - Handles data-intensive tasks
 - Used in high-speed environments
-
 #### Issues:
 - Caching
 - Locking
 - Data transfer
-
 #### Key Insight
 > Execution and data handling can be separated
 
@@ -477,31 +448,25 @@ Client → SQL → Server → Execute → Return
 #### Types:
 - Coarse-grained → few powerful processors
 - Fine-grained → many small processors
-
 #### Metrics:
 ``Throughput = tasks per unit time``
 ``Response Time = time per task``
-
 #### Key Insight
 > Parallelism improves performance
 
 ### 10. SPEEDUP
 #### Formula:
 ``Speedup = Time_small / Time_large``
-
 #### Ideal:
 ``Speedup = N``
-
 #### Reality:
 - Sublinear
 
 ### 11. SCALEUP
 #### Formula:
 ``Scaleup = Time_small_problem / Time_large_problem``
-
 #### Ideal:
 ``Scaleup = 1``
-
 #### Key Insight
 > Perfect scaling is rare
 
@@ -510,7 +475,6 @@ Client → SQL → Server → Execute → Return
 - Startup cost
 - Resource contention
 - Skew (uneven workloads)
-
 #### Key Insight
 > Slowest task limits performance
 
@@ -519,15 +483,12 @@ Client → SQL → Server → Execute → Return
 1. Bus:
    - Simple
    - Poor scalability
-
-2. Mesh:
+1. Mesh:
    - Better scaling
    - More connections
-
-3. Hypercube:
+1. Hypercube:
    - Best communication
    - ``Max hops = log(n)``
-
 #### Key Insight
 > Network design impacts DB performance
 
@@ -537,7 +498,6 @@ Client → SQL → Server → Execute → Return
 - Shared Disk
 - Shared Nothing
 - Hybrid
-
 #### Key Insight
 > Shared nothing scales best
 
@@ -547,15 +507,12 @@ Client → SQL → Server → Execute → Return
 #### Features:
 - Network-connected nodes
 - Shared data access
-
 #### Types:
 - Homogeneous (same system)
 - Heterogeneous (different systems)
-
 #### Transactions:
 - Local
 - Global
-
 #### Key Insight
 > Distribution increases reach but adds complexity
 
@@ -564,7 +521,6 @@ Client → SQL → Server → Execute → Return
 - Data sharing
 - Fault tolerance
 - Availability
-
 #### Disadvantages:
 - Complexity
 - Bugs
@@ -595,7 +551,6 @@ Client → SQL → Server → Execute → Return
 - High scalability
 #### Cons:
 - Complex system design
-
 #### Key Insight
 > Modern systems prefer horizontal scaling
 
@@ -604,16 +559,13 @@ Client → SQL → Server → Execute → Return
 - Writes → master
 - Reads → slaves
 - Issue: replication delay
-
 #### 2. Sharding:
 - Split data across nodes
 - No cross-shard joins
-
 #### Other Approaches:
 - Multi-master
 - No joins (denormalization)
 - In-memory DB
-
 #### Key Insight
 > Scaling trades consistency for performance
 
@@ -627,7 +579,6 @@ You now understand:
 - Architecture types
 - Parallel & distributed systems
 - Scaling strategies
-
 #### Mental Model
 Optimize → Architect → Parallelize → Distribute → Scale
 
@@ -660,7 +611,6 @@ Focus:
 - Velocity → speed of generation
 - Variability → inconsistency
 - Veracity → data quality
-
 #### Key Insight
 > Big Data = unpredictable + massive + fast
 
@@ -674,7 +624,6 @@ Focus:
 - No fixed schema
 - Horizontal scalability
 - Distributed storage
-
 #### Key Insight
 > Flexibility over structure
 
@@ -683,12 +632,10 @@ Focus:
 - Big data explosion
 - Web-scale applications
 - Need for real-time systems
-
 #### “Perfect Storm”:
 - Large data
 - New requirements
 - Flexible data types
-
 #### Key Insight
 > NOSQL is not replacement, but extension of RDBMS
 
@@ -698,12 +645,10 @@ Focus:
 - Flexible schema
 - High performance (writes)
 - Fault tolerant
-
 #### NOSQL Disadvantages:
 - No joins
 - Weak consistency
 - No standard query language
-
 #### Key Insight
 > Trade structure for scalability
 
@@ -712,7 +657,6 @@ Focus:
 - Consistency (C)
 - Availability (A)
 - Partition Tolerance (P)
-
 #### Definitions:
 - Consistency → same data everywhere
 - Availability → always respond
@@ -721,21 +665,17 @@ Focus:
 ### 8. CAP THEOREM RULE
 #### Statement:
 > Cannot achieve all three simultaneously
-
 #### Conclusion:
 ``Pick any two: C, A, P``
-
 #### Key Insight
 > Trade-offs are unavoidable
 
 ### 9. CAP DECISIONS
 #### Traditional RDBMS:
 - CA (Consistency + Availability)
-
 #### NOSQL Systems:
 - AP (Availability + Partition)
 - CP (Consistency + Partition)
-
 #### Key Insight
 > Large systems prioritize availability
 
@@ -744,18 +684,15 @@ Focus:
 - ACID
 #### Weak Consistency:
 - BASE
-
 #### ACID:
 - Atomicity
 - Consistency
 - Isolation
 - Durability
-
 #### BASE:
 - Basically Available
 - Soft State
 - Eventual Consistency
-
 #### Key Insight
 > BASE enables scalability
 
@@ -763,11 +700,9 @@ Focus:
 #### Definition:
 - Updates propagate over time
 - All nodes become consistent eventually
-
 #### Example:
 - Write on one node
 - Other nodes update later
-
 #### Key Insight
 > Immediate correctness is sacrificed for speed
 
@@ -776,10 +711,8 @@ Focus:
 - Nodes randomly share updates
 #### Analogy:
 - Like spreading rumors
-
 #### Result:
 - Eventually all nodes sync
-
 #### Key Insight
 > Random propagation ensures scalability
 
@@ -789,25 +722,21 @@ Focus:
 - Very fast
 #### Example:
 - Redis, DynamoDB
-
 #### 2. Document Stores
 - Data stored as JSON/XML documents
 - Nested structure
 #### Example:
 - MongoDB, CouchDB
-
 #### 3. Column Stores
 - Data stored in column families
 - Efficient for large datasets
 #### Example:
 - Cassandra, BigTable
-
 #### 4. Graph Stores
 - Nodes + edges
 - Relationship-focused
 #### Example:
 - Neo4j
-
 #### Key Insight
 > Different models for different problems
 
@@ -816,12 +745,10 @@ Focus:
 ``get(key)``
 ``put(key, value)``
 ``delete(key)``
-
 #### Features:
 - Simple
 - Fast
 - Scalable
-
 #### Limitation:
 - Cannot model complex relations
 
@@ -829,11 +756,9 @@ Focus:
 #### Structure:
 - JSON-like
 - Nested objects
-
 #### Features:
 - Flexible schema
 - Complex data support
-
 #### Key Insight
 > Best for semi-structured data
 
@@ -841,11 +766,9 @@ Focus:
 #### Structure:
 - Column families
 - Sparse storage
-
 #### Features:
 - Efficient reads
 - Data locality
-
 #### Key Insight
 > Optimized for large-scale analytics
 
@@ -855,7 +778,6 @@ Focus:
 #### Features:
 - Relationship queries
 - Traversals
-
 #### Key Insight
 > Best for interconnected data
 
@@ -864,12 +786,10 @@ Focus:
 - Structured data
 - Strong consistency
 - SQL-based
-
 #### Non-Relational:
 - Flexible data
 - Scalable
 - Eventual consistency
-
 #### Key Insight
 > Choose based on problem, not trend
 
@@ -883,7 +803,6 @@ You now understand:
 - NOSQL fundamentals
 - CAP theorem trade-offs
 - Types of NOSQL systems
-
 #### Mental Model
 Big Data → Break RDBMS → Relax guarantees → Scale horizontally
 
@@ -901,14 +820,12 @@ Goal:
 - Each row uniquely identified (Primary Key)
 - Relations via Foreign Keys
 - Query using SQL  
-
 #### Why RDBMS dominates:
 - Simplicity  
 - Reliability  
 - Performance  
 - Flexibility  
 - Enterprise adoption  
-
 #### Key Insight
 > RDBMS = foundation of modern data systems
 
@@ -919,16 +836,13 @@ Goal:
 - Microsoft SQL Server  
 - Sybase  
 - Teradata  
-
 #### Open Source
 - PostgreSQL  
 - MySQL  
 - SQLite  
 - MariaDB  
-
 #### Object-Relational
 - Combines relational + object concepts  
-
 #### Key Insight
 > Industry uses both proprietary and open-source systems
 
@@ -936,7 +850,6 @@ Goal:
 - Oracle → dominant (~45–48%)  
 - Microsoft → ~19%  
 - IBM → ~15%  
-
 #### Insight:
 > Enterprise world heavily relies on Oracle
 
@@ -947,11 +860,9 @@ Top systems:
 3. SQL Server  
 4. PostgreSQL  
 5. Db2  
-
 #### Trend:
 - PostgreSQL rising  
 - Open-source adoption increasing  
-
 #### Key Insight
 > Open-source is catching up fast
 
@@ -960,26 +871,20 @@ Top systems:
 - Multi-model DB  
 - OLTP + analytics  
 - Uses SQL + PL/SQL  
-
 #### IBM Db2
 - Strong enterprise analytics  
-
 #### SQL Server
 - Microsoft DB  
 - Uses Transact-SQL  
-
 #### PostgreSQL
 - Powerful open-source  
 - Handles large-scale systems  
-
 #### MySQL
 - Lightweight  
 - Popular for web apps  
-
 #### SQLite
 - Embedded DB  
 - No server required  
-
 #### Key Insight
 > DB choice depends on use-case, not popularity
 
@@ -989,7 +894,6 @@ Top systems:
   - Object-oriented concepts  
 - Uses pointers → faster access  
 - Reduces joins  
-
 #### Limitation:
 - Less used compared to NOSQL rise
 
@@ -1000,60 +904,48 @@ Databases compared on:
 - Partitioning  
 - Security  
 - OS support  
-
 #### Key Insight
 > Core features same, implementation differs
 
 ### 9. INDUSTRY REALITY
 - RDBMS still dominant  
 - NOSQL growing  
-
 #### Why RDBMS still strong:
 - Strong consistency  
 - Transactions  
 - Reliability  
-
 #### Key Insight
 > NOSQL complements RDBMS, doesn’t replace it
 
 ### 10. FULL COURSE RECAP
 Week 1:
 - DBMS basics  
-
 Week 2–3:
 - Relational model  
 - SQL  
-
 Week 4:
 - Advanced SQL  
 - Transactions  
-
 Week 5–6:
 - Functional dependencies  
 - Normalization  
-
 Week 7:
 - Application architecture  
-
 Week 8–9:
 - Storage  
 - Indexing (B+ Trees, Hashing)  
-
 Week 10:
 - Query processing  
 - Optimization  
-
 Week 11:
 - Transactions  
 - Concurrency  
 - Recovery  
-
 Week 12:
 - Big Data  
 - NOSQL  
 - CAP theorem  
 - DB ecosystem  
-
 #### Key Insight
 > You now understand the entire DB pipeline
 
@@ -1063,7 +955,6 @@ You now know:
 - Write efficient queries  
 - Optimize performance  
 - Understand real systems  
-
 ### Mental Model:
 ``Design → Query → Optimize → Scale → Choose DB``
 
@@ -1071,7 +962,6 @@ You now know:
 - Every system uses data  
 - Every company depends on DB  
 - DBMS knowledge = long-term value  
-
 #### Key Insight
 > Databases are permanent in tech
 
@@ -1084,10 +974,10 @@ You now know:
   - Indexing  
   - Transactions  
   - Query optimization  
-
 Then move to:
 → Distributed systems  
 → Big Data  
 → System design  
 
+---
 ---
