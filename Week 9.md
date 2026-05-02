@@ -1147,3 +1147,4 @@ CREATE INDEX idx ON emp(UPPER(name));
 ### Notes taken from Activity Questions 9.5
 1. 
 ---
+---
