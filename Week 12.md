@@ -196,7 +196,7 @@ Focus:
   - Algorithm used
   - Execution coordination
 #### Key Insight
-> Evaluation plan = fully annotated execution tree :contentReference[oaicite:0]{index=0}
+> Evaluation plan = fully annotated execution tree
 
 ### 3. COST-BASED OPTIMIZATION
 #### Steps:
@@ -210,7 +210,7 @@ Focus:
 - Intermediate result size
 - Algorithm cost
 #### Key Insight
-> Cost difference can be massive (seconds vs days) :contentReference[oaicite:1]{index=1}
+> Cost difference can be massive (seconds vs days)
 
 ### 4. RELATIONAL EXPRESSION TRANSFORMATION
 #### Definition:
@@ -264,7 +264,7 @@ Two expressions are equivalent if:
 - Speeds up joins
 
 #### Key Insight
-> Filter early → smaller joins → faster queries :contentReference[oaicite:2]{index=2}
+> Filter early → smaller joins → faster queries
 
 ### 8. PROJECTION PUSHING
 #### Rule:
@@ -309,7 +309,7 @@ Select best algorithm
 #### Example Insight:
 - Filter "dept = Music" before join
 - Filter "year = 2009" before join
-→ Smaller intermediate relations :contentReference[oaicite:3]{index=3}
+→ Smaller intermediate relations
 
 ### 11. JOIN ORDERING
 #### Example:
@@ -374,7 +374,7 @@ Focus:
 - Understand system-level performance
 - Understand how databases scale
 #### Core Idea
-> Performance + Architecture + Scaling = Real-world DB systems :contentReference[oaicite:0]{index=0}
+> Performance + Architecture + Scaling = Real-world DB systems
 
 ### 2. WHAT DBMS APPLICATIONS NEED
 #### Key Requirements:
@@ -389,7 +389,7 @@ Focus:
 - Correctness (ACID)
 - Scalability
 #### Key Insight
-> High throughput + low latency + high availability = good system :contentReference[oaicite:1]{index=1}
+> High throughput + low latency + high availability = good system
 
 ### 3. PERFORMANCE FACTORS
 #### Transaction-Level:
@@ -418,7 +418,7 @@ Focus:
 - Services
 - Geographic spread
 #### Key Insight
-> Scaling ≠ just more data, it’s sustained performance :contentReference[oaicite:2]{index=2}
+> Scaling ≠ just more data, it’s sustained performance
 
 ### 5. RDBMS ARCHITECTURE TYPES
 #### Types:
@@ -450,7 +450,7 @@ Focus:
 #### Interface:
 - SQL / APIs (ODBC, JDBC)
 #### Key Insight
-> Separation improves scalability :contentReference[oaicite:3]{index=3}
+> Separation improves scalability
 
 ### 8. SERVER SYSTEM TYPES
 #### 1. Transaction Server:
@@ -503,7 +503,7 @@ Client → SQL → Server → Execute → Return
 ``Scaleup = 1``
 
 #### Key Insight
-> Perfect scaling is rare :contentReference[oaicite:4]{index=4}
+> Perfect scaling is rare
 
 ### 12. WHY SCALING IS SUBLINEAR
 #### Reasons:
@@ -597,7 +597,7 @@ Client → SQL → Server → Execute → Return
 - Complex system design
 
 #### Key Insight
-> Modern systems prefer horizontal scaling :contentReference[oaicite:5]{index=5}
+> Modern systems prefer horizontal scaling
 
 ### 20. SCALING TECHNIQUES
 #### 1. Master-Slave:
@@ -640,7 +640,7 @@ Focus:
 - Understand why RDBMS is not enough
 - Understand NOSQL systems
 #### Core Idea
-> Scale changes everything :contentReference[oaicite:0]{index=0}
+> Scale changes everything
 
 ### 2. WHAT IS BIG DATA
 #### Definition:
@@ -652,7 +652,7 @@ Focus:
 - Querying
 - Visualization
 #### Key Insight
-> Problem is not just size, but complexity :contentReference[oaicite:1]{index=1}
+> Problem is not just size, but complexity
 
 ### 3. CHARACTERISTICS OF BIG DATA (5 V’s)
 - Volume → size of data
@@ -676,7 +676,7 @@ Focus:
 - Distributed storage
 
 #### Key Insight
-> Flexibility over structure :contentReference[oaicite:2]{index=2}
+> Flexibility over structure
 
 ### 5. WHY NOSQL EMERGED
 #### Reasons:
@@ -690,7 +690,7 @@ Focus:
 - Flexible data types
 
 #### Key Insight
-> NOSQL is not replacement, but extension of RDBMS :contentReference[oaicite:3]{index=3}
+> NOSQL is not replacement, but extension of RDBMS
 
 ### 6. NOSQL VS RDBMS
 #### NOSQL Advantages:
@@ -726,7 +726,7 @@ Focus:
 ``Pick any two: C, A, P``
 
 #### Key Insight
-> Trade-offs are unavoidable :contentReference[oaicite:4]{index=4}
+> Trade-offs are unavoidable
 
 ### 9. CAP DECISIONS
 #### Traditional RDBMS:
@@ -769,7 +769,7 @@ Focus:
 - Other nodes update later
 
 #### Key Insight
-> Immediate correctness is sacrificed for speed :contentReference[oaicite:5]{index=5}
+> Immediate correctness is sacrificed for speed
 
 ### 12. GOSSIP PROTOCOL
 #### Idea:
@@ -809,7 +809,7 @@ Focus:
 - Neo4j
 
 #### Key Insight
-> Different models for different problems :contentReference[oaicite:6]{index=6}
+> Different models for different problems
 
 ### 14. KEY-VALUE MODEL
 #### Operations:
