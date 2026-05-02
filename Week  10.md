@@ -249,7 +249,7 @@ Transfer $50 from A → B:
 - Conflict Serializability
 - View Serializability
 #### Insight
-- Serializability ensures correctness in concurrency :contentReference[oaicite:2]{index=2}
+- Serializability ensures correctness in concurrency
 
 ### 3. KEY IDEA
 #### Serial Execution
@@ -269,7 +269,7 @@ Transfer $50 from A → B:
 #### Reason
 - Only read/write affect database state
 #### Insight
-- Simplifies analysis without losing correctness :contentReference[oaicite:3]{index=3}
+- Simplifies analysis without losing correctness
 
 ### 5. CONFLICTING INSTRUCTIONS
 #### Definition
@@ -282,7 +282,7 @@ Transfer $50 from A → B:
 - Write–Read → Conflict
 - Write–Write → Conflict
 #### Insight
-- Conflicts define execution order constraints :contentReference[oaicite:4]{index=4}
+- Conflicts define execution order constraints
 
 ### 6. NON-CONFLICTING INSTRUCTIONS
 #### Property
@@ -298,7 +298,7 @@ Transfer $50 from A → B:
   - One can be obtained from other
   - By swapping non-conflicting instructions
 #### Insight
-- Equivalent schedules produce same result :contentReference[oaicite:5]{index=5}
+- Equivalent schedules produce same result
 
 ### 8. CONFLICT SERIALIZABILITY
 #### Definition
@@ -309,7 +309,7 @@ Transfer $50 from A → B:
 #### Goal
 - Transform into serial order
 #### Insight
-- Practical method to verify serializability :contentReference[oaicite:6]{index=6}
+- Practical method to verify serializability
 
 ### 9. EXAMPLE: SERIALIZABLE SCHEDULE
 #### Observation
@@ -338,7 +338,7 @@ Transfer $50 from A → B:
 #### Result
 - Final balance becomes incorrect
 #### Insight
-- Violates correctness despite valid individual transactions :contentReference[oaicite:7]{index=7}
+- Violates correctness despite valid individual transactions
 
 ### 12. SERIAL SCHEDULE COMPARISON
 #### Valid Orders
@@ -363,7 +363,7 @@ Transfer $50 from A → B:
 #### But
 - Serializable ⇏ Conflict serializable
 #### Insight
-- Conflict serializability is sufficient but not necessary :contentReference[oaicite:8]{index=8}
+- Conflict serializability is sufficient but not necessary
 
 ### 15. SPECIAL CASE
 #### Observation
@@ -383,7 +383,7 @@ Transfer $50 from A → B:
 #### Edge Ti → Tj
 - If Ti’s operation conflicts and occurs before Tj
 #### Insight
-- Captures dependency between transactions :contentReference[oaicite:9]{index=9}
+- Captures dependency between transactions
 
 ### 17. GRAPH CONSTRUCTION
 #### Rule 1
@@ -401,7 +401,7 @@ Transfer $50 from A → B:
 #### If Cyclic
 - Not conflict serializable
 #### Insight
-- Cycle = contradiction in ordering :contentReference[oaicite:10]{index=10}
+- Cycle = contradiction in ordering
 
 ### 19. TOPOLOGICAL SORT
 #### Definition
@@ -460,7 +460,7 @@ Transfer $50 from A → B:
 #### Solution
 - Rollback partial changes
 #### Insight
-- Recovery ensures atomicity under failures :contentReference[oaicite:2]{index=2}
+- Recovery ensures atomicity under failures
 
 ### 3. RECOVERABLE SCHEDULE
 #### Definition
@@ -469,7 +469,7 @@ Transfer $50 from A → B:
 #### Reason
 - Prevent using uncommitted data
 #### Insight
-- Read-after-write dependency must be respected :contentReference[oaicite:3]{index=3}
+- Read-after-write dependency must be respected
 
 ### 4. IRRECOVERABLE SCHEDULE
 #### Problem
@@ -492,7 +492,7 @@ Transfer $50 from A → B:
 #### Problem
 - Large amount of work lost
 #### Insight
-- Expensive and undesirable :contentReference[oaicite:4]{index=4}
+- Expensive and undesirable
 
 ### 6. CASCADELESS SCHEDULE
 #### Definition
@@ -502,7 +502,7 @@ Transfer $50 from A → B:
 #### Advantage
 - No cascading rollback
 #### Insight
-- Stronger than recoverable schedules :contentReference[oaicite:5]{index=5}
+- Stronger than recoverable schedules
 
 ### 7. RELATION BETWEEN TYPES
 #### Order of Strength
@@ -530,7 +530,7 @@ Transfer $50 from A → B:
 #### Control
 - Can disable auto-commit
 #### Insight
-- SQL manages transactions automatically :contentReference[oaicite:6]{index=6}
+- SQL manages transactions automatically
 
 ### 10. TCL (TRANSACTION CONTROL LANGUAGE)
 #### Commands
@@ -551,7 +551,7 @@ Transfer $50 from A → B:
 #### Property
 - Cannot be undone after commit
 #### Insight
-- Marks successful completion :contentReference[oaicite:7]{index=7}
+- Marks successful completion
 
 ### 12. ROLLBACK
 #### Definition
@@ -561,7 +561,7 @@ Transfer $50 from A → B:
 #### Effect
 - Restores previous state
 #### Insight
-- Ensures atomicity :contentReference[oaicite:8]{index=8}
+- Ensures atomicity
 
 ### 13. SAVEPOINT
 #### Definition
@@ -573,7 +573,7 @@ Transfer $50 from A → B:
 #### Rollback
 - ROLLBACK TO name
 #### Insight
-- Fine-grained control over transactions :contentReference[oaicite:9]{index=9}
+- Fine-grained control over transactions
 
 ### 14. RELEASE SAVEPOINT
 #### Definition
@@ -598,7 +598,7 @@ Transfer $50 from A → B:
 #### Goal
 - Allow more valid schedules
 #### Insight
-- Weaker but more flexible condition :contentReference[oaicite:10]{index=10}
+- Weaker but more flexible condition
 
 ### 17. VIEW EQUIVALENCE
 #### Two schedules are equivalent if:
@@ -609,7 +609,7 @@ Transfer $50 from A → B:
 #### (3) Final Write
 - Same transaction performs last write
 #### Insight
-- Based on data flow, not ordering :contentReference[oaicite:11]{index=11}
+- Based on data flow, not ordering
 
 ### 18. VIEW SERIALIZABLE
 #### Definition
@@ -641,7 +641,7 @@ Transfer $50 from A → B:
 #### Meaning
 - No efficient general solution
 #### Insight
-- Harder than conflict serializability :contentReference[oaicite:12]{index=12}
+- Harder than conflict serializability
 
 ### 22. PRACTICAL APPROACH
 #### Strategy
@@ -672,7 +672,7 @@ Transfer $50 from A → B:
 #### Reason
 - Depends on actual computations
 #### Insight
-- Beyond read-write analysis :contentReference[oaicite:13]{index=13}
+- Beyond read-write analysis
 
 ### 25. FINAL TAKEAWAYS
 #### Core Ideas
@@ -714,7 +714,7 @@ Transfer $50 from A → B:
 #### Problem
 - Serial execution → poor performance
 #### Insight
-- Balance between correctness and performance :contentReference[oaicite:2]{index=2}
+- Balance between correctness and performance
 
 ### 3. KEY IDEA
 #### Approach
@@ -740,7 +740,7 @@ Transfer $50 from A → B:
 - Read + Write
 - Only one transaction allowed
 #### Insight
-- Reads can share, writes need exclusivity :contentReference[oaicite:3]{index=3}
+- Reads can share, writes need exclusivity
 
 ### 6. LOCK COMPATIBILITY
 #### Rules
@@ -748,7 +748,7 @@ Transfer $50 from A → B:
 - S + X → Not allowed
 - X + X → Not allowed
 #### Insight
-- Prevents inconsistent reads/writes :contentReference[oaicite:4]{index=4}
+- Prevents inconsistent reads/writes
 
 ### 7. LOCK OPERATIONS
 #### lock-S(Q)
@@ -782,7 +782,7 @@ Transfer $50 from A → B:
 #### Important
 - Releasing too early is dangerous
 #### Insight
-- Timing of unlock is critical :contentReference[oaicite:5]{index=5}
+- Timing of unlock is critical
 
 ### 11. EXAMPLE: SERIAL EXECUTION
 #### Scenario
@@ -801,7 +801,7 @@ Transfer $50 from A → B:
 #### Example Result
 - Incorrect total (250 instead of 300)
 #### Insight
-- Intermediate state exposed → inconsistency :contentReference[oaicite:6]{index=6}
+- Intermediate state exposed → inconsistency
 
 ### 13. GOOD CONCURRENT SCHEDULE
 #### Fix
@@ -811,7 +811,7 @@ Transfer $50 from A → B:
 #### Outcome
 - Correct result (300)
 #### Insight
-- Proper lock duration ensures correctness :contentReference[oaicite:7]{index=7}
+- Proper lock duration ensures correctness
 
 ### 14. DEADLOCK
 #### Definition
@@ -822,7 +822,7 @@ Transfer $50 from A → B:
 #### Result
 - Circular waiting
 #### Insight
-- System stuck permanently :contentReference[oaicite:8]{index=8}
+- System stuck permanently
 
 ### 15. DEADLOCK HANDLING
 #### Solution
@@ -837,7 +837,7 @@ Transfer $50 from A → B:
 #### With Locks
 - Deadlocks possible
 #### Insight
-- Deadlocks preferable over inconsistency :contentReference[oaicite:9]{index=9}
+- Deadlocks preferable over inconsistency
 
 ### 17. TWO-PHASE LOCKING (2PL)
 #### Purpose
@@ -850,7 +850,7 @@ Transfer $50 from A → B:
 - Release locks
 - No new locks
 #### Insight
-- Enforces disciplined locking :contentReference[oaicite:10]{index=10}
+- Enforces disciplined locking
 
 ### 18. LOCK POINT
 #### Definition
@@ -874,7 +874,7 @@ Transfer $50 from A → B:
 #### Downgrade
 - X → S (during shrinking phase)
 #### Insight
-- Flexible locking improves efficiency :contentReference[oaicite:11]{index=11}
+- Flexible locking improves efficiency
 
 ### 21. AUTOMATIC LOCKING (READ)
 #### Process
@@ -895,7 +895,7 @@ Transfer $50 from A → B:
 #### Observation
 - Even 2PL allows deadlocks
 #### Insight
-- Serializability ≠ deadlock-free :contentReference[oaicite:12]{index=12}
+- Serializability ≠ deadlock-free
 
 ### 24. STARVATION
 #### Definition
@@ -904,7 +904,7 @@ Transfer $50 from A → B:
 - Continuous priority to others
 - Repeated rollbacks
 #### Insight
-- Fairness issue in scheduling :contentReference[oaicite:13]{index=13}
+- Fairness issue in scheduling
 
 ### 25. CASCADING ROLLBACK
 #### Cause
@@ -912,7 +912,7 @@ Transfer $50 from A → B:
 #### Effect
 - Multiple rollbacks
 #### Insight
-- Still possible under 2PL :contentReference[oaicite:14]{index=14}
+- Still possible under 2PL
 
 ### 26. STRICT TWO-PHASE LOCKING
 #### Rule
@@ -920,7 +920,7 @@ Transfer $50 from A → B:
 #### Advantage
 - Prevent cascading rollback
 #### Insight
-- Safer than basic 2PL :contentReference[oaicite:15]{index=15}
+- Safer than basic 2PL
 
 ### 27. RIGOROUS 2PL
 #### Rule
@@ -939,7 +939,7 @@ Transfer $50 from A → B:
 #### Communication
 - Transactions send requests
 #### Insight
-- Central control system :contentReference[oaicite:16]{index=16}
+- Central control system
 
 ### 29. LOCK TABLE
 #### Structure
@@ -952,7 +952,7 @@ Transfer $50 from A → B:
 - Queue for requests
 - Grant if compatible
 #### Insight
-- Core data structure for locking :contentReference[oaicite:17]{index=17}
+- Core data structure for locking
 
 ### 30. FINAL TAKEAWAYS
 #### Core Ideas
@@ -993,7 +993,7 @@ Transfer $50 from A → B:
 - T1 waits for T2
 - T2 waits for T1
 #### Insight
-- System gets stuck indefinitely :contentReference[oaicite:2]{index=2}
+- System gets stuck indefinitely
 
 ### 3. DEADLOCK HANDLING STRATEGIES
 #### Categories
@@ -1012,7 +1012,7 @@ Transfer $50 from A → B:
 #### Drawback
 - Reduced concurrency
 #### Insight
-- Avoid cycle formation :contentReference[oaicite:3]{index=3}
+- Avoid cycle formation
 
 ### 5. TIMESTAMP
 #### Definition
@@ -1022,7 +1022,7 @@ Transfer $50 from A → B:
 #### Rule
 - Smaller timestamp → older transaction
 #### Insight
-- Used to enforce ordering :contentReference[oaicite:4]{index=4}
+- Used to enforce ordering
 
 ### 6. WAIT-DIE SCHEME
 #### Type
@@ -1034,7 +1034,7 @@ Transfer $50 from A → B:
 - If TS(Ti) < TS(Tj) → Ti waits
 - Else → Ti dies
 #### Insight
-- Older transactions get priority :contentReference[oaicite:5]{index=5}
+- Older transactions get priority
 
 ### 7. WAIT-DIE CHARACTERISTICS
 #### Behavior
@@ -1056,7 +1056,7 @@ Transfer $50 from A → B:
 - If TS(Ti) < TS(Tj) → Tj is rolled back
 - Else → Ti waits
 #### Insight
-- Aggressive strategy :contentReference[oaicite:6]{index=6}
+- Aggressive strategy
 
 ### 9. WOUND-WAIT CHARACTERISTICS
 #### Advantage
@@ -1072,7 +1072,7 @@ Transfer $50 from A → B:
 #### Purpose
 - Maintain priority order
 #### Insight
-- Prevent starvation :contentReference[oaicite:7]{index=7}
+- Prevent starvation
 
 ### 11. TIMEOUT SCHEME
 #### Idea
@@ -1084,7 +1084,7 @@ Transfer $50 from A → B:
 #### Drawback
 - Starvation possible
 #### Insight
-- Not very reliable :contentReference[oaicite:8]{index=8}
+- Not very reliable
 
 ### 12. DEADLOCK DETECTION
 #### Approach
@@ -1094,7 +1094,7 @@ Transfer $50 from A → B:
 #### Edge Ti → Tj
 - Ti waiting for Tj
 #### Insight
-- Captures dependency structure :contentReference[oaicite:9]{index=9}
+- Captures dependency structure
 
 ### 13. DEADLOCK CONDITION
 #### Rule
@@ -1116,7 +1116,7 @@ Transfer $50 from A → B:
 #### Goal
 - Break cycle
 #### Insight
-- Must sacrifice some work :contentReference[oaicite:10]{index=10}
+- Must sacrifice some work
 
 ### 16. VICTIM SELECTION
 #### Criteria
@@ -1126,7 +1126,7 @@ Transfer $50 from A → B:
 - Resources used
 - Number of rollbacks
 #### Insight
-- Optimize rollback impact :contentReference[oaicite:11]{index=11}
+- Optimize rollback impact
 
 ### 17. ROLLBACK STRATEGIES
 #### Full Rollback
@@ -1142,7 +1142,7 @@ Transfer $50 from A → B:
 #### Solution
 - Increase cost of repeated rollbacks
 #### Insight
-- Fairness must be ensured :contentReference[oaicite:12]{index=12}
+- Fairness must be ensured
 
 ### 19. TIMESTAMP-BASED PROTOCOL
 #### Idea
@@ -1152,14 +1152,14 @@ Transfer $50 from A → B:
 #### Advantage
 - No waiting → no deadlock
 #### Insight
-- Different approach to concurrency :contentReference[oaicite:13]{index=13}
+- Different approach to concurrency
 
 ### 20. DATA ITEM TIMESTAMPS
 #### Maintain for each item Q
 - W-timestamp(Q): last write time
 - R-timestamp(Q): last read time
 #### Insight
-- Tracks data usage history :contentReference[oaicite:14]{index=14}
+- Tracks data usage history
 
 ### 21. READ RULE
 #### If TS(Ti) < W-timestamp(Q)
@@ -1168,7 +1168,7 @@ Transfer $50 from A → B:
 - Allow read
 - Update R-timestamp(Q)
 #### Insight
-- Prevent reading obsolete data :contentReference[oaicite:15]{index=15}
+- Prevent reading obsolete data
 
 ### 22. WRITE RULE (CASE 1)
 #### If TS(Ti) < R-timestamp(Q)
@@ -1199,7 +1199,7 @@ Transfer $50 from A → B:
 #### Outcome
 - Conflict serializability ensured
 #### Insight
-- Implicit ordering replaces locks :contentReference[oaicite:16]{index=16}
+- Implicit ordering replaces locks
 
 ### 26. NO DEADLOCK
 #### Reason
@@ -1207,14 +1207,14 @@ Transfer $50 from A → B:
 #### Behavior
 - Immediate rollback instead
 #### Insight
-- Eliminates circular wait :contentReference[oaicite:17]{index=17}
+- Eliminates circular wait
 
 ### 27. LIMITATIONS
 #### Issues
 - May not be recoverable
 - May not be cascadeless
 #### Insight
-- Trade-off for deadlock freedom :contentReference[oaicite:18]{index=18}
+- Trade-off for deadlock freedom
 
 ### 28. FINAL TAKEAWAYS
 #### Core Ideas
@@ -1231,4 +1231,5 @@ Transfer $50 from A → B:
 - Wound-wait → older kills
 - Detection → cycle check
 - Timestamp → no locks, no deadlock
+---
 ---
