@@ -178,123 +178,80 @@ Goal:
 ## 1. MOTIVATION
 
 Even though BCNF removes more redundancy, it **may not preserve dependencies**.
-
 ### Problem:
 - BCNF → Lossless ✔ but Dependency Preservation ❌ (sometimes)
-
 ### Solution:
 Use **3NF decomposition**
 - Slight redundancy allowed
 - Dependency preservation guaranteed
 
----
-
 ## 2. 3NF RECAP
 
 A relation is in 3NF if for every FD X → A:
-
 At least one holds:
 - A ⊆ X (trivial)
 - X is a superkey
 - A is a prime attribute (part of some candidate key)
 
----
-
 ## 3. TESTING FOR 3NF
 
 To check if a relation is in 3NF:
-
 - Check only F (not F⁺) ✔
 - For each FD α → β:
   - If α is a superkey → OK
   - Else check: β attributes must be part of some candidate key
-
-⚠️ Issue:
+Issue:
 - Finding candidate keys is expensive
-- Testing 3NF is **NP-hard** :contentReference[oaicite:0]{index=0}
-
----
+- Testing 3NF is **NP-hard**
 
 ## 4. 3NF DECOMPOSITION ALGORITHM
 
 Given:
 - Relation R
 - Functional Dependencies F
-
 ### Steps:
-
 ### Step 1: Compute Canonical Cover (Fc)
 - Remove redundant dependencies
 - Minimize FDs
-
----
-
 ### Step 2: Create Relations
 For each FD X → Y in Fc:
 - Create relation Ri = X ∪ Y
-
----
-
 ### Step 3: Ensure Key Presence
 - If no Ri contains a candidate key K:
   - Add one relation with K
-
----
-
 ### Step 4 (Optional Optimization):
 - Remove redundant relations (subset relations)
 
----
-
 ## 5. PROPERTIES OF 3NF DECOMPOSITION
-
 After decomposition:
 - Each relation is in 3NF ✔
 - Lossless Join ✔
 - Dependency Preserving ✔
 
----
-
 ## 6. 3NF DECOMPOSITION EXAMPLE
 
 Relation:
 (customer_id, employee_id, branch_name, type)
-
 FDs:
 - customer_id, employee_id → type
 - employee_id → branch_name
 - customer_id, branch_name → employee_id
-
----
-
 ### Step 1: Canonical Cover
 Remove redundancy:
 - branch_name is extraneous
-
 Fc:
 - customer_id, employee_id → type
 - employee_id → branch_name
 - customer_id, branch_name → employee_id
-
----
-
 ### Step 2: Create Relations
 - (customer_id, employee_id, type)
 - (employee_id, branch_name)
 - (customer_id, branch_name, employee_id)
-
----
-
 ### Step 3: Remove Redundancy
 - (employee_id, branch_name) is subset → remove
-
----
-
 ### Final 3NF:
 - (customer_id, employee_id, type)
 - (customer_id, branch_name, employee_id)
-
----
 
 ## 7. BCNF (BOYCE-CODD NORMAL FORM)
 
@@ -303,90 +260,53 @@ A relation is in BCNF if for every FD α → β:
 - α is a superkey OR
 - dependency is trivial
 
----
-
 ## 8. TESTING FOR BCNF
 
 ### Method:
 For each FD α → β:
 - Compute α⁺ (closure)
 - If α⁺ ≠ R → violation
-
----
-
 ### Optimization:
 - Only check F (not F⁺) for original relation ✔
-
-⚠️ But:
-- For decomposed relations → must consider F⁺ :contentReference[oaicite:1]{index=1}
-
----
+But:
+- For decomposed relations → must consider F⁺
 
 ## 9. BCNF DECOMPOSITION ALGORITHM
-
 If FD α → β violates BCNF:
-
 ### Step:
 - R1 = α ∪ β
 - R2 = R − (β − α)
-
 Repeat until all relations are in BCNF
-
----
-
 ### Property:
 - Always Lossless Join ✔
 - Dependency Preservation ❌ (not guaranteed)
 
----
-
 ## 10. BCNF EXAMPLE
-
 R(A, B, C)  
 F = {A → B, B → C}
-
 Key = A
-
----
-
 ### Problem:
 B → C violates BCNF (B not superkey)
-
----
-
 ### Decomposition:
 - R1 = (B, C)
 - R2 = (A, B)
 
----
-
 ## 11. IMPORTANT PITFALL
 
 While checking BCNF on decomposed relation:
-
 - Checking only F may mislead ❌
 - Must consider F⁺
-
----
-
-### Example Insight:
+#### Example Insight:
 Even if FD not visible in F:
 - It may exist in F⁺
 - Can violate BCNF
 
----
-
 ## 12. DEPENDENCY PRESERVATION IN BCNF
-
 Two methods:
-
-### 1. Using F⁺ (Exponential Algorithm)
+#### 1. Using F⁺ (Exponential Algorithm)
 - Always correct ✔
 - Expensive ❌
-
----
-
-### 2. Using Direct F (Polynomial Algorithm)
+#### 2. Using Direct F (Polynomial Algorithm)
 - Faster ✔
 - May give false negative ❌
 
@@ -396,56 +316,39 @@ Two methods:
 - Polynomial method is **safe but conservative**
 - May say "not preserved" even when it is
 
----
-
 ## 13. COMPARISON: 3NF vs BCNF
 
-| Feature | 3NF | BCNF |
-|--------|-----|------|
-| Focus | Primary Key | Candidate Keys |
-| Redundancy | Some | Minimal |
-| Dependency Preservation | Always ✔ | Not guaranteed ❌ |
-| Lossless Join | ✔ | ✔ |
-| Condition | X superkey OR Y prime | X must be superkey |
-
----
+| Feature                 | 3NF                   | BCNF               |
+| ----------------------- | --------------------- | ------------------ |
+| Focus                   | Primary Key           | Candidate Keys     |
+| Redundancy              | Some                  | Minimal            |
+| Dependency Preservation | Always ✔              | Not guaranteed ❌   |
+| Lossless Join           | ✔                     | ✔                  |
+| Condition               | X superkey OR Y prime | X must be superkey |
 
 ## 14. FINAL UNDERSTANDING
-
-### 3NF:
+#### 3NF:
 - Practical
 - Dependency preserving
 - Slight redundancy
-
-### BCNF:
+#### BCNF:
 - Cleaner design
 - No redundancy
 - May lose dependencies
 
----
-
-## 15. BIG PICTURE
-
+### 15. BIG PICTURE
 You always have:
-
 - 3NF → Lossless ✔ + Dependency Preserving ✔
 - BCNF → Lossless ✔ + Minimal Redundancy ✔
-
 But:
 - You **cannot always get both BCNF + Dependency Preservation**
 
----
-
-## 16. STRATEGY FOR EXAMS
-
+### 16. STRATEGY FOR EXAMS
 - If question asks:
   - "Preserve dependencies" → go for 3NF
   - "Remove redundancy completely" → go for BCNF
 
----
-
-## 17. KEY FLOW
-
+### 17. KEY FLOW
 R  
 → Check 3NF  
 → If not → Apply 3NF decomposition  
@@ -455,18 +358,12 @@ R
 1. 
 ---
 ## CS2001 – Week 6, Lecture 3
-
-## 1. OBJECTIVE
-
+### 1. OBJECTIVE
 Apply normalization + FD theory to **real-world database design**
-
 Goal:
 - Convert specification → ER Model → Relational Schema → Refined Design
 
----
-
-## 2. DESIGN PIPELINE
-
+### 2. DESIGN PIPELINE
 1. Identify **Entity Sets**
 2. Identify **Relationships**
 3. Create **Initial Schema**
@@ -474,27 +371,18 @@ Goal:
 5. Optimize for **Queries**
 6. Finalize Schema
 
----
-
-## 3. SYSTEM OVERVIEW (LIS)
-
+### 3. SYSTEM OVERVIEW (LIS)
 Library system manages:
 - Books
 - Members
 - Issue/Return process
-
 Key constraints:
 - Multiple copies of same book
 - Members have quotas
 - Issue rules enforced
 
-:contentReference[oaicite:0]{index=0}
-
----
-
-## 4. ENTITY SETS
-
-### 4.1 BOOKS
+### 4. ENTITY SETS
+#### 4.1 BOOKS
 Attributes:
 - title
 - author (fname, lname)
@@ -502,10 +390,7 @@ Attributes:
 - year
 - ISBN (unique per publication)
 - accession_no (unique per copy)
-
----
-
-### 4.2 STUDENTS
+#### 4.2 STUDENTS
 Attributes:
 - member_no (unique)
 - name
@@ -515,10 +400,7 @@ Attributes:
 - mobile (nullable)
 - dob
 - degree
-
----
-
-### 4.3 FACULTY
+#### 4.3 FACULTY
 Attributes:
 - member_no (unique)
 - name
@@ -527,25 +409,16 @@ Attributes:
 - gender
 - mobile
 - doj
-
----
-
-### 4.4 MEMBERS
+#### 4.4 MEMBERS
 Attributes:
 - member_no
 - member_type (ug, pg, rs, fc)
-
----
-
-### 4.5 QUOTA
+#### 4.5 QUOTA
 Attributes:
 - member_type
 - max_books
 - max_duration
-
----
-
-### 4.6 STAFF (Derived / Assumed)
+#### 4.6 STAFF (Derived / Assumed)
 Attributes:
 - name
 - id
@@ -553,26 +426,17 @@ Attributes:
 - mobile
 - doj
 
----
-
-## 5. RELATIONSHIP
-
-### BOOK ISSUE
-
+### 5. RELATIONSHIP
+#### BOOK ISSUE
 Between:
 - members (member_no)
 - books (accession_no)
-
 Attributes:
 - doi (date of issue)
-
 Type:
 - Many-to-One (many books → one member)
 
----
-
-## 6. INITIAL RELATIONAL SCHEMA
-
+### 6. INITIAL RELATIONAL SCHEMA
 - books(title, author_fname, author_lname, publisher, year, ISBN, accession_no)
 - book_issue(member_no, accession_no, doi)
 - members(member_no, member_type)
@@ -581,125 +445,73 @@ Type:
 - faculty(member_no, ..., id, ...)
 - staff(...)
 
----
-
-## 7. SCHEMA REFINEMENT
-
-### 7.1 BOOKS — PROBLEM
-
+### 7. SCHEMA REFINEMENT
+#### 7.1 BOOKS — PROBLEM
 FDs:
 - ISBN → title, author, publisher, year
 - accession_no → ISBN
-
 Key:
 - accession_no
-
 ❌ Redundancy:
 - Same book info repeated across copies
-
----
-
-### 7.2 BOOKS — DECOMPOSITION
-
+#### 7.2 BOOKS — DECOMPOSITION
 Split into:
-
 1. **book_catalogue**
    - (ISBN, title, author, publisher, year)
    - Key: ISBN
-
-2. **book_copies**
+1. **book_copies**
    - (ISBN, accession_no)
    - Key: accession_no
-
 ✔ BCNF  
 ✔ Lossless  
 ✔ Dependency Preserved
-
----
-
-### 7.3 BOOK ISSUE
-
+#### 7.3 BOOK ISSUE
 FD:
 - (member_no, accession_no) → doi
-
 Key:
 - (member_no, accession_no)
-
 ✔ Already BCNF
-
----
-
-### 7.4 QUOTA
-
+#### 7.4 QUOTA
 FD:
 - member_type → max_books, max_duration
-
 Key:
 - member_type
-
 ✔ BCNF
-
----
-
-### 7.5 MEMBERS
-
+#### 7.5 MEMBERS
 FD:
 - member_no → member_type
-
 Key:
 - member_no
-
 ✔ BCNF
-
----
-
-### 7.6 STUDENTS
-
+#### 7.6 STUDENTS
 FDs:
 - roll_no → all attributes
 - member_no ↔ roll_no
-
 Keys:
 - roll_no, member_no
-
 ✔ BCNF  
 ⚠ Problem:
 - member_no duplicated unnecessarily
-
----
-
-### 7.7 FACULTY
-
+#### 7.7 FACULTY
 FDs:
 - id → all attributes
 - member_no ↔ id
-
 ✔ BCNF  
 ⚠ Same issue as students
 
----
-
-## 8. REAL-WORLD PROBLEM (VERY IMPORTANT)
-
+### 8. REAL-WORLD PROBLEM (VERY IMPORTANT)
 Query:
 > Find name of member who issued a book
-
 Problem:
 - member_no exists
 - BUT:
   - Is member student?
   - Or faculty?
+Cannot decide which table to query
 
-❌ Cannot decide which table to query
-
----
-
-## 9. DESIGN FIX (CRITICAL INSIGHT)
-
+### 9. DESIGN FIX (CRITICAL INSIGHT)
 Introduce **GENERALIZATION**
-
-### New MEMBERS Schema:
-
+#### New MEMBERS Schema:
 members(
 - member_no
 - member_class (student / faculty)
@@ -707,35 +519,22 @@ members(
 - roll_no (nullable)
 - id (nullable)
 )
-
 FDs:
 - member_no → everything
 - member_type → member_class
-
----
-
-### Relationship:
+#### Relationship:
 - student IS-A member
 - faculty IS-A member
 
----
-
-## 10. UPDATED SCHEMA
-
-### STUDENTS (Simplified)
+### 10. UPDATED SCHEMA
+#### STUDENTS (Simplified)
 - roll_no → all attributes
 - No member_no
-
----
-
-### FACULTY (Simplified)
+#### FACULTY (Simplified)
 - id → all attributes
 - No member_no
 
----
-
-## 11. FINAL SCHEMA
-
+### 11. FINAL SCHEMA
 - book_catalogue(title, author_fname, author_lname, publisher, year, ISBN)
 - book_copies(ISBN, accession_no)
 - book_issue(member_no, accession_no, doi)
@@ -745,33 +544,18 @@ FDs:
 - faculty(faculty_fname, faculty_lname, id, department, gender, mobile, doj)
 - staff(staff_fname, staff_lname, id, gender, mobile, doj)
 
----
-
-## 12. KEY TAKEAWAYS
-
-### 1. Theory ≠ Complete Design
+### 12. KEY TAKEAWAYS
+#### 1. Theory ≠ Complete Design
 - Even BCNF schemas may fail in practice
-
----
-
-### 2. Query Efficiency Matters
+#### 2. Query Efficiency Matters
 - Design must support real queries
-
----
-
-### 3. Hidden Information Exists
+#### 3. Hidden Information Exists
 - Not all constraints are explicitly given
 - Must infer from problem
-
----
-
-### 4. Generalization is Powerful
+#### 4. Generalization is Powerful
 - Helps unify multiple entity types
 
----
-
-## 13. FINAL FLOW (VERY IMPORTANT)
-
+### 13. FINAL FLOW (VERY IMPORTANT)
 Specification  
 → Extract Entities  
 → Build ER Model  
@@ -780,338 +564,209 @@ Specification
 → Check Queries  
 → Refine Design  
 
----
-
-## 14. CORE INSIGHT 🔴
-
+### 14. CORE INSIGHT 🔴
 > A "perfect" normalized schema is useless if queries become impractical.
 
 ### Notes taken from Activity Questions 6.3
 1. 
 ---
 ## CS2001 – Week 6, Lecture 4
-
-## 1. MOTIVATION
-
+### 1. MOTIVATION
 Even after BCNF:
 - Redundancy can still exist ❌
-
 Reason:
 - Functional Dependencies (FDs) are **not sufficient**
-
 New concept needed:
 → **Multivalued Dependencies (MVDs)**
 
-:contentReference[oaicite:0]{index=0}
-
----
-
-## 2. MULTIVALUED DEPENDENCY (MVD)
-
-### Idea:
+### 2. MULTIVALUED DEPENDENCY (MVD)
+#### Idea:
 An attribute can determine **multiple independent values**
-
 Notation:
 - X → Y (FD)
 - X ↠ Y (MVD)
 
----
-
-## 3. INTUITION
-
+### 3. INTUITION
 Example:
 Person(Man, Phones, Dogs_Like)
-
 - A man can have:
   - Multiple phones
   - Multiple dogs he likes
-
 So:
 - Man ↠ Phones
 - Man ↠ Dogs_Like
-
----
-
-### Key Insight:
+#### Key Insight:
 Phones and Dogs are **independent**
-
 But in table:
 → All combinations appear (Cartesian Product)
-
 Example:
+
 | Man | Phone | Dog |
-|-----|------|-----|
-| M1 | P1 | D1 |
-| M1 | P1 | D2 |
-| M1 | P2 | D1 |
-| M1 | P2 | D2 |
-
----
-
-### Problem:
+| --- | ----- | --- |
+| M1  | P1    | D1  |
+| M1  | P1    | D2  |
+| M1  | P2    | D1  |
+| M1  | P2    | D2  |
+#### Problem:
 - Massive redundancy
 - Still satisfies BCNF ❗
 
----
-
-## 4. WHY BCNF FAILS
-
+### 4. WHY BCNF FAILS
 - No non-trivial FD exists
 - Whole relation is candidate key
-
 → BCNF satisfied  
 → But redundancy exists
-
-🔥 This is the limitation of BCNF
-
----
+This is the limitation of BCNF
 
 ## 5. FORMAL DEFINITION
-
 MVD: X ↠ Y holds if:
-
 For tuples t1, t2:
 - If t1[X] = t2[X]
-
 Then:
 - We must have tuples combining values:
   - t3[Y] = t1[Y]
   - t3[rest] = t2[rest]
   - and vice versa
-
----
-
-### Simple Meaning:
+#### Simple Meaning:
 - Values of Y are independent of rest of attributes
 
----
-
-## 6. KEY PROPERTY
-
+### 6. KEY PROPERTY
 If:
 X → Y (FD)
-
 Then:
 X ↠ Y (MVD)
-
 ✔ Every FD is an MVD  
 ❌ Not every MVD is FD
 
----
-
-## 7. WHEN MVD OCCURS
-
-### Case:
+### 7. WHEN MVD OCCURS
+#### Case:
 Two independent relationships stored together
-
 Example:
 - Student(SID, Name)
 - Course(CID, Name)
-
 If merged:
 → Student_Course
-
 Then:
 - SID ↠ CID
 - SID ↠ Cname
 
----
-
-## 8. ANOTHER CLASSIC EXAMPLE
-
+### 8. ANOTHER CLASSIC EXAMPLE
 Instructor(ID, Child, Phone)
-
 - ID ↠ Child
 - ID ↠ Phone
-
 Combining both → redundant combinations
 
----
-
-## 9. TRIVIAL MVD
-
+### 9. TRIVIAL MVD
 MVD X ↠ Y is trivial if:
 - Y ⊆ X OR
 - X ∪ Y = R
-
 Else:
 → Non-trivial MVD (problematic)
 
----
-
-## 10. MVD INFERENCE RULES
-
-### Important ones:
-
+### 10. MVD INFERENCE RULES
+#### Important ones:
 - Complementation:
   - X ↠ Y ⇒ X ↠ (R − X − Y)
-
 - Augmentation:
   - WX ↠ YZ
-
 - Transitivity:
   - X ↠ Y and Y ↠ Z ⇒ X ↠ (Z − Y)
-
 - Replication:
   - X → Y ⇒ X ↠ Y
 
----
-
-## 11. USE OF MVD
-
+### 11. USE OF MVD
 - Detect redundancy beyond FDs
 - Define constraints on relations
 - Ensure correct data representation
 
----
-
-## 12. FOURTH NORMAL FORM (4NF)
-
-### Definition:
-
+### 12. FOURTH NORMAL FORM (4NF)
+#### Definition:
 A relation is in 4NF if for every MVD X ↠ Y:
-
 At least one holds:
 - MVD is trivial OR
 - X is a superkey
-
----
-
-### Key Insight:
+#### Key Insight:
 4NF = BCNF + MVD control
 
----
-
-## 13. IMPORTANT RESULT
-
+### 13. IMPORTANT RESULT
 If a relation is in 4NF:
 → It is automatically in BCNF
 
----
-
-## 14. 4NF DECOMPOSITION ALGORITHM
-
-### Step 1:
+### 14. 4NF DECOMPOSITION ALGORITHM
+#### Step 1:
 Find MVD X ↠ Y where:
 - X is NOT a superkey
-
----
-
-### Step 2:
+#### Step 2:
 Decompose:
-
 - R1 = X ∪ Y
 - R2 = R − (Y − X)
-
----
-
-### Step 3:
+#### Step 3:
 Repeat until all relations satisfy 4NF
-
----
-
-### Property:
+#### Property:
 - Lossless Join ✔
 - Dependency Preservation ❌ (not guaranteed)
 
----
-
-## 15. MAIN EXAMPLE
-
+### 15. MAIN EXAMPLE
 Relation:
 Person(Man, Phones, Dogs_Like, Address)
-
 Dependencies:
 - Man ↠ Phones
 - Man ↠ Dogs_Like
 - Man → Address
-
----
-
-### Problem:
+#### Problem:
 - None of LHS are superkeys
 → Violates 4NF
-
----
-
-### Decomposition:
-
+#### Decomposition:
 1. Person_Phones(Man, Phones)
 2. Person_Dogs(Man, Dogs_Like)
 3. Person_Address(Man, Address)
-
----
-
-### Result:
+#### Result:
 ✔ All in 4NF  
 ✔ No redundancy  
 ✔ Lossless
 
----
-
-## 16. ADVANCED EXAMPLE FLOW
-
+### 16. ADVANCED EXAMPLE FLOW
 R(A, B, C, G, H, I)
-
 FDs:
 - A ↠ B
 - B ↠ HI
 - CG ↠ H
-
----
-
-### Decomposition Steps:
+#### Decomposition Steps:
 - R1(A, B)
 - R2(A, C, G, H, I)
 - R3(C, G, H)
 - R4(A, C, G, I)
 - R5(A, I)
 - R6(A, C, G)
-
 Final:
 → All in 4NF
 
----
+### 17. KEY DIFFERENCE
 
-## 17. KEY DIFFERENCE
+| Concept         | FD                   | MVD                         |
+| --------------- | -------------------- | --------------------------- |
+| Meaning         | Single value         | Multiple independent values |
+| Redundancy type | Partial / Transitive | Cartesian explosion         |
+| Fix             | 3NF / BCNF           | 4NF                         |
 
-| Concept | FD | MVD |
-|--------|----|-----|
-| Meaning | Single value | Multiple independent values |
-| Redundancy type | Partial / Transitive | Cartesian explosion |
-| Fix | 3NF / BCNF | 4NF |
-
----
-
-## 18. BIG PICTURE 🔴
-
+### 18. BIG PICTURE 🔴
 1NF → Atomic  
 2NF → No partial dependency  
 3NF → No transitive dependency  
 BCNF → Strong FD control  
 4NF → Remove MVD redundancy  
 
----
-
-## 19. CORE INSIGHT 🔥
-
+### 19. CORE INSIGHT
 > Even a perfectly normalized BCNF table can be horribly redundant due to independent multivalued attributes.
 
----
-
-## 20. PRACTICAL NOTE
-
+### 20. PRACTICAL NOTE
 - 4NF is **rarely needed in practice**
 - Most systems stop at:
   → 3NF or BCNF
-
 Reason:
 - MVD situations are limited (phones, emails, etc.)
 
----
-
-## 21. FINAL FLOW
-
+### 21. FINAL FLOW
 FD-based Normalization → 3NF → BCNF  
 Then:
 MVD-based Normalization → 4NF  
@@ -1120,70 +775,41 @@ MVD-based Normalization → 4NF
 1. 
 ---
 ## CS2001 – Week 6, Lecture 5
-
-## 1. OVERALL OBJECTIVE
-
+### 1. OVERALL OBJECTIVE
 This module concludes:
 - Database Design Process
 - Practical Design Trade-offs
 - Introduction to Temporal Databases
 
-:contentReference[oaicite:0]{index=0}
-
----
-
-## 2. DESIGN GOALS (VERY IMPORTANT 🔴)
-
+### 2. DESIGN GOALS (VERY IMPORTANT)
 Ideal database design should achieve:
-
 - BCNF / 4NF
 - Lossless Join
 - Dependency Preservation
-
----
-
-### Reality Check:
-
+#### Reality Check:
 You **cannot always achieve all three simultaneously**
-
 So we compromise:
-
 - Use **3NF** → allow redundancy
 - Or lose dependency preservation
-
----
-
-### Practical Limitation:
+#### Practical Limitation:
 - SQL **cannot enforce general FDs**
 - Only enforces **keys (superkeys)**
 
----
-
-## 3. HIGHER NORMAL FORMS (FOR COMPLETENESS)
-
+### 3. HIGHER NORMAL FORMS (FOR COMPLETENESS)
 - 5NF (Join Dependency)
 - 6NF
 - DKNF
-
-⚠️ Rarely used because:
+Rarely used because:
 - Too complex
 - No strong inference systems
 
----
-
-## 4. DATABASE DESIGN PROCESS
-
-### Starting Point:
-
+### 4. DATABASE DESIGN PROCESS
+#### Starting Point:
 Schema R comes from:
 - ER model conversion
 - Universal relation
 - Ad-hoc design
-
----
-
-### Process Flow:
-
+#### Process Flow:
 1. Identify entities & relationships
 2. Convert to relational schema
 3. Apply normalization
@@ -1192,277 +818,152 @@ Schema R comes from:
    - No anomalies
 5. Refine for queries
 
----
-
-## 5. ER MODEL vs NORMALIZATION
-
+### 5. ER MODEL vs NORMALIZATION
 ### Ideal Case:
 - Good ER design → No normalization needed
-
----
-
-### Real Case:
+#### Real Case:
 - Hidden dependencies exist
-
 Example:
 - department_name → building
-
 Fix:
 - Create separate **Department entity**
-
----
-
-### Insight:
+#### Insight:
 Normalization cannot fix **bad conceptual modeling**
 
----
-
-## 6. DENORMALIZATION (VERY IMPORTANT 🔴)
-
-### Why?
+### 6. DENORMALIZATION (VERY IMPORTANT)
+#### Why?
 - Improve query performance
-
----
-
-### Example:
+#### Example:
 Course + Prerequisite
-
 Instead of:
 - Two tables + JOIN
-
 Use:
 - Single combined table
+#### Trade-off:
 
----
-
-### Trade-off:
-
-| Benefit | Cost |
-|--------|------|
-| Faster queries | Redundancy |
-| No joins | Update overhead |
-| Simple retrieval | More storage |
-
----
-
-### Alternative:
+| Benefit          | Cost            |
+| ---------------- | --------------- |
+| Faster queries   | Redundancy      |
+| No joins         | Update overhead |
+| Simple retrieval | More storage    |
+#### Alternative:
 - Materialized Views
-
----
-
-### CORE INSIGHT 🔥
-
+#### CORE INSIGHT 
 > Perfect normalization ≠ best performance
 
----
-
-## 7. BAD DESIGN PATTERNS
-
-### ❌ Year-wise Tables:
+### 7. BAD DESIGN PATTERNS
+#### Year-wise Tables:
 earnings_2004, earnings_2005...
-
 Problem:
 - Hard to query across years
 
----
-
-### ❌ Crosstab Design:
+#### Crosstab Design:
 (company_id, earnings_2004, earnings_2005...)
-
 Problem:
 - Not scalable
 - Difficult queries
-
----
-
-### ✔ Correct Design:
+#### ✔ Correct Design:
 (company_id, year, earnings)
 
----
-
-## 8. LIS EXAMPLE (4NF EXTENSION)
-
+### 8. LIS EXAMPLE (4NF EXTENSION)
 From *page 12–14 diagrams*:
 - book_title has:
   - multiple authors
-  - multiple editions :contentReference[oaicite:1]{index=1}
-
----
-
-### MVDs:
+  - multiple editions
+#### MVDs:
 - book_title ↠ author
 - book_title ↠ edition
-
----
-
-### Problem:
+#### Problem:
 - BCNF satisfied
 - But NOT 4NF
-
----
-
-### Decomposition:
-
+#### Decomposition:
 - book_author(book_title, author)
 - book_edition(book_title, edition)
-
 ✔ Removes redundancy  
 ✔ Achieves 4NF  
 
----
-
-## 9. TEMPORAL DATABASES (NEW CONCEPT)
-
-### Motivation:
+### 9. TEMPORAL DATABASES (NEW CONCEPT)
+#### Motivation:
 Some data is **time-dependent**
-
 Examples:
 - Medical records
 - Stock prices
 - Exchange rates
-
----
-
-### Problem:
+#### Problem:
 Traditional DB stores only **current state**
-
----
-
-### Need:
+#### Need:
 Store:
 - Value + Time Interval
 
----
-
-## 10. TEMPORAL DATA
-
+### 10. TEMPORAL DATA
 Each tuple has:
 - Valid Time Interval
-
----
-
-### Concepts:
-
+#### Concepts:
 - Snapshot → value at a point
 - Interval → value over time
-
----
-
-### Example:
+#### Example:
 course(course_id, title, start, end)
-
----
-
-### Constraint:
+#### Constraint:
 - No overlapping intervals
+Hard to enforce efficiently
 
-⚠️ Hard to enforce efficiently
-
----
-
-## 11. TYPES OF TIME
-
-### 1. VALID TIME
+### 11. TYPES OF TIME
+#### 1. VALID TIME
 - When fact is true in real world
-
----
-
-### 2. TRANSACTION TIME
+#### 2. TRANSACTION TIME
 - When fact is stored in DB
 
----
-
-## 12. UNI vs BI TEMPORAL
-
-### Uni-Temporal:
+### 12. UNI vs BI TEMPORAL
+#### Uni-Temporal:
 - Only one time dimension
-
----
-
-### Bi-Temporal:
+#### Bi-Temporal:
 - Both:
   - Valid Time
   - Transaction Time
 
----
-
-## 13. EXAMPLE (JOHN CASE)
-
+### 13. EXAMPLE (JOHN CASE)
 From *page 21–23 tables* :contentReference
-
----
-
-### Problem (Non-temporal DB):
+#### Problem (Non-temporal DB):
 - Only latest address stored
 - History lost
-
----
-
-### Uni-Temporal Solution:
-
+#### Uni-Temporal Solution:
 Person(Name, City, Valid_From, Valid_Till)
-
 Example:
 - Chennai → (1992 to 2015)
 - Mumbai → (2015 to ∞)
-
----
-
-### Bi-Temporal Solution:
-
+#### Bi-Temporal Solution:
 Person(Name, City, Valid_From, Valid_Till, Entered, Superseded)
-
----
-
-### Insight:
+#### Insight:
 - Valid Time = real-world truth
 - Transaction Time = database history
 
----
-
-## 14. ADVANTAGES OF TEMPORAL DB
-
+### 14. ADVANTAGES OF TEMPORAL DB
 - Historical queries possible
 - Rollback support
 - Better real-world modeling
 
----
-
-## 15. DISADVANTAGES
-
+### 15. DISADVANTAGES
 - More storage
 - Complex queries
 - Difficult maintenance
 
----
-
-## 16. BIG PICTURE
+### 16. BIG PICTURE
 Database Design is about balance:
-
 - Theory (Normalization)
 - Practice (Performance)
 - Reality (Time-based data)
 
----
-
-## 17. FINAL TAKEAWAY
-
+### 17. FINAL TAKEAWAY
 > A good database designer knows when to normalize, when to denormalize, and when to rethink the model entirely.
 
----
-
-## 18. COMPLETE NORMALIZATION JOURNEY
-
+### 18. COMPLETE NORMALIZATION JOURNEY
 1NF → Atomic  
 2NF → No partial dependency  
 3NF → No transitive dependency  
 BCNF → Strong FD rules  
 4NF → Handle MVD  
 
----
-
-## 19. FINAL FLOW
-
+### 19. FINAL FLOW
 ER Model  
 → Relational Schema  
 → Normalize (3NF / BCNF / 4NF)  
@@ -1471,5 +972,6 @@ ER Model
 
 ### Notes taken from Activity Questions 6.5
 1. 
+---
 ---
 [[Extra Content for Week 6]]

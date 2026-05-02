@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Week 12.md",
+                "file": "Week 6.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Week 12"
+              "title": "Week 6"
             }
           }
         ]
@@ -78,8 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "right": {
     "id": "b7caa06c789744e3",
@@ -186,12 +185,14 @@
   },
   "active": "5615b9024836cfb3",
   "lastOpenFiles": [
-    "Week  10.md",
-    "Week 12.md",
-    "Extra Content for Week 6.md",
-    "Week 6.md",
-    "Week 7.md",
     "Week 5.md",
+    "Week 6.md",
+    "Week 4.md",
+    "Week 3.md",
+    "Extra Content for Week 6.md",
+    "Week 12.md",
+    "Week  10.md",
+    "Week 7.md",
     "Extra Content for Week 5.md",
     "Week 11.md",
     "daily-log.md",
@@ -199,9 +200,7 @@
     "Week 8.md",
     "DBMS.md",
     "Extra Content for Week 4.md",
-    "Week 4.md",
     "Extra Content for Week 3.md",
-    "Week 3.md",
     "Week 2.md",
     "Extra Content for Week 2.md",
     "Week 1.md"
