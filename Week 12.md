@@ -366,3 +366,525 @@ You now understand:
 Rewrite → Reduce → Reorder → Evaluate → Choose best
 
 ---
+## CS2001 – Week 12, Lecture 3
+### 1. INTRODUCTION
+Focus:
+→ RDBMS Performance, Architecture, and Scaling
+#### Goal:
+- Understand system-level performance
+- Understand how databases scale
+#### Core Idea
+> Performance + Architecture + Scaling = Real-world DB systems :contentReference[oaicite:0]{index=0}
+
+### 2. WHAT DBMS APPLICATIONS NEED
+#### Key Requirements:
+- Throughput (transactions/sec)
+- Response Time (latency)
+- Availability (uptime)
+#### Definitions:
+``Throughput = Transactions per second``
+``Response Time = Time from request → result``
+``Availability = Mean time to failure``
+#### Also Required:
+- Correctness (ACID)
+- Scalability
+#### Key Insight
+> High throughput + low latency + high availability = good system :contentReference[oaicite:1]{index=1}
+
+### 3. PERFORMANCE FACTORS
+#### Transaction-Level:
+- Concurrency control
+- Query optimization
+
+#### System-Level:
+- System architecture
+- Database architecture
+- Performance tuning
+
+#### Tuning Methods:
+- Hardware: faster CPU, more memory, faster disks
+- DB parameters: buffer size, checkpointing
+- Design: schema, indexes
+
+#### Key Insight
+> Bottlenecks decide performance
+
+### 4. SCALABILITY
+#### Definition:
+- Ability to handle growth without performance loss
+#### Growth Dimensions:
+- Data size
+- Number of users
+- Services
+- Geographic spread
+#### Key Insight
+> Scaling ≠ just more data, it’s sustained performance :contentReference[oaicite:2]{index=2}
+
+### 5. RDBMS ARCHITECTURE TYPES
+#### Types:
+- Centralized
+- Client-Server
+- Parallel
+- Distributed
+
+### 6. CENTRALIZED ARCHITECTURE
+#### Characteristics:
+- Single system
+- No network interaction
+#### Use Case:
+- Small systems
+#### Key Insight
+> Simple but not scalable
+
+### 7. CLIENT-SERVER ARCHITECTURE
+#### Structure:
+- Clients → send requests
+- Server → processes queries
+#### Components:
+- Front-end:
+  - UI, forms, reports
+- Back-end:
+  - Query processing
+  - Optimization
+  - Concurrency
+#### Interface:
+- SQL / APIs (ODBC, JDBC)
+#### Key Insight
+> Separation improves scalability :contentReference[oaicite:3]{index=3}
+
+### 8. SERVER SYSTEM TYPES
+#### 1. Transaction Server:
+- Executes queries
+- Returns results
+#### Flow:
+Client → SQL → Server → Execute → Return
+
+#### 2. Data Server:
+- Handles data-intensive tasks
+- Used in high-speed environments
+
+#### Issues:
+- Caching
+- Locking
+- Data transfer
+
+#### Key Insight
+> Execution and data handling can be separated
+
+### 9. PARALLEL DATABASE SYSTEMS
+#### Definition:
+- Multiple CPUs + disks + network
+#### Types:
+- Coarse-grained → few powerful processors
+- Fine-grained → many small processors
+
+#### Metrics:
+``Throughput = tasks per unit time``
+``Response Time = time per task``
+
+#### Key Insight
+> Parallelism improves performance
+
+### 10. SPEEDUP
+#### Formula:
+``Speedup = Time_small / Time_large``
+
+#### Ideal:
+``Speedup = N``
+
+#### Reality:
+- Sublinear
+
+### 11. SCALEUP
+#### Formula:
+``Scaleup = Time_small_problem / Time_large_problem``
+
+#### Ideal:
+``Scaleup = 1``
+
+#### Key Insight
+> Perfect scaling is rare :contentReference[oaicite:4]{index=4}
+
+### 12. WHY SCALING IS SUBLINEAR
+#### Reasons:
+- Startup cost
+- Resource contention
+- Skew (uneven workloads)
+
+#### Key Insight
+> Slowest task limits performance
+
+### 13. INTERCONNECTION NETWORKS
+#### Types:
+1. Bus:
+   - Simple
+   - Poor scalability
+
+2. Mesh:
+   - Better scaling
+   - More connections
+
+3. Hypercube:
+   - Best communication
+   - ``Max hops = log(n)``
+
+#### Key Insight
+> Network design impacts DB performance
+
+### 14. PARALLEL ARCHITECTURE MODELS
+#### Types:
+- Shared Memory
+- Shared Disk
+- Shared Nothing
+- Hybrid
+
+#### Key Insight
+> Shared nothing scales best
+
+### 15. DISTRIBUTED DATABASE SYSTEMS
+#### Definition:
+- Data spread across multiple machines
+#### Features:
+- Network-connected nodes
+- Shared data access
+
+#### Types:
+- Homogeneous (same system)
+- Heterogeneous (different systems)
+
+#### Transactions:
+- Local
+- Global
+
+#### Key Insight
+> Distribution increases reach but adds complexity
+
+### 16. DISTRIBUTED SYSTEM PROS & CONS
+#### Advantages:
+- Data sharing
+- Fault tolerance
+- Availability
+
+#### Disadvantages:
+- Complexity
+- Bugs
+- Overhead
+
+### 17. SCALING DATABASES
+#### Problem:
+- Single machine limits
+#### Solutions:
+- Vertical scaling
+- Horizontal scaling
+
+### 18. VERTICAL SCALING
+#### Definition:
+- Increase machine power
+#### Pros:
+- Simpler
+- Less maintenance
+#### Cons:
+- Single point of failure
+- Limited growth
+
+### 19. HORIZONTAL SCALING
+#### Definition:
+- Add more machines
+#### Pros:
+- Better fault tolerance
+- High scalability
+#### Cons:
+- Complex system design
+
+#### Key Insight
+> Modern systems prefer horizontal scaling :contentReference[oaicite:5]{index=5}
+
+### 20. SCALING TECHNIQUES
+#### 1. Master-Slave:
+- Writes → master
+- Reads → slaves
+- Issue: replication delay
+
+#### 2. Sharding:
+- Split data across nodes
+- No cross-shard joins
+
+#### Other Approaches:
+- Multi-master
+- No joins (denormalization)
+- In-memory DB
+
+#### Key Insight
+> Scaling trades consistency for performance
+
+### 21. BIG PICTURE
+System Evolution:
+Centralized → Client-Server → Parallel → Distributed → Scaled Systems
+
+### 22. FINAL TAKEAWAY
+You now understand:
+- Performance metrics
+- Architecture types
+- Parallel & distributed systems
+- Scaling strategies
+
+#### Mental Model
+Optimize → Architect → Parallelize → Distribute → Scale
+
+---
+## CS2001 – Week 12, Lecture 4
+### 1. INTRODUCTION
+Focus:
+→ Big Data + NOSQL + CAP Theorem
+#### Goal:
+- Understand why RDBMS is not enough
+- Understand NOSQL systems
+#### Core Idea
+> Scale changes everything :contentReference[oaicite:0]{index=0}
+
+### 2. WHAT IS BIG DATA
+#### Definition:
+- Data too large and complex for traditional systems
+#### Challenges:
+- Storage
+- Processing
+- Analysis
+- Querying
+- Visualization
+#### Key Insight
+> Problem is not just size, but complexity :contentReference[oaicite:1]{index=1}
+
+### 3. CHARACTERISTICS OF BIG DATA (5 V’s)
+- Volume → size of data
+- Variety → types (text, image, video, etc.)
+- Velocity → speed of generation
+- Variability → inconsistency
+- Veracity → data quality
+
+#### Key Insight
+> Big Data = unpredictable + massive + fast
+
+### 4. WHAT IS NOSQL
+#### Definition:
+- Non-relational database systems
+- Data not stored in tables
+#### Meaning:
+- “Not Only SQL”
+#### Key Features:
+- No fixed schema
+- Horizontal scalability
+- Distributed storage
+
+#### Key Insight
+> Flexibility over structure :contentReference[oaicite:2]{index=2}
+
+### 5. WHY NOSQL EMERGED
+#### Reasons:
+- Big data explosion
+- Web-scale applications
+- Need for real-time systems
+
+#### “Perfect Storm”:
+- Large data
+- New requirements
+- Flexible data types
+
+#### Key Insight
+> NOSQL is not replacement, but extension of RDBMS :contentReference[oaicite:3]{index=3}
+
+### 6. NOSQL VS RDBMS
+#### NOSQL Advantages:
+- Scalable
+- Flexible schema
+- High performance (writes)
+- Fault tolerant
+
+#### NOSQL Disadvantages:
+- No joins
+- Weak consistency
+- No standard query language
+
+#### Key Insight
+> Trade structure for scalability
+
+### 7. CAP THEOREM
+#### Three Properties:
+- Consistency (C)
+- Availability (A)
+- Partition Tolerance (P)
+
+#### Definitions:
+- Consistency → same data everywhere
+- Availability → always respond
+- Partition tolerance → survive network failure
+
+### 8. CAP THEOREM RULE
+#### Statement:
+> Cannot achieve all three simultaneously
+
+#### Conclusion:
+``Pick any two: C, A, P``
+
+#### Key Insight
+> Trade-offs are unavoidable :contentReference[oaicite:4]{index=4}
+
+### 9. CAP DECISIONS
+#### Traditional RDBMS:
+- CA (Consistency + Availability)
+
+#### NOSQL Systems:
+- AP (Availability + Partition)
+- CP (Consistency + Partition)
+
+#### Key Insight
+> Large systems prioritize availability
+
+### 10. CONSISTENCY MODELS
+#### Strong Consistency:
+- ACID
+#### Weak Consistency:
+- BASE
+
+#### ACID:
+- Atomicity
+- Consistency
+- Isolation
+- Durability
+
+#### BASE:
+- Basically Available
+- Soft State
+- Eventual Consistency
+
+#### Key Insight
+> BASE enables scalability
+
+### 11. EVENTUAL CONSISTENCY
+#### Definition:
+- Updates propagate over time
+- All nodes become consistent eventually
+
+#### Example:
+- Write on one node
+- Other nodes update later
+
+#### Key Insight
+> Immediate correctness is sacrificed for speed :contentReference[oaicite:5]{index=5}
+
+### 12. GOSSIP PROTOCOL
+#### Idea:
+- Nodes randomly share updates
+#### Analogy:
+- Like spreading rumors
+
+#### Result:
+- Eventually all nodes sync
+
+#### Key Insight
+> Random propagation ensures scalability
+
+### 13. TYPES OF NOSQL DATABASES
+#### 1. Key-Value Stores
+- Data = key → value
+- Very fast
+#### Example:
+- Redis, DynamoDB
+
+#### 2. Document Stores
+- Data stored as JSON/XML documents
+- Nested structure
+#### Example:
+- MongoDB, CouchDB
+
+#### 3. Column Stores
+- Data stored in column families
+- Efficient for large datasets
+#### Example:
+- Cassandra, BigTable
+
+#### 4. Graph Stores
+- Nodes + edges
+- Relationship-focused
+#### Example:
+- Neo4j
+
+#### Key Insight
+> Different models for different problems :contentReference[oaicite:6]{index=6}
+
+### 14. KEY-VALUE MODEL
+#### Operations:
+``get(key)``
+``put(key, value)``
+``delete(key)``
+
+#### Features:
+- Simple
+- Fast
+- Scalable
+
+#### Limitation:
+- Cannot model complex relations
+
+### 15. DOCUMENT MODEL
+#### Structure:
+- JSON-like
+- Nested objects
+
+#### Features:
+- Flexible schema
+- Complex data support
+
+#### Key Insight
+> Best for semi-structured data
+
+### 16. COLUMN MODEL
+#### Structure:
+- Column families
+- Sparse storage
+
+#### Features:
+- Efficient reads
+- Data locality
+
+#### Key Insight
+> Optimized for large-scale analytics
+
+### 17. GRAPH MODEL
+#### Structure:
+- Nodes + edges
+#### Features:
+- Relationship queries
+- Traversals
+
+#### Key Insight
+> Best for interconnected data
+
+### 18. RELATIONAL VS NON-RELATIONAL
+#### Relational:
+- Structured data
+- Strong consistency
+- SQL-based
+
+#### Non-Relational:
+- Flexible data
+- Scalable
+- Eventual consistency
+
+#### Key Insight
+> Choose based on problem, not trend :contentReference[oaicite:7]{index=7}
+
+### 19. BIG PICTURE
+Evolution:
+RDBMS → Scaling issues → NOSQL → Distributed systems
+
+### 20. FINAL TAKEAWAY
+You now understand:
+- Big data challenges
+- NOSQL fundamentals
+- CAP theorem trade-offs
+- Types of NOSQL systems
+
+#### Mental Model
+Big Data → Break RDBMS → Relax guarantees → Scale horizontally
+
+---
