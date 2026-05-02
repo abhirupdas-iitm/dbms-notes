@@ -1,6 +1,5 @@
 ## CS2001 – Week 11, Lecture 1
-## BACKUP & RECOVERY – CONCEPTS AND STRATEGIES
-
+### BACKUP & RECOVERY – CONCEPTS AND STRATEGIES
 ### 1. CONTEXT
 #### Recap
 - Transactions ensure ACID properties
@@ -255,7 +254,7 @@
 - Logs → recovery backbone
 ---
 ## CS2001 – Week 11, Lecture 2
-## FAILURE CLASSIFICATION, STORAGE & LOG-BASED RECOVERY
+### FAILURE CLASSIFICATION, STORAGE & LOG-BASED RECOVERY
 
 ### 1. CONTEXT
 #### Recap
@@ -718,8 +717,6 @@
 #### Insight
 - Reconstruct state at failure
 
----
-
 ### 19. UNDO PHASE ALGORITHM
 #### Steps
 1. Scan backward
@@ -767,8 +764,7 @@
 - Redo ALL, Undo SOME
 ---
 ## CS2001 – Week 11, Lecture 4
-## EARLY LOCK RELEASE, LOGICAL UNDO & ADVANCED RECOVERY
-
+### EARLY LOCK RELEASE, LOGICAL UNDO & ADVANCED RECOVERY
 ### 1. CONTEXT
 #### Recap
 - Log-based recovery handles concurrency
@@ -1042,7 +1038,6 @@
 - Reliability comes from redundancy, not fewer failures
 
 ### 3. THREE CORE TECHNIQUES
-
 #### (A) MIRRORING
 - Duplicate data across disks
 - Writes → both disks
@@ -1052,7 +1047,6 @@
 - Fast reads
 ##### Cons
 - 50% storage efficiency
-
 #### (B) STRIPING
 - Split data across disks
 ##### Types
@@ -1064,7 +1058,6 @@
 - Faster reads/writes
 ##### Cons
 - No redundancy (alone)
-
 #### (C) PARITY
 - Extra bit/block for error detection + correction
 - Uses XOR
@@ -1080,7 +1073,6 @@
 #### Important
 - Numbers ≠ ranking
 - Just identifiers
-
 #### Common Levels
 - RAID 0 → Striping
 - RAID 1 → Mirroring
@@ -1093,10 +1085,8 @@
 - No redundancy
 - 100% storage utilization
 - Highest performance
-
 #### Problem
 - One disk failure → total data loss
-
 #### Use Case
 - Temporary / non-critical data
 
@@ -1105,10 +1095,8 @@
 - Duplicate data
 - Excellent fault tolerance
 - Parallel reads
-
 #### Cost
 - 50% storage efficiency
-
 #### Insight
 - Data survives single disk failure
 
@@ -1116,7 +1104,6 @@
 #### Features
 - Bit-level striping
 - Error correction using Hamming code
-
 #### Problem
 - Complex
 - Not used in practice
@@ -1125,7 +1112,6 @@
 #### Features
 - Byte-level striping
 - Single parity disk
-
 #### Problem
 - Cannot handle multiple requests
 - All disks accessed together
@@ -1134,14 +1120,11 @@
 #### Features
 - Block-level striping
 - Dedicated parity disk
-
 #### Pros
 - Good read performance
-
 #### Cons
 - Parity disk bottleneck
 - Write performance low
-
 #### Limit
 - Handles only 1 disk failure
 
@@ -1149,7 +1132,6 @@
 #### Features
 - Block striping
 - Parity distributed across disks
-
 #### Pros
 - No bottleneck disk
 - Good read performance
@@ -1202,7 +1184,6 @@
 - RAID 10 → fast + safe
 
 ### 16. PRACTICAL USAGE
-
 #### RAID 0
 - Logging, rendering
 - Temporary data
@@ -1210,7 +1191,6 @@
 - OS, transactional DB
 #### RAID 5
 - Data warehouse, web servers
-
 #### RAID 6
 - Archival systems
 #### RAID 10
@@ -1224,7 +1204,6 @@
 - Rebuild time
 
 ### 18. IMPORTANT INSIGHTS
-
 #### RAID 0
 - Not fault tolerant
 #### RAID 2/3/4
@@ -1240,7 +1219,6 @@
 - RAID 5 → better storage efficiency
 
 ### 20. WHAT RAID DOES NOT DO
-
 #### DOES NOT
 - Guarantee uptime
 - Replace backups
@@ -1251,7 +1229,6 @@
 - RAID ≠ Backup
 
 ### 21. FINAL TAKEAWAYS
-
 #### Core Ideas
 - RAID = performance + redundancy
 - Uses:
@@ -1261,7 +1238,6 @@
 - Trade-offs always exist
 
 ### MEMORY LINES
-
 - Striping → speed
 - Mirroring → safety
 - Parity → balance
