@@ -227,7 +227,7 @@ Transfer $50 from A → B:
 1. 
 ---
 ## CS2001 – Week 10, Lecture 2
-## SERIALIZABILITY & CONFLICT SERIALIZABILITY
+### SERIALIZABILITY & CONFLICT SERIALIZABILITY
 
 ### 1. CONTEXT
 #### Recap
@@ -437,9 +437,12 @@ Transfer $50 from A → B:
 - Swap → only non-conflicting
 - Graph → cycle check
 - DAG → safe schedule
+
+### Notes taken from Activity Questions 10.2
+1. 
 ---
 ## CS2001 – Week 10, Lecture 3
-## RECOVERABILITY, TCL & VIEW SERIALIZABILITY
+### RECOVERABILITY, TCL & VIEW SERIALIZABILITY
 
 ### 1. CONTEXT
 #### Recap
