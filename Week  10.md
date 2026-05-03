@@ -700,7 +700,7 @@ Transfer $50 from A → B:
 1. 
 ---
 ## CS2001 – Week 10, Lecture 4
-## CONCURRENCY CONTROL & LOCK-BASED PROTOCOLS
+### CONCURRENCY CONTROL & LOCK-BASED PROTOCOLS
 
 ### 1. CONTEXT
 #### Recap
@@ -977,6 +977,9 @@ Transfer $50 from A → B:
 - 2PL → grow then shrink
 - Deadlock → circular wait
 - Strict 2PL → safer execution
+
+### Notes taken from Activity Questions 10.4
+1. 
 ---
 ## CS2001 – Week 10, Lecture 5
 ## DEADLOCK HANDLING & TIMESTAMP-BASED PROTOCOLS
