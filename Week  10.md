@@ -1,6 +1,5 @@
 ## CS2001 – Week 10, Lecture 1
-## TRANSACTION CONCEPT, ACID PROPERTIES, STATES & SCHEDULES
-
+### TRANSACTION CONCEPT, ACID PROPERTIES, STATES & SCHEDULES
 ### 1. CONTEXT
 #### Recap
 - Completed indexing, hashing, and physical design
@@ -223,6 +222,9 @@ Transfer $50 from A → B:
 - States → lifecycle
 - Schedule → execution order
 - Serializable → correctness
+
+### Notes taken from Activity Questions 10.1
+1. 
 ---
 ## CS2001 – Week 10, Lecture 2
 ## SERIALIZABILITY & CONFLICT SERIALIZABILITY
