@@ -1242,5 +1242,8 @@ Transfer $50 from A → B:
 - Wound-wait → older kills
 - Detection → cycle check
 - Timestamp → no locks, no deadlock
+
+### Notes taken from Activity Questions 10.5
+1. 
 ---
 ---
