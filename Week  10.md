@@ -695,6 +695,9 @@ Transfer $50 from A → B:
 - COMMIT → permanent
 - ROLLBACK → undo
 - View → weaker than conflict
+
+### Notes taken from Activity Questions 10.3
+1. 
 ---
 ## CS2001 – Week 10, Lecture 4
 ## CONCURRENCY CONTROL & LOCK-BASED PROTOCOLS
