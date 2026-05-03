@@ -252,6 +252,9 @@
 - Incremental → changes since last
 - Differential → changes since full
 - Logs → recovery backbone
+
+### Notes taken from Activity Questions 11.1
+1. 
 ---
 ## CS2001 – Week 11, Lecture 2
 ### FAILURE CLASSIFICATION, STORAGE & LOG-BASED RECOVERY
