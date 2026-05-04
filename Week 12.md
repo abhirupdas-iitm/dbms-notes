@@ -987,5 +987,7 @@ Then move to:
 → Big Data  
 → System design  
 
+### Notes taken from Activity Questions 12.5
+1. 
 ---
 ---
