@@ -172,6 +172,8 @@ You now understand:
 #### Mental Model
 Query → Algebra → Plan → Cost → Best Plan → Execute
 
+### Notes taken from Activity Questions 12.1
+1. 
 ---
 ## CS2001 – Week 12, Lecture 2
 ### 1. INTRODUCTION
