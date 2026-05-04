@@ -1254,5 +1254,8 @@
 - Mirroring → safety
 - Parity → balance
 - RAID ≠ Backup
+
+### Notes taken from Activity Questions 11.5
+1. 
 ---
 ---
