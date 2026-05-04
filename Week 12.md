@@ -586,6 +586,8 @@ You now understand:
 #### Mental Model
 Optimize → Architect → Parallelize → Distribute → Scale
 
+### Notes taken from Activity Questions 12.3
+1. 
 ---
 ## CS2001 – Week 12, Lecture 4
 ### 1. INTRODUCTION
