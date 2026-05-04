@@ -344,6 +344,8 @@ You now understand:
 #### Mental Model
 Rewrite → Reduce → Reorder → Evaluate → Choose best
 
+### Notes taken from Activity Questions 12.2
+1. 
 ---
 ## CS2001 – Week 12, Lecture 3
 ### 1. INTRODUCTION
