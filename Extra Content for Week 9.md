@@ -137,3 +137,143 @@ You now understand:
 Root → Internal Nodes → Leaf → Data
 
 ---
+## CS2001 – Week 9, Extra Lecture 2
+### 1. INTRODUCTION
+Goal:
+→ Understand construction of B+ Tree  
+→ Learn insertion process  
+#### Focus:
+- Internal node structure  
+- Leaf node behavior  
+- Splitting logic  
+#### Key Insight
+> Construction of B+ Tree ensures balance and efficiency :contentReference[oaicite:0]{index=0}
+
+### 2. BASIC RULES OF B+ TREE
+#### Order (m):
+``Max children = m``  
+``Max keys = m - 1``  
+
+#### Properties:
+- Keys stored in sorted order  
+- All leaves at same level  
+- High fan-out  
+
+#### Key Insight
+> Order defines structure and limits
+
+### 3. INTERNAL NODE STRUCTURE
+Contains:
+- Keys  
+- Child pointers  
+
+#### Properties:
+- Guides search path  
+- Does NOT store actual records  
+
+#### Key Insight
+> Internal nodes act as routing nodes
+
+### 4. LEAF NODE STRUCTURE
+Contains:
+- Keys  
+- Record pointers  
+
+#### Properties:
+- Stores actual data  
+- Linked sequentially  
+
+#### Key Insight
+> Leaf nodes hold complete data access
+
+### 5. INSERTION PROCESS
+#### Step 1:
+Insert key in leaf node  
+
+#### Step 2:
+Maintain sorted order  
+
+#### Step 3:
+If node has space → DONE  
+
+#### Key Insight
+> Always insert at leaf first
+
+### 6. OVERFLOW CONDITION
+Occurs when:
+``Number of keys > m - 1``  
+
+#### Action:
+- Split node  
+- Divide keys into two nodes  
+
+#### Key Insight
+> Overflow triggers structural change
+
+### 7. NODE SPLITTING
+#### Steps:
+1. Divide keys into two halves  
+2. Create new node  
+3. Move half keys  
+
+#### Promotion:
+- Middle key goes to parent  
+
+#### Key Insight
+> Splitting maintains balance
+
+### 8. ROOT SPLIT
+If root overflows:
+- Create new root  
+- Increase tree height  
+
+#### Key Insight
+> Only root split increases height
+
+### 9. INSERTION EXAMPLE IDEA
+#### Process:
+- Start with empty tree  
+- Insert values sequentially  
+- Split when capacity exceeded  
+
+#### Key Insight
+> Tree grows upward via splits
+
+### 10. POINTER DISTRIBUTION
+- Left child → smaller keys  
+- Right child → larger keys  
+
+#### Key Insight
+> Maintains sorted traversal
+
+### 11. TREE GROWTH
+- Controlled via splits  
+- Height remains low  
+
+#### Key Insight
+> High branching factor reduces height
+
+### 12. PERFORMANCE ADVANTAGE
+- Fewer disk accesses  
+- Efficient search  
+- Balanced structure  
+
+#### Key Insight
+> B+ Tree optimizes disk-based indexing
+
+### 13. COMMON MISTAKES
+- Inserting in internal nodes directly  
+- Ignoring sorted order  
+- Incorrect split handling  
+
+### 14. FINAL TAKEAWAY
+You now understand:
+- Construction rules  
+- Insertion steps  
+- Overflow handling  
+- Splitting mechanism  
+
+#### Mental Model
+Insert → Check Overflow → Split → Promote → Balance
+
+---
