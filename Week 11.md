@@ -548,6 +548,9 @@
 - Undo → rollback
 - Redo → reapply
 - Checkpoint → shortcut recovery
+
+### Notes taken from Activity Questions 11.2
+1. 
 ---
 ## CS2001 – Week 11, Lecture 3
 ## TRANSACTIONAL LOGGING, HOT BACKUP & CONCURRENT RECOVERY
