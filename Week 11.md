@@ -768,6 +768,9 @@
 - Redo → forward
 - Undo → backward
 - Redo ALL, Undo SOME
+
+### Notes taken from Activity Questions 11.3
+1. 
 ---
 ## CS2001 – Week 11, Lecture 4
 ### EARLY LOCK RELEASE, LOGICAL UNDO & ADVANCED RECOVERY
