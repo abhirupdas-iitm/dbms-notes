@@ -1022,6 +1022,9 @@
 - Delete → insert
 - Redo → always physical
 - Undo → depends on state
+
+### Notes taken from Activity Questions 11.4
+1. 
 ---
 ## CS2001 – Week 11, Lecture 5
 ## RAID (REDUNDANT ARRAY OF INDEPENDENT DISKS)
