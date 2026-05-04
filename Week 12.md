@@ -812,6 +812,8 @@ You now understand:
 #### Mental Model
 Big Data → Break RDBMS → Relax guarantees → Scale horizontally
 
+### Notes taken from Activity Questions 12.4
+1. 
 ---
 ## CS2001 – Week 12, Lecture 5
 ### 1. INTRODUCTION
